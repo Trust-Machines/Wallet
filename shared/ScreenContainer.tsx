@@ -1,4 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
+import { LinearGradient } from 'expo-linear-gradient'
 import {
   StyleSheet,
   View,
@@ -6,18 +6,17 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
-  ImageBackground,
-} from "react-native";
-import Colors from "../constants/Colors";
-import StyleVariables from "../constants/StyleVariables";
+} from 'react-native'
+import Colors from '../constants/Colors'
+import StyleVariables from '../constants/StyleVariables'
 
 type ScreenContainerProps = {
-  children: React.ReactNode;
-  showStars?: boolean;
-  paddingTop?: number;
-  paddingHorizontal?: number;
-  withTab?: boolean;
-};
+  children: React.ReactNode
+  showStars?: boolean
+  paddingTop?: number
+  paddingHorizontal?: number
+  withTab?: boolean
+}
 
 export function ScreenContainer(props: ScreenContainerProps) {
   return (
@@ -26,7 +25,7 @@ export function ScreenContainer(props: ScreenContainerProps) {
       accessible={false}
     >
       <View style={styles.container}>
-        <StatusBar barStyle={"light-content"} />
+        <StatusBar barStyle={'light-content'} />
         <LinearGradient
           colors={[
             Colors.primaryBackgroundDarker,
@@ -37,7 +36,7 @@ export function ScreenContainer(props: ScreenContainerProps) {
           {props.showStars && (
             <Image
               style={styles.image}
-              source={require("../assets/images/constellations-background.png")}
+              source={require('../assets/images/constellations-background.png')}
             />
           )}
           <View
@@ -59,7 +58,7 @@ export function ScreenContainer(props: ScreenContainerProps) {
         </LinearGradient>
       </View>
     </TouchableWithoutFeedback>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -69,12 +68,11 @@ const styles = StyleSheet.create({
   contentWrapper: {
     flex: 1,
     padding: 20,
-    alignItems: "center",
   },
   image: {
-    width: "100%",
-    position: "absolute",
+    width: '100%',
+    position: 'absolute',
     top: 0,
     left: 0,
   },
-});
+})

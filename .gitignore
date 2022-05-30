@@ -1,6 +1,5 @@
 node_modules/
 .expo/
-dist/
 npm-debug.*
 *.jks
 *.p8
@@ -70,6 +69,5 @@ buck-out/
 # Expo
 .expo/
 web-build/
-dist/
 
 # @end expo-cli

@@ -1,38 +1,38 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { QrStackScreenProps } from "../../types";
-import ModalScreenContainer from "../../shared/ModalScreenContainer";
-import en from "../../en";
-import AppButton, { ButtonTheme } from "../../shared/AppButton";
-import StyleVariables from "../../constants/StyleVariables";
-import Colors from "../../constants/Colors";
-import { useState } from "react";
+import { Pressable, StyleSheet, View } from 'react-native'
+import { TextTheme, ThemedText } from '../../shared/ThemedText'
+import { QrStackScreenProps } from '../../types'
+import ModalScreenContainer from '../../shared/ModalScreenContainer'
+import en from '../../en'
+import AppButton, { ButtonTheme } from '../../shared/AppButton'
+import StyleVariables from '../../constants/StyleVariables'
+import Colors from '../../constants/Colors'
+import { useState } from 'react'
 
 enum Tokens {
-  TKN1 = "TKN1",
-  TKN2 = "TKN2",
+  TKN1 = 'TKN1',
+  TKN2 = 'TKN2',
 }
 
 type TokenProps = {
-  token: Tokens | undefined;
-};
+  token: Tokens | undefined
+}
 
 export default function ConfirmSendModal({
   navigation,
-}: QrStackScreenProps<"ConfirmSend">) {
+}: QrStackScreenProps<'ConfirmSend'>) {
   const [selectedToken, setSelectedToken] = useState<Tokens | undefined>(
     undefined
-  );
-  const [amount, setAmount] = useState<string>("1,000 STX");
+  )
+  const [amount, setAmount] = useState<string>('1,000 STX')
 
   function Token(props: TokenProps) {
     function handleSelectToken() {
       if (props.token && props.token !== selectedToken) {
-        setSelectedToken(Tokens[props.token]);
-        setAmount(`30 ${props.token}`);
+        setSelectedToken(Tokens[props.token])
+        setAmount(`30 ${props.token}`)
       } else {
-        setSelectedToken(undefined);
-        setAmount("1,000 STX");
+        setSelectedToken(undefined)
+        setAmount('1,000 STX')
       }
     }
 
@@ -59,14 +59,14 @@ export default function ConfirmSendModal({
           </View>
         </View>
       </Pressable>
-    );
+    )
   }
 
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
       <ThemedText
         theme={TextTheme.LabelText}
-        styleOverwrite={{ marginTop: 31, marginBottom: 4 }}
+        styleOverwrite={{ marginTop: 31, marginBottom: 4, textAlign: 'center' }}
       >
         {en.Common_send}
       </ThemedText>
@@ -81,6 +81,7 @@ export default function ConfirmSendModal({
         styleOverwrite={{
           marginBottom: 20,
           color: Colors.primaryAppColorLighter,
+          textAlign: 'center',
         }}
       >
         ~$31.5
@@ -89,7 +90,7 @@ export default function ConfirmSendModal({
         theme={TextTheme.LabelText}
         styleOverwrite={{
           marginBottom: 12,
-          alignSelf: "flex-start",
+          alignSelf: 'flex-start',
         }}
       >
         {en.Qr_flow_swapping_assets_label}
@@ -97,15 +98,15 @@ export default function ConfirmSendModal({
       <Token token={Tokens.TKN1} />
       <Token token={Tokens.TKN2} />
       <AppButton
-        text={en.Common_send + " " + amount}
+        text={en.Common_send + ' ' + amount}
         theme={ButtonTheme.Primary}
-        onPress={() => navigation.navigate("TransactionSuccess")}
+        onPress={() => navigation.navigate('TransactionSuccess')}
         fullWidth
-        style={{ marginTop: "auto" }}
+        style={{ marginTop: 'auto' }}
         marginBottom={80}
       />
     </ModalScreenContainer>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -113,17 +114,16 @@ const styles = StyleSheet.create({
     borderRadius: StyleVariables.borderRadius,
     height: 79,
     paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
-    width: "100%",
   },
   tokenImgPlaceholder: {
     height: 32,
     width: 32,
     borderRadius: 16,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
   },
   tokenAmountContainer: {
     paddingVertical: 4,
@@ -133,4 +133,4 @@ const styles = StyleSheet.create({
     borderColor: Colors.disabled,
     marginTop: 4,
   },
-});
+})

@@ -1,49 +1,49 @@
-import { StyleSheet, View, SafeAreaView, Pressable } from "react-native";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { RootTabScreenProps } from "../../types";
-import { SvgIcons } from "../../assets/images";
-import en from "../../en";
-import Colors from "../../constants/Colors";
-import { Assets } from "../../constants/CommonEnums";
-import { useEffect, useState } from "react";
-import { LinearGradient } from "expo-linear-gradient";
-import Layout from "../../constants/Layout";
-import ExchangeInput from "./components/ExchangeInput";
-import StyleVariables from "../../constants/StyleVariables";
-import AppButton, { ButtonTheme } from "../../shared/AppButton";
+import { StyleSheet, View, SafeAreaView, Pressable } from 'react-native'
+import { ScreenContainer } from '../../shared/ScreenContainer'
+import { TextTheme, ThemedText } from '../../shared/ThemedText'
+import { RootTabScreenProps } from '../../types'
+import { SvgIcons } from '../../assets/images'
+import en from '../../en'
+import Colors from '../../constants/Colors'
+import { Assets } from '../../constants/CommonEnums'
+import { useEffect, useState } from 'react'
+import { LinearGradient } from 'expo-linear-gradient'
+import Layout from '../../constants/Layout'
+import ExchangeInput from './components/ExchangeInput'
+import StyleVariables from '../../constants/StyleVariables'
+import AppButton, { ButtonTheme } from '../../shared/AppButton'
 
 export default function ExchangeScreen({
   navigation,
-}: RootTabScreenProps<"Home">) {
-  const [payAsset, setPayAsset] = useState(Assets.STX);
-  const [payAmount, setPayAmount] = useState(0);
-  const [receiveAsset, setReceiveAsset] = useState(Assets.BTC);
-  const [receiveAmount, setReceiveAmount] = useState(0);
+}: RootTabScreenProps<'Home'>) {
+  const [payAsset, setPayAsset] = useState(Assets.STX)
+  const [payAmount, setPayAmount] = useState(0)
+  const [receiveAsset, setReceiveAsset] = useState(Assets.BTC)
+  const [receiveAmount, setReceiveAmount] = useState(0)
 
-  useEffect(() => {});
+  useEffect(() => {})
 
   function onSwapSides(): void {
-    setPayAsset(receiveAsset);
-    setReceiveAsset(payAsset);
-    setPayAmount(receiveAmount);
-    setReceiveAmount(payAmount);
+    setPayAsset(receiveAsset)
+    setReceiveAsset(payAsset)
+    setPayAmount(receiveAmount)
+    setReceiveAmount(payAmount)
   }
 
-  function openAssetSelectorModal(type: "pay" | "receive"): void {
-    navigation.navigate("ExchangeStack", {
-      screen: "ExchangeSelectToken",
+  function openAssetSelectorModal(type: 'pay' | 'receive'): void {
+    navigation.navigate('ExchangeStack', {
+      screen: 'ExchangeSelectToken',
       params: {
         type,
-        onGoBack: (type: "pay" | "receive", asset: Assets) => {
-          if (type === "pay") {
-            setPayAsset(asset);
+        onGoBack: (type: 'pay' | 'receive', asset: Assets) => {
+          if (type === 'pay') {
+            setPayAsset(asset)
           } else {
-            setReceiveAsset(asset);
+            setReceiveAsset(asset)
           }
         },
       },
-    });
+    })
   }
 
   return (
@@ -68,7 +68,7 @@ export default function ExchangeScreen({
           >
             {en.Common_balance}:&nbsp;
             <ThemedText theme={TextTheme.CaptionText}>
-              333.3&nbsp;{" "}
+              333.3&nbsp;{' '}
               <ThemedText
                 theme={TextTheme.CaptionText}
                 styleOverwrite={{ color: Colors.secondaryFont }}
@@ -82,7 +82,7 @@ export default function ExchangeScreen({
           amount={payAmount}
           setAmount={(value) => setPayAmount(value)}
           asset={payAsset}
-          openAssetSelectorModal={() => openAssetSelectorModal("pay")}
+          openAssetSelectorModal={() => openAssetSelectorModal('pay')}
         />
       </LinearGradient>
 
@@ -99,7 +99,7 @@ export default function ExchangeScreen({
           amount={receiveAmount}
           setAmount={(value) => setReceiveAmount(value)}
           asset={receiveAsset}
-          openAssetSelectorModal={() => openAssetSelectorModal("receive")}
+          openAssetSelectorModal={() => openAssetSelectorModal('receive')}
         />
         <View style={styles.exchangeIconContainer}>
           <Pressable onPress={onSwapSides}>
@@ -152,7 +152,7 @@ export default function ExchangeScreen({
             theme={TextTheme.LabelText}
             styleOverwrite={{ color: Colors.primaryAppColorLighter }}
           >
-            {"<0.01%"}
+            {'<0.01%'}
           </ThemedText>
         </View>
       </View>
@@ -161,10 +161,10 @@ export default function ExchangeScreen({
         text={en.Exchange_screen_button_text}
         theme={ButtonTheme.Primary}
         fullWidth
-        onPress={() => console.log("Swap pressed")}
+        onPress={() => console.log('Swap pressed')}
       />
     </ScreenContainer>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -175,19 +175,19 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingLeft: 20,
     paddingRight: 20,
-    position: "relative",
+    position: 'relative',
+    alignSelf: 'center',
   },
   stretchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 20,
   },
   exchangeIconContainer: {
-    position: "absolute",
+    position: 'absolute',
     width: Layout.window.width,
-    alignItems: "center",
+    alignItems: 'center',
     top: -24,
   },
   technicalDetailsContainer: {
@@ -198,8 +198,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingLeft: 14,
     paddingRight: 14,
-    width: "100%",
     marginBottom: 23,
     marginTop: 8,
   },
-});
+})

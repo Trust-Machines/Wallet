@@ -1,15 +1,15 @@
-import { Image, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { SendStackScreenProps } from "../../types";
-import ModalScreenContainer from "../../shared/ModalScreenContainer";
-import en from "../../en";
-import AppButton, { ButtonTheme } from "../../shared/AppButton";
-import StyleVariables from "../../constants/StyleVariables";
-import Colors from "../../constants/Colors";
+import { Image, StyleSheet, View } from 'react-native'
+import { TextTheme, ThemedText } from '../../shared/ThemedText'
+import { SendStackScreenProps } from '../../types'
+import ModalScreenContainer from '../../shared/ModalScreenContainer'
+import en from '../../en'
+import AppButton, { ButtonTheme } from '../../shared/AppButton'
+import StyleVariables from '../../constants/StyleVariables'
+import Colors from '../../constants/Colors'
 
 export default function SendSuccessModal({
   navigation,
-}: SendStackScreenProps<"SendSuccess">) {
+}: SendStackScreenProps<'SendSuccess'>) {
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
       <ThemedText
@@ -18,7 +18,10 @@ export default function SendSuccessModal({
       >
         {en.Qr_flow_transaction_success_title}
       </ThemedText>
-      <Image source={require("../../assets/images/success-graphics.png")} />
+      <Image
+        source={require('../../assets/images/success-graphics.png')}
+        style={{ alignSelf: 'center' }}
+      />
 
       <View style={styles.technicalDetailsContainer}>
         <View style={styles.stretchContainer}>
@@ -71,15 +74,14 @@ export default function SendSuccessModal({
         fullWidth
       />
     </ModalScreenContainer>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   stretchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 20,
   },
   technicalDetailsContainer: {
@@ -90,8 +92,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingLeft: 14,
     paddingRight: 14,
-    width: "100%",
     marginBottom: 23,
     marginTop: 8,
   },
-});
+})

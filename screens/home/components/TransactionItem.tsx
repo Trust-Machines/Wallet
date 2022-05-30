@@ -1,9 +1,9 @@
-import { View } from "react-native";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import Colors from "../../../constants/Colors";
-import StyleVariables from "../../../constants/StyleVariables";
-import { Assets } from "../../../constants/CommonEnums";
-import { SvgIcons } from "../../../assets/images";
+import { View } from 'react-native'
+import { TextTheme, ThemedText } from '../../../shared/ThemedText'
+import Colors from '../../../constants/Colors'
+import StyleVariables from '../../../constants/StyleVariables'
+import { Assets } from '../../../constants/CommonEnums'
+import { SvgIcons } from '../../../assets/images'
 
 export default function TransactionItem() {
   return (
@@ -13,8 +13,8 @@ export default function TransactionItem() {
         padding: 10,
         backgroundColor: Colors.primaryBackgroundLighter,
         borderRadius: StyleVariables.borderRadius,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 8,
       }}
     >
@@ -22,13 +22,13 @@ export default function TransactionItem() {
       <View style={{ flex: 1 }}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             marginBottom: 4,
           }}
         >
           <ThemedText theme={TextTheme.LabelText}>Stacks</ThemedText>
-          <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
             <ThemedText
               theme={TextTheme.LabelText}
               styleOverwrite={{
@@ -46,14 +46,14 @@ export default function TransactionItem() {
             </ThemedText>
           </View>
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: Colors.secondaryFont }}
           >
             Bitcoin
           </ThemedText>
-          <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
             <ThemedText
               theme={TextTheme.CaptionText}
               styleOverwrite={{ color: Colors.error, marginRight: 4 }}
@@ -70,5 +70,5 @@ export default function TransactionItem() {
         </View>
       </View>
     </View>
-  );
+  )
 }

@@ -1,19 +1,19 @@
-import { Text, View } from "react-native";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import en from "../../../en";
-import { Assets } from "../../../constants/CommonEnums";
-import Colors from "../../../constants/Colors";
+import { Text, View } from 'react-native'
+import { TextTheme, ThemedText } from '../../../shared/ThemedText'
+import en from '../../../en'
+import { Assets } from '../../../constants/CommonEnums'
+import Colors from '../../../constants/Colors'
 
 export default function HomeBalance() {
   const balance = {
-    STX: "10.3K",
-    USD: "10,761.61",
-    change: "+3%",
-    lastUpdated: "5 seconds ago",
-  };
+    STX: '10.3K',
+    USD: '10,761.61',
+    change: '+3%',
+    lastUpdated: '5 seconds ago',
+  }
 
   return (
-    <View style={{ height: 166, justifyContent: "space-between" }}>
+    <View style={{ height: 166, justifyContent: 'space-between' }}>
       <View>
         <ThemedText
           theme={TextTheme.CaptionText}
@@ -21,11 +21,11 @@ export default function HomeBalance() {
         >
           {en.Common_balance}
         </ThemedText>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           <ThemedText
             theme={TextTheme.Headline2Text}
             styleOverwrite={{
-              textAlign: "left",
+              textAlign: 'left',
               marginRight: 4,
               marginBottom: 0,
             }}
@@ -51,7 +51,7 @@ export default function HomeBalance() {
       </View>
       <Text
         style={{
-          fontFamily: "Inter_600SemiBold",
+          fontFamily: 'Inter_600SemiBold',
           fontSize: 10,
           lineHeight: 12,
           color: Colors.disabled,
@@ -60,5 +60,5 @@ export default function HomeBalance() {
         {en.Home_last_updated_label}:&nbsp;{balance.lastUpdated}
       </Text>
     </View>
-  );
+  )
 }

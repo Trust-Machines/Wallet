@@ -9,5 +9,5 @@ export default {
   disabledFont: '#ADB5BD',
   error: '#FA5252',
   mainBackground: '#10171D',
-  inputBackground: '#343842'
+  inputBackground: '#343842',
 }

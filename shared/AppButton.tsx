@@ -4,28 +4,28 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-} from "react-native";
-import { TextTheme, ThemedText } from "./ThemedText";
-import Colors from "../constants/Colors";
-import { LinearGradient } from "expo-linear-gradient";
-import StyleVariables from "../constants/StyleVariables";
+} from 'react-native'
+import { TextTheme, ThemedText } from './ThemedText'
+import Colors from '../constants/Colors'
+import { LinearGradient } from 'expo-linear-gradient'
+import StyleVariables from '../constants/StyleVariables'
 
 export enum ButtonTheme {
-  Primary = "Primary",
-  NoBorder = "NoBorder",
-  Disabled = "Disabled",
+  Primary = 'Primary',
+  NoBorder = 'NoBorder',
+  Disabled = 'Disabled',
 }
 
 type AppButtonProps = {
-  text: string;
-  fullWidth: boolean;
-  theme: ButtonTheme;
-  onPress(): void;
-  marginBottom?: number;
-  style?: StyleProp<ViewStyle>;
-  icon?: React.ReactNode;
-  paddingHorizontal?: number;
-};
+  text: string
+  fullWidth: boolean
+  theme: ButtonTheme
+  onPress(): void
+  marginBottom?: number
+  style?: StyleProp<ViewStyle>
+  icon?: React.ReactNode
+  paddingHorizontal?: number
+}
 
 export default function AppButton(props: AppButtonProps) {
   return (
@@ -35,7 +35,7 @@ export default function AppButton(props: AppButtonProps) {
       style={[
         props.style,
         {
-          width: props.fullWidth ? "100%" : "auto",
+          width: props.fullWidth ? '100%' : 'auto',
           marginBottom: props.marginBottom || 0,
         },
       ]}
@@ -64,7 +64,7 @@ export default function AppButton(props: AppButtonProps) {
         </View>
       </LinearGradient>
     </TouchableOpacity>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     borderRadius: StyleVariables.borderRadius,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
-});
+})
 
 const buttonColors = {
   [ButtonTheme.Primary]: {
@@ -91,10 +91,10 @@ const buttonColors = {
     gradientEndColor: Colors.primaryAppColorDarker,
   },
   [ButtonTheme.NoBorder]: {
-    bg: "transparent",
+    bg: 'transparent',
     text: Colors.primaryFont,
-    gradientStartColor: "transparent",
-    gradientEndColor: "transparent",
+    gradientStartColor: 'transparent',
+    gradientEndColor: 'transparent',
   },
   [ButtonTheme.Disabled]: {
     bg: Colors.primaryBackgroundLighter,
@@ -102,4 +102,4 @@ const buttonColors = {
     gradientStartColor: Colors.disabled,
     gradientEndColor: Colors.disabled,
   },
-};
+}
