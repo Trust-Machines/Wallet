@@ -45,7 +45,7 @@ const defaultPeer = { host: 'electrum.blockstream.info', ssl: '50002' };
 const hardcodedPeers = [
   { host: 'electrum.blockstream.info', ssl: '50002' },
   { host: 'electrum.blockstream.info', ssl: '50002' },
-  { host: 'electrum.bitaroo.net', ssl: '50002' },
+  // { host: 'electrum.bitaroo.net', ssl: '50002' },
 ];
 
 /** @type {ElectrumClient} */

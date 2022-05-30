@@ -13,23 +13,36 @@ export default function PresentQrModal({
 }: QrStackScreenProps<'PresentQr'>) {
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
-      <ThemedText
-        theme={TextTheme.NavigationText}
-        styleOverwrite={{ marginTop: 20, marginBottom: 35 }}
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'space-between',
+          marginBottom: Layout.isSmallDevice ? 0 : '10%',
+        }}
       >
-        {en.Qr_flow_present_qr_title}
-      </ThemedText>
-      <View style={styles.qrContainer}>
-        <QrCode width="100%" />
+        <View>
+          <ThemedText
+            theme={TextTheme.NavigationText}
+            styleOverwrite={{
+              marginTop: Layout.isSmallDevice ? 0 : 20,
+              marginBottom: Layout.isSmallDevice ? 15 : 35,
+            }}
+          >
+            {en.Qr_flow_present_qr_title}
+          </ThemedText>
+          <View style={styles.qrContainer}>
+            <QrCode />
+          </View>
+        </View>
+        <AppButton
+          text={en.Qr_flow_present_qr_button_text}
+          theme={ButtonTheme.Primary}
+          onPress={() => navigation.navigate('ScanQr')}
+          fullWidth
+          style={{ marginTop: 'auto' }}
+          marginBottom={80}
+        />
       </View>
-      <AppButton
-        text={en.Qr_flow_present_qr_button_text}
-        theme={ButtonTheme.Primary}
-        onPress={() => navigation.navigate('ScanQr')}
-        fullWidth
-        style={{ marginTop: 'auto' }}
-        marginBottom={80}
-      />
     </ModalScreenContainer>
   )
 }

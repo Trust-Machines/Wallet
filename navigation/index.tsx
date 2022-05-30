@@ -280,20 +280,25 @@ function BottomTabNavigator() {
           borderTopWidth: 0,
           width: Layout.window.width - 20,
           marginLeft: 10,
+          elevation: 0,
         },
         tabBarShowLabel: false,
         tabBarBackground: () => (
           <LinearGradient
             style={{
               alignItems: 'center',
-              width: Layout.window.width,
+              width: Layout.isSmallDevice
+                ? Layout.window.width - 20
+                : Layout.window.width,
             }}
             colors={[Colors.primaryBackgroundLighter, '#243251']}
           >
             <BottomTabBorder
-              preserveAspectRatio="xMinYMin slice"
+              preserveAspectRatio={
+                Layout.isSmallDevice ? 'xMinYMin' : 'xMinYMin slice'
+              }
               width={Layout.window.width - 20}
-              style={{ marginLeft: -20 }}
+              style={{ marginLeft: Layout.isSmallDevice ? 0 : -20 }}
             />
           </LinearGradient>
         ),
@@ -318,6 +323,7 @@ function BottomTabNavigator() {
         component={CollectiblesScreen}
         options={({ navigation }: RootTabScreenProps<'Collectibles'>) => ({
           title: en.Header_title_collectibles,
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveCollectibles style={styles.glow} />
@@ -340,6 +346,7 @@ function BottomTabNavigator() {
         })}
         options={({ navigation }: RootTabScreenProps<'ExchangeTab'>) => ({
           title: en.Header_title_exchange,
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) => (
             <View
               style={{
@@ -372,6 +379,7 @@ function BottomTabNavigator() {
         component={DefiBrowserScreen}
         options={({ navigation }: RootTabScreenProps<'DefiBrowser'>) => ({
           title: 'Defi Browser',
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveDefi style={styles.glow} />
@@ -386,6 +394,7 @@ function BottomTabNavigator() {
         component={SettingsScreen}
         options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
           title: en.Header_title_settings,
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveSettings style={styles.glow} />

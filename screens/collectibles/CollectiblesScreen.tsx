@@ -110,7 +110,7 @@ export default function CollectiblesScreen({
   )
 
   return (
-    <ScreenContainer paddingTop={8} paddingHorizontal={8}>
+    <ScreenContainer paddingTop={8} paddingHorizontal={8} withTab>
       <SafeAreaView>
         <FlatList
           data={arts}

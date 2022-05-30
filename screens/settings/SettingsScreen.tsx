@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { ScreenContainer } from '../../shared/ScreenContainer'
 import { RootTabScreenProps } from '../../types'
 import Colors from '../../constants/Colors'
@@ -53,56 +53,61 @@ export default function SettingsScreen({
   }
 
   return (
-    <ScreenContainer paddingTop={5}>
-      <Label label={en.Settings_label_profile} />
-      <View style={styles.itemGroup}>
-        <Item
-          title={'My TrustMachines Wallet'}
-          secondaryText={'9Hvt...0a0b'}
-          withChevron
-          handlePress={() => console.log('pressed')}
-        />
-      </View>
+    <ScreenContainer paddingTop={5} withTab>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 30 }}
+      >
+        <Label label={en.Settings_label_profile} />
+        <View style={styles.itemGroup}>
+          <Item
+            title={'My TrustMachines Wallet'}
+            secondaryText={'9Hvt...0a0b'}
+            withChevron
+            handlePress={() => console.log('pressed')}
+          />
+        </View>
 
-      <Label label={en.Settings_label_security} />
-      <View style={styles.itemGroup}>
-        <Item
-          title={en.Settings_screen_recovery_phrase}
-          withChevron
-          handlePress={() => console.log('pressed')}
-        />
-        <Separator />
-        <Item
-          title={en.Settings_screen_app_lock}
-          withChevron
-          handlePress={() => console.log('pressed')}
-        />
-      </View>
+        <Label label={en.Settings_label_security} />
+        <View style={styles.itemGroup}>
+          <Item
+            title={en.Settings_screen_recovery_phrase}
+            withChevron
+            handlePress={() => console.log('pressed')}
+          />
+          <Separator />
+          <Item
+            title={en.Settings_screen_app_lock}
+            withChevron
+            handlePress={() => console.log('pressed')}
+          />
+        </View>
 
-      <Label label={en.Settings_label_notifications} />
-      <View style={styles.itemGroup}>
-        <Item
-          title={en.Settings_screen_notifications_settings}
-          withChevron
-          handlePress={() => console.log('pressed')}
-        />
-      </View>
+        <Label label={en.Settings_label_notifications} />
+        <View style={styles.itemGroup}>
+          <Item
+            title={en.Settings_screen_notifications_settings}
+            withChevron
+            handlePress={() => console.log('pressed')}
+          />
+        </View>
 
-      <Label label={en.Settings_label_others} />
-      <View style={styles.itemGroup}>
-        <Item
-          title={en.Settings_screen_contact_us}
-          withChevron
-          handlePress={() => console.log('pressed')}
-        />
-        <Separator />
-        <Item
-          title={en.Settings_screen_sign_out}
-          withChevron
-          handlePress={() => console.log('pressed')}
-          color={Colors.error}
-        />
-      </View>
+        <Label label={en.Settings_label_others} />
+        <View style={styles.itemGroup}>
+          <Item
+            title={en.Settings_screen_contact_us}
+            withChevron
+            handlePress={() => console.log('pressed')}
+          />
+          <Separator />
+          <Item
+            title={en.Settings_screen_sign_out}
+            withChevron
+            handlePress={() => console.log('pressed')}
+            color={Colors.error}
+          />
+        </View>
+      </ScrollView>
     </ScreenContainer>
   )
 }

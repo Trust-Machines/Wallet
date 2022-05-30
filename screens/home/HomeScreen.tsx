@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, ScrollView, Text, View } from 'react-native'
 import HomeHeader from './components/HomeHeader'
 import { ScreenContainer } from '../../shared/ScreenContainer'
 import { RootTabScreenProps } from '../../types'
@@ -10,19 +10,23 @@ import { TextTheme, ThemedText } from '../../shared/ThemedText'
 import Colors from '../../constants/Colors'
 import TransactionItem from './components/TransactionItem'
 import { useAppSelector } from '../../redux/hooks'
+import Layout from '../../constants/Layout'
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const wallet = useAppSelector((state) => state.wallet.currentWallet)
   useEffect(() => console.log('wallet from state', wallet), [])
 
   return (
-    <ScreenContainer>
+    <ScreenContainer withTab>
       <HomeHeader />
-      <View
+      <ScrollView
         style={{
-          position: 'relative',
           marginTop: 11,
+          width: Layout.window.width,
+          marginLeft: -20,
         }}
+        contentContainerStyle={{ paddingHorizontal: 20, position: 'relative' }}
+        showsVerticalScrollIndicator={false}
       >
         <Image
           source={require('../../assets/images/home-chart.png')}
@@ -34,6 +38,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             theme={ButtonTheme.Primary}
             text={en.Common_receive}
             style={{ flex: 1 }}
+            paddingHorizontal={0}
             onPress={() =>
               navigation.navigate('ReceiveStack', {
                 screen: 'ReceivePresentQr',
@@ -44,7 +49,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <AppButton
             theme={ButtonTheme.Primary}
             text={en.Common_send}
-            style={{ flex: 1, marginLeft: 16, marginRight: 16 }}
+            style={{ flex: 1, marginHorizontal: 16 }}
             onPress={() =>
               navigation.navigate('SendStack', {
                 screen: 'Send',
@@ -93,10 +98,18 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         >
           29 April 2022
         </Text>
-        <TransactionItem />
-        <TransactionItem />
-        <TransactionItem />
-      </View>
+        <View style={{ paddingBottom: 30 }}>
+          <TransactionItem />
+          <TransactionItem />
+          <TransactionItem />
+          <TransactionItem />
+          <TransactionItem />
+          <TransactionItem />
+          <TransactionItem />
+          <TransactionItem />
+          <TransactionItem />
+        </View>
+      </ScrollView>
     </ScreenContainer>
   )
 }

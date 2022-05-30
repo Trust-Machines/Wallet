@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
+  ViewStyle,
 } from 'react-native'
 import Colors from '../constants/Colors'
 import StyleVariables from '../constants/StyleVariables'
@@ -16,6 +17,7 @@ type ScreenContainerProps = {
   paddingTop?: number
   paddingHorizontal?: number
   withTab?: boolean
+  styles?: ViewStyle
 }
 
 export function ScreenContainer(props: ScreenContainerProps) {
@@ -25,7 +27,11 @@ export function ScreenContainer(props: ScreenContainerProps) {
       accessible={false}
     >
       <View style={styles.container}>
-        <StatusBar barStyle={'light-content'} />
+        <StatusBar
+          barStyle={'light-content'}
+          translucent
+          backgroundColor={'transparent'}
+        />
         <LinearGradient
           colors={[
             Colors.primaryBackgroundDarker,
@@ -47,9 +53,9 @@ export function ScreenContainer(props: ScreenContainerProps) {
                 paddingHorizontal: props.paddingHorizontal ?? 20,
                 paddingBottom: props.withTab
                   ? StyleVariables.bottomTabHeight +
-                    StyleVariables.bottomTabBottomOffset +
-                    20
+                    StyleVariables.bottomTabBottomOffset
                   : 20,
+                ...props.styles,
               },
             ]}
           >

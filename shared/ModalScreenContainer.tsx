@@ -48,8 +48,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: Colors.primaryBackgroundDarker,
-    height: 65,
-    width: '100%',
+    height: Layout.isSmallDevice ? 45 : 65,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopLeftRadius: 16,

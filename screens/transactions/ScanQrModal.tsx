@@ -19,7 +19,6 @@ export default function ScanQrModal({
           onPress={() => navigation.navigate('ConfirmSend')}
           fullWidth
           style={{ marginTop: 'auto' }}
-          marginBottom={80}
         />
       </View>
     </ModalScreenContainer>
@@ -34,8 +33,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     top: 0,
-    paddingTop: 124,
+    paddingTop: Layout.isSmallDevice ? '5%' : '10%',
     paddingHorizontal: 20,
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: '10%',
   },
 })

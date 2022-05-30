@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import { TextTheme, ThemedText } from '../../../shared/ThemedText'
 import Colors from '../../../constants/Colors'
 import StyleVariables from '../../../constants/StyleVariables'
@@ -7,7 +7,7 @@ import { SvgIcons } from '../../../assets/images'
 
 export default function TransactionItem() {
   return (
-    <View
+    <Pressable
       style={{
         height: 64,
         padding: 10,
@@ -69,6 +69,6 @@ export default function TransactionItem() {
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   )
 }

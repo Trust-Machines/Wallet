@@ -1,6 +1,6 @@
 import {
   Pressable,
-  SafeAreaView,
+  ScrollView,
   StyleSheet,
   TextInput,
   View,
@@ -16,6 +16,7 @@ import { safeParseFloat } from '../../utils/helpers'
 import { SvgIcons } from '../../assets/images'
 import Contact from './components/Contact'
 import AppButton, { ButtonTheme } from '../../shared/AppButton'
+import Layout from '../../constants/Layout'
 
 export default function SendScreen({
   navigation,
@@ -34,89 +35,93 @@ export default function SendScreen({
 
   return (
     <ModalScreenContainer title={en.Common_send}>
-      <ThemedText
-        theme={TextTheme.LabelText}
-        styleOverwrite={{
-          marginTop: -6,
-          marginBottom: 4,
-          alignSelf: 'flex-start',
-        }}
-      >
-        {en.Common_amount}:
-      </ThemedText>
-      <SafeAreaView>
-        <TextInput
-          style={[styles.inputContainer, styles.amountInput]}
-          value={amount.toString()}
-          onChangeText={(value) => setAmount(safeParseFloat(value))}
-          keyboardType="decimal-pad"
-          keyboardAppearance="dark"
-        />
-      </SafeAreaView>
-
-      <ThemedText
-        theme={TextTheme.LabelText}
-        styleOverwrite={{
-          marginTop: 20,
-          marginBottom: 4,
-          alignSelf: 'flex-start',
-        }}
-      >
-        {en.Common_to}:
-      </ThemedText>
-      <SafeAreaView style={{ position: 'relative', marginBottom: 24 }}>
-        <TextInput
-          style={[styles.inputContainer, styles.searchInput]}
-          value={addressInputValue.toString()}
-          onChangeText={(value) => setAddressInputValue(value)}
-          keyboardType="default"
-          keyboardAppearance="dark"
-          placeholder={en.Common_search_placeholder}
-          placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
-        />
-        {addressInputValue ? (
-          <Pressable
-            onPress={() => setAddressInputValue('')}
-            style={{ position: 'absolute', right: 0 }}
-          >
-            <SvgIcons.General.ClearSearch />
-          </Pressable>
-        ) : (
-          <SvgIcons.General.Search style={{ position: 'absolute', right: 0 }} />
-        )}
-      </SafeAreaView>
-      <View style={styles.contactsHeader}>
-        <ThemedText theme={TextTheme.LabelText}>
-          {en.Send_screen_select_contact_label}
-        </ThemedText>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ThemedText
-          theme={TextTheme.CaptionText}
-          styleOverwrite={{ color: Colors.primaryAppColorDarker }}
+          theme={TextTheme.LabelText}
+          styleOverwrite={{
+            marginTop: Layout.isSmallDevice ? 0 : -6,
+            marginBottom: 4,
+            alignSelf: 'flex-start',
+          }}
         >
-          {en.Send_screen_add_contact_label}
+          {en.Common_amount}:
         </ThemedText>
-      </View>
-      <Contact
-        name={'Stacks Merch Shop'}
-        address={'(6111...334e)'}
-        selected={selectedContactAddress === '(6111...334e)'}
-        setSelectedContantAddress={setSelectedContantAddress}
-        clearAddressInputValue={() => setAddressInputValue('')}
-      />
-      <Contact
-        name={'Katie'}
-        address={'(SM2Z....TGTF4)'}
-        selected={selectedContactAddress === '(SM2Z....TGTF4)'}
-        setSelectedContantAddress={setSelectedContantAddress}
-        clearAddressInputValue={() => setAddressInputValue('')}
-      />
-      <Contact
-        name={'Katie'}
-        address={'(SM2Z....TGTF3)'}
-        selected={selectedContactAddress === '(SM2Z....TGTF3)'}
-        setSelectedContantAddress={setSelectedContantAddress}
-        clearAddressInputValue={() => setAddressInputValue('')}
-      />
+        <View>
+          <TextInput
+            style={[styles.inputContainer, styles.amountInput]}
+            value={amount.toString()}
+            onChangeText={(value) => setAmount(safeParseFloat(value))}
+            keyboardType="decimal-pad"
+            keyboardAppearance="dark"
+          />
+        </View>
+
+        <ThemedText
+          theme={TextTheme.LabelText}
+          styleOverwrite={{
+            marginTop: 20,
+            marginBottom: 4,
+            alignSelf: 'flex-start',
+          }}
+        >
+          {en.Common_to}:
+        </ThemedText>
+        <View style={{ position: 'relative', marginBottom: 24 }}>
+          <TextInput
+            style={[styles.inputContainer, styles.searchInput]}
+            value={addressInputValue.toString()}
+            onChangeText={(value) => setAddressInputValue(value)}
+            keyboardType="default"
+            keyboardAppearance="dark"
+            placeholder={en.Common_search_placeholder}
+            placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
+          />
+          {addressInputValue ? (
+            <Pressable
+              onPress={() => setAddressInputValue('')}
+              style={{ position: 'absolute', right: 0 }}
+            >
+              <SvgIcons.General.ClearSearch />
+            </Pressable>
+          ) : (
+            <SvgIcons.General.Search
+              style={{ position: 'absolute', right: 0 }}
+            />
+          )}
+        </View>
+        <View style={styles.contactsHeader}>
+          <ThemedText theme={TextTheme.LabelText}>
+            {en.Send_screen_select_contact_label}
+          </ThemedText>
+          <ThemedText
+            theme={TextTheme.CaptionText}
+            styleOverwrite={{ color: Colors.primaryAppColorDarker }}
+          >
+            {en.Send_screen_add_contact_label}
+          </ThemedText>
+        </View>
+        <Contact
+          name={'Stacks Merch Shop'}
+          address={'(6111...334e)'}
+          selected={selectedContactAddress === '(6111...334e)'}
+          setSelectedContantAddress={setSelectedContantAddress}
+          clearAddressInputValue={() => setAddressInputValue('')}
+        />
+        <Contact
+          name={'Katie'}
+          address={'(SM2Z....TGTF4)'}
+          selected={selectedContactAddress === '(SM2Z....TGTF4)'}
+          setSelectedContantAddress={setSelectedContantAddress}
+          clearAddressInputValue={() => setAddressInputValue('')}
+        />
+        <Contact
+          name={'Katie'}
+          address={'(SM2Z....TGTF3)'}
+          selected={selectedContactAddress === '(SM2Z....TGTF3)'}
+          setSelectedContantAddress={setSelectedContantAddress}
+          clearAddressInputValue={() => setAddressInputValue('')}
+        />
+      </ScrollView>
       <AppButton
         text={`${en.Common_send}${
           (selectedContactAddress || addressInputValue) && ' ' + en.Common_to
@@ -134,8 +139,6 @@ export default function SendScreen({
         }
         fullWidth
         onPress={() => navigation.navigate('SendSuccess')}
-        style={{ marginTop: 'auto' }}
-        marginBottom={60}
       />
     </ModalScreenContainer>
   )

@@ -21,7 +21,7 @@ type AppButtonProps = {
   fullWidth: boolean
   theme: ButtonTheme
   onPress(): void
-  marginBottom?: number
+  marginBottom?: number | string
   style?: StyleProp<ViewStyle>
   icon?: React.ReactNode
   paddingHorizontal?: number
@@ -32,13 +32,7 @@ export default function AppButton(props: AppButtonProps) {
     <TouchableOpacity
       disabled={props.theme === ButtonTheme.Disabled}
       onPress={props.onPress}
-      style={[
-        props.style,
-        {
-          width: props.fullWidth ? '100%' : 'auto',
-          marginBottom: props.marginBottom || 0,
-        },
-      ]}
+      style={[props.style, { width: props.fullWidth ? '100%' : 'auto' }]}
     >
       <LinearGradient
         colors={[

@@ -7,6 +7,7 @@ import AppButton, { ButtonTheme } from '../../shared/AppButton'
 import StyleVariables from '../../constants/StyleVariables'
 import Colors from '../../constants/Colors'
 import { useState } from 'react'
+import Layout from '../../constants/Layout'
 
 enum Tokens {
   TKN1 = 'TKN1',
@@ -64,47 +65,59 @@ export default function ConfirmSendModal({
 
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
-      <ThemedText
-        theme={TextTheme.LabelText}
-        styleOverwrite={{ marginTop: 31, marginBottom: 4, textAlign: 'center' }}
-      >
-        {en.Common_send}
-      </ThemedText>
-      <ThemedText
-        theme={TextTheme.Headline1Text}
-        styleOverwrite={{ marginBottom: 4 }}
-      >
-        1,000 STX
-      </ThemedText>
-      <ThemedText
-        theme={TextTheme.LabelText}
-        styleOverwrite={{
-          marginBottom: 20,
-          color: Colors.primaryAppColorLighter,
-          textAlign: 'center',
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'space-between',
+          marginBottom: Layout.isSmallDevice ? 0 : '10%',
         }}
       >
-        ~$31.5
-      </ThemedText>
-      <ThemedText
-        theme={TextTheme.LabelText}
-        styleOverwrite={{
-          marginBottom: 12,
-          alignSelf: 'flex-start',
-        }}
-      >
-        {en.Qr_flow_swapping_assets_label}
-      </ThemedText>
-      <Token token={Tokens.TKN1} />
-      <Token token={Tokens.TKN2} />
-      <AppButton
-        text={en.Common_send + ' ' + amount}
-        theme={ButtonTheme.Primary}
-        onPress={() => navigation.navigate('TransactionSuccess')}
-        fullWidth
-        style={{ marginTop: 'auto' }}
-        marginBottom={80}
-      />
+        <View>
+          <ThemedText
+            theme={TextTheme.LabelText}
+            styleOverwrite={{
+              marginTop: Layout.isSmallDevice ? 4 : 31,
+              marginBottom: 4,
+              textAlign: 'center',
+            }}
+          >
+            {en.Common_send}
+          </ThemedText>
+          <ThemedText
+            theme={TextTheme.Headline1Text}
+            styleOverwrite={{ marginBottom: 4 }}
+          >
+            1,000 STX
+          </ThemedText>
+          <ThemedText
+            theme={TextTheme.LabelText}
+            styleOverwrite={{
+              marginBottom: 20,
+              color: Colors.primaryAppColorLighter,
+              textAlign: 'center',
+            }}
+          >
+            ~$31.5
+          </ThemedText>
+          <ThemedText
+            theme={TextTheme.LabelText}
+            styleOverwrite={{
+              marginBottom: 12,
+              alignSelf: 'flex-start',
+            }}
+          >
+            {en.Qr_flow_swapping_assets_label}
+          </ThemedText>
+          <Token token={Tokens.TKN1} />
+          <Token token={Tokens.TKN2} />
+        </View>
+        <AppButton
+          text={en.Common_send + ' ' + amount}
+          theme={ButtonTheme.Primary}
+          onPress={() => navigation.navigate('TransactionSuccess')}
+          fullWidth
+        />
+      </View>
     </ModalScreenContainer>
   )
 }

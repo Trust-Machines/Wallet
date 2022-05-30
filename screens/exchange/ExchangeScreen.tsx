@@ -1,4 +1,10 @@
-import { StyleSheet, View, SafeAreaView, Pressable } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Pressable,
+  ScrollView,
+} from 'react-native'
 import { ScreenContainer } from '../../shared/ScreenContainer'
 import { TextTheme, ThemedText } from '../../shared/ThemedText'
 import { RootTabScreenProps } from '../../types'
@@ -47,122 +53,130 @@ export default function ExchangeScreen({
   }
 
   return (
-    <ScreenContainer paddingTop={0}>
-      <LinearGradient
-        colors={[
-          Colors.primaryBackgroundDarker,
-          Colors.primaryBackgroundLighter,
-        ]}
-        style={styles.swapBox}
+    <ScreenContainer paddingTop={0} withTab>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ width: Layout.window.width, marginLeft: -20 }}
       >
-        <SafeAreaView style={styles.stretchContainer}>
-          <ThemedText
-            theme={TextTheme.CaptionText}
-            styleOverwrite={{ color: Colors.secondaryFont }}
-          >
-            {en.Exchange_screen_pay_label}
-          </ThemedText>
-          <ThemedText
-            theme={TextTheme.CaptionText}
-            styleOverwrite={{ color: Colors.secondaryFont }}
-          >
-            {en.Common_balance}:&nbsp;
-            <ThemedText theme={TextTheme.CaptionText}>
-              333.3&nbsp;{' '}
-              <ThemedText
-                theme={TextTheme.CaptionText}
-                styleOverwrite={{ color: Colors.secondaryFont }}
-              >
-                {payAsset}
+        <LinearGradient
+          colors={[
+            Colors.primaryBackgroundDarker,
+            Colors.primaryBackgroundLighter,
+          ]}
+          style={styles.swapBox}
+        >
+          <View style={styles.stretchContainer}>
+            <ThemedText
+              theme={TextTheme.CaptionText}
+              styleOverwrite={{ color: Colors.secondaryFont }}
+            >
+              {en.Exchange_screen_pay_label}
+            </ThemedText>
+            <ThemedText
+              theme={TextTheme.CaptionText}
+              styleOverwrite={{ color: Colors.secondaryFont }}
+            >
+              {en.Common_balance}:&nbsp;
+              <ThemedText theme={TextTheme.CaptionText}>
+                333.3&nbsp;{' '}
+                <ThemedText
+                  theme={TextTheme.CaptionText}
+                  styleOverwrite={{ color: Colors.secondaryFont }}
+                >
+                  {payAsset}
+                </ThemedText>
               </ThemedText>
             </ThemedText>
-          </ThemedText>
-        </SafeAreaView>
-        <ExchangeInput
-          amount={payAmount}
-          setAmount={(value) => setPayAmount(value)}
-          asset={payAsset}
-          openAssetSelectorModal={() => openAssetSelectorModal('pay')}
-        />
-      </LinearGradient>
+          </View>
+          <ExchangeInput
+            amount={payAmount}
+            setAmount={(value) => setPayAmount(value)}
+            asset={payAsset}
+            openAssetSelectorModal={() => openAssetSelectorModal('pay')}
+          />
+        </LinearGradient>
 
-      <View style={styles.swapBox}>
-        <SafeAreaView style={styles.stretchContainer}>
-          <ThemedText
-            theme={TextTheme.CaptionText}
-            styleOverwrite={{ color: Colors.secondaryFont }}
-          >
-            {en.Exchange_screen_receive_label}
-          </ThemedText>
-        </SafeAreaView>
-        <ExchangeInput
-          amount={receiveAmount}
-          setAmount={(value) => setReceiveAmount(value)}
-          asset={receiveAsset}
-          openAssetSelectorModal={() => openAssetSelectorModal('receive')}
-        />
-        <View style={styles.exchangeIconContainer}>
-          <Pressable onPress={onSwapSides}>
-            <SvgIcons.Exchange.ExchangeColored />
-          </Pressable>
-        </View>
-      </View>
-
-      <View style={styles.technicalDetailsContainer}>
-        <View style={styles.stretchContainer}>
-          <ThemedText
-            theme={TextTheme.DetailText}
-            styleOverwrite={{ color: Colors.secondaryFont }}
-          >
-            Rate
-          </ThemedText>
-          <ThemedText theme={TextTheme.LabelText}>
-            1 STX = 0.00002728
-          </ThemedText>
+        <View style={styles.swapBox}>
+          <SafeAreaView style={styles.stretchContainer}>
+            <ThemedText
+              theme={TextTheme.CaptionText}
+              styleOverwrite={{ color: Colors.secondaryFont }}
+            >
+              {en.Exchange_screen_receive_label}
+            </ThemedText>
+          </SafeAreaView>
+          <ExchangeInput
+            amount={receiveAmount}
+            setAmount={(value) => setReceiveAmount(value)}
+            asset={receiveAsset}
+            openAssetSelectorModal={() => openAssetSelectorModal('receive')}
+          />
+          <View style={styles.exchangeIconContainer}>
+            <Pressable onPress={onSwapSides}>
+              <SvgIcons.Exchange.ExchangeColored />
+            </Pressable>
+          </View>
         </View>
 
-        <View style={styles.stretchContainer}>
-          <ThemedText
-            theme={TextTheme.DetailText}
-            styleOverwrite={{ color: Colors.secondaryFont }}
-          >
-            Slippage Tolerance
-          </ThemedText>
-          <ThemedText theme={TextTheme.LabelText}>1%</ThemedText>
-        </View>
+        <View style={{ paddingHorizontal: 20 }}>
+          <View style={styles.technicalDetailsContainer}>
+            <View style={styles.stretchContainer}>
+              <ThemedText
+                theme={TextTheme.DetailText}
+                styleOverwrite={{ color: Colors.secondaryFont }}
+              >
+                Rate
+              </ThemedText>
+              <ThemedText theme={TextTheme.LabelText}>
+                1 STX = 0.00002728
+              </ThemedText>
+            </View>
 
-        <View style={styles.stretchContainer}>
-          <ThemedText
-            theme={TextTheme.DetailText}
-            styleOverwrite={{ color: Colors.secondaryFont }}
-          >
-            Estimated Fees
-          </ThemedText>
-          <ThemedText theme={TextTheme.LabelText}>$0.19429</ThemedText>
-        </View>
+            <View style={styles.stretchContainer}>
+              <ThemedText
+                theme={TextTheme.DetailText}
+                styleOverwrite={{ color: Colors.secondaryFont }}
+              >
+                Slippage Tolerance
+              </ThemedText>
+              <ThemedText theme={TextTheme.LabelText}>1%</ThemedText>
+            </View>
 
-        <View style={styles.stretchContainer}>
-          <ThemedText
-            theme={TextTheme.DetailText}
-            styleOverwrite={{ color: Colors.secondaryFont }}
-          >
-            Price Impact
-          </ThemedText>
-          <ThemedText
-            theme={TextTheme.LabelText}
-            styleOverwrite={{ color: Colors.primaryAppColorLighter }}
-          >
-            {'<0.01%'}
-          </ThemedText>
-        </View>
-      </View>
+            <View style={styles.stretchContainer}>
+              <ThemedText
+                theme={TextTheme.DetailText}
+                styleOverwrite={{ color: Colors.secondaryFont }}
+              >
+                Estimated Fees
+              </ThemedText>
+              <ThemedText theme={TextTheme.LabelText}>$0.19429</ThemedText>
+            </View>
 
-      <AppButton
-        text={en.Exchange_screen_button_text}
-        theme={ButtonTheme.Primary}
-        fullWidth
-        onPress={() => console.log('Swap pressed')}
-      />
+            <View style={styles.stretchContainer}>
+              <ThemedText
+                theme={TextTheme.DetailText}
+                styleOverwrite={{ color: Colors.secondaryFont }}
+              >
+                Price Impact
+              </ThemedText>
+              <ThemedText
+                theme={TextTheme.LabelText}
+                styleOverwrite={{ color: Colors.primaryAppColorLighter }}
+              >
+                {'<0.01%'}
+              </ThemedText>
+            </View>
+          </View>
+
+          <AppButton
+            text={en.Exchange_screen_button_text}
+            theme={ButtonTheme.Primary}
+            fullWidth
+            onPress={() => console.log('Swap pressed')}
+            marginBottom={30}
+          />
+        </View>
+      </ScrollView>
     </ScreenContainer>
   )
 }
@@ -171,10 +185,8 @@ const styles = StyleSheet.create({
   swapBox: {
     height: 130,
     width: Layout.window.width,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
     position: 'relative',
     alignSelf: 'center',
   },

@@ -6,6 +6,7 @@ import { TextTheme, ThemedText } from '../../shared/ThemedText'
 import Colors from '../../constants/Colors'
 import en from '../../en'
 import { RootStackScreenProps } from '../../types'
+import Layout from '../../constants/Layout'
 const ElectrumHelper = require('../../utils/ElectrumHelper')
 
 export default function StartScreen({
@@ -20,20 +21,31 @@ export default function StartScreen({
   }
 
   return (
-    <ScreenContainer showStars>
-      <Image
-        source={require('../../assets/images/start-screen-graphics.png')}
-        style={{ marginTop: '25%', alignSelf: 'center' }}
-      />
-      <ThemedText theme={TextTheme.Headline2Text}>
-        <ThemedText
-          theme={TextTheme.Headline2Text}
-          style={{ color: Colors.primaryAppColorLighter }}
-        >
-          {en.Wallet_name}&nbsp;
+    <ScreenContainer
+      showStars
+      styles={{
+        justifyContent: 'space-between',
+        marginBottom: Layout.isSmallDevice ? '5%' : '10%',
+      }}
+    >
+      <View>
+        <Image
+          source={require('../../assets/images/start-screen-graphics.png')}
+          style={{
+            marginTop: Layout.isSmallDevice ? '0%' : '20%',
+            alignSelf: 'center',
+          }}
+        />
+        <ThemedText theme={TextTheme.Headline2Text}>
+          <ThemedText
+            theme={TextTheme.Headline2Text}
+            style={{ color: Colors.primaryAppColorLighter }}
+          >
+            {en.Wallet_name}&nbsp;
+          </ThemedText>
+          {en.Start_screen_title}
         </ThemedText>
-        {en.Start_screen_title}
-      </ThemedText>
+      </View>
       <View style={styles.buttonContainer}>
         <AppButton
           onPress={() => navigation.navigate('Biometrics')}
@@ -47,7 +59,6 @@ export default function StartScreen({
           text={en.User_has_wallet_button_text}
           theme={ButtonTheme.NoBorder}
           fullWidth
-          marginBottom={70}
         />
       </View>
     </ScreenContainer>
