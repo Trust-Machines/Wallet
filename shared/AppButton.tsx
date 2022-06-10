@@ -4,35 +4,35 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-} from 'react-native'
-import { TextTheme, ThemedText } from './ThemedText'
-import Colors from '../constants/Colors'
-import { LinearGradient } from 'expo-linear-gradient'
-import StyleVariables from '../constants/StyleVariables'
+} from "react-native";
+import { TextTheme, ThemedText } from "./ThemedText";
+import { colors } from "../constants/Colors";
+import { LinearGradient } from "expo-linear-gradient";
+import { styleVariables } from "../constants/StyleVariables";
 
 export enum ButtonTheme {
-  Primary = 'Primary',
-  NoBorder = 'NoBorder',
-  Disabled = 'Disabled',
+  Primary = "Primary",
+  NoBorder = "NoBorder",
+  Disabled = "Disabled",
 }
 
 type AppButtonProps = {
-  text: string
-  fullWidth: boolean
-  theme: ButtonTheme
-  onPress(): void
-  marginBottom?: number | string
-  style?: StyleProp<ViewStyle>
-  icon?: React.ReactNode
-  paddingHorizontal?: number
-}
+  text: string;
+  fullWidth: boolean;
+  theme: ButtonTheme;
+  onPress(): void;
+  marginBottom?: number | string;
+  style?: StyleProp<ViewStyle>;
+  icon?: React.ReactNode;
+  paddingHorizontal?: number;
+};
 
-export default function AppButton(props: AppButtonProps) {
+export function AppButton(props: AppButtonProps) {
   return (
     <TouchableOpacity
       disabled={props.theme === ButtonTheme.Disabled}
       onPress={props.onPress}
-      style={[props.style, { width: props.fullWidth ? '100%' : 'auto' }]}
+      style={[props.style, { width: props.fullWidth ? "100%" : "auto" }]}
     >
       <LinearGradient
         colors={[
@@ -58,42 +58,42 @@ export default function AppButton(props: AppButtonProps) {
         </View>
       </LinearGradient>
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   gradient: {
-    borderRadius: StyleVariables.borderRadius,
+    borderRadius: styleVariables.borderRadius,
     height: 48,
     maxHeight: 48,
     padding: 1,
   },
   button: {
     flex: 1,
-    borderRadius: StyleVariables.borderRadius,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    borderRadius: styleVariables.borderRadius,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
   },
-})
+});
 
 const buttonColors = {
   [ButtonTheme.Primary]: {
-    bg: Colors.primaryBackgroundLighter,
-    text: Colors.primaryFont,
-    gradientStartColor: Colors.primaryAppColorLighter,
-    gradientEndColor: Colors.primaryAppColorDarker,
+    bg: colors.primaryBackgroundLighter,
+    text: colors.primaryFont,
+    gradientStartColor: colors.primaryAppColorLighter,
+    gradientEndColor: colors.primaryAppColorDarker,
   },
   [ButtonTheme.NoBorder]: {
-    bg: 'transparent',
-    text: Colors.primaryFont,
-    gradientStartColor: 'transparent',
-    gradientEndColor: 'transparent',
+    bg: "transparent",
+    text: colors.primaryFont,
+    gradientStartColor: "transparent",
+    gradientEndColor: "transparent",
   },
   [ButtonTheme.Disabled]: {
-    bg: Colors.primaryBackgroundLighter,
-    text: Colors.disabledFont,
-    gradientStartColor: Colors.disabled,
-    gradientEndColor: Colors.disabled,
+    bg: colors.primaryBackgroundLighter,
+    text: colors.disabledFont,
+    gradientStartColor: colors.disabled,
+    gradientEndColor: colors.disabled,
   },
-}
+};

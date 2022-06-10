@@ -3,14 +3,14 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import * as React from 'react'
-import { View, StyleSheet } from 'react-native'
-import Colors from '../constants/Colors'
-import StartScreen from '../screens/auth/StartScreen'
-import BiometricsScreen from '../screens/auth/BiometricsScreen'
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
+import { View, StyleSheet } from "react-native";
+import { colors } from "../constants/Colors";
+import { StartScreen } from "../screens/auth/StartScreen";
+import { BiometricsScreen } from "../screens/auth/BiometricsScreen";
 import {
   BuyCryptoStackParamList,
   ExchangeStackParamList,
@@ -20,58 +20,58 @@ import {
   RootTabParamList,
   RootTabScreenProps,
   SendStackParamList,
-} from '../types'
-import en from '../en'
-import LinkingConfiguration from './LinkingConfiguration'
-import SaveRecoveryPhraseScreen from '../screens/auth/SaveRecoveryPhraseScreen'
-import CreateWalletSuccessScreen from '../screens/auth/CreateWalletSuccessScreen'
-import BottomTabBorder from '../assets/images/bottom-tab-border.svg'
-import { LinearGradient } from 'expo-linear-gradient'
-import Layout from '../constants/Layout'
-import HomeScreen from '../screens/home/HomeScreen'
-import ExchangeScreen from '../screens/exchange/ExchangeScreen'
-import StyleVariables from '../constants/StyleVariables'
-import ExchangeSelectTokenModal from '../screens/exchange/ExchangeSelectTokenModal'
-import PresentQrModal from '../screens/transactions/PresentQrModal'
-import ScanQrModal from '../screens/transactions/ScanQrModal'
-import ConfirmSendModal from '../screens/transactions/ConfirmSendModal'
-import TransactionSuccessModal from '../screens/transactions/TransactionSuccessModal'
-import ReceivePresentQrModal from '../screens/transactions/ReceivePresentQrModal'
-import SendScreen from '../screens/transactions/SendScreen'
-import SendSuccessModal from '../screens/transactions/SendSuccessModal'
-import CollectiblesScreen from '../screens/collectibles/CollectiblesScreen'
-import DefiBrowserScreen from '../screens/defi/DefiBrowserScreen'
-import SettingsScreen from '../screens/settings/SettingsScreen'
-import BuyCryptoModal from '../screens/transactions/BuyCryptoModal'
-import WalletLoginScreen from '../screens/auth/WalletLoginScreen'
-import { SvgIcons } from '../assets/images'
+} from "../types";
+import { en } from "../en";
+import LinkingConfiguration from "./LinkingConfiguration";
+import { SaveRecoveryPhraseScreen } from "../screens/auth/SaveRecoveryPhraseScreen";
+import { CreateWalletSuccessScreen } from "../screens/auth/CreateWalletSuccessScreen";
+import BottomTabBorder from "../assets/images/bottom-tab-border.svg";
+import { LinearGradient } from "expo-linear-gradient";
+import { layout } from "../constants/Layout";
+import { HomeScreen } from "../screens/home/HomeScreen";
+import { ExchangeScreen } from "../screens/exchange/ExchangeScreen";
+import { styleVariables } from "../constants/StyleVariables";
+import { ExchangeSelectTokenModal } from "../screens/exchange/ExchangeSelectTokenModal";
+import { PresentQrModal } from "../screens/transactions/PresentQrModal";
+import { ScanQrModal } from "../screens/transactions/ScanQrModal";
+import { ConfirmSendModal } from "../screens/transactions/ConfirmSendModal";
+import { TransactionSuccessModal } from "../screens/transactions/TransactionSuccessModal";
+import { ReceivePresentQrModal } from "../screens/transactions/ReceivePresentQrModal";
+import { SendScreen } from "../screens/transactions/SendScreen";
+import { SendSuccessModal } from "../screens/transactions/SendSuccessModal";
+import { CollectiblesScreen } from "../screens/collectibles/CollectiblesScreen";
+import { DefiBrowserScreen } from "../screens/defi/DefiBrowserScreen";
+import { SettingsScreen } from "../screens/settings/SettingsScreen";
+import { BuyCryptoModal } from "../screens/transactions/BuyCryptoModal";
+import { WalletLoginScreen } from "../screens/auth/WalletLoginScreen";
+import { SvgIcons } from "../assets/images";
 
 const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'transparent',
+    background: "transparent",
   },
-}
+};
 
-export default function Navigation() {
+export function Navigation() {
   return (
     <NavigationContainer linking={LinkingConfiguration} theme={MyTheme}>
       <RootNavigator />
     </NavigationContainer>
-  )
+  );
 }
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>()
-const ExchangeStack = createNativeStackNavigator<ExchangeStackParamList>()
-const ReceiveStack = createNativeStackNavigator<ReceiveStackParamList>()
-const SendStack = createNativeStackNavigator<SendStackParamList>()
-const BuyCryptoStack = createNativeStackNavigator<BuyCryptoStackParamList>()
-const QrStack = createNativeStackNavigator<QrStackParamList>()
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const ExchangeStack = createNativeStackNavigator<ExchangeStackParamList>();
+const ReceiveStack = createNativeStackNavigator<ReceiveStackParamList>();
+const SendStack = createNativeStackNavigator<SendStackParamList>();
+const BuyCryptoStack = createNativeStackNavigator<BuyCryptoStackParamList>();
+const QrStack = createNativeStackNavigator<QrStackParamList>();
 
 function RootNavigator() {
   return (
@@ -110,7 +110,7 @@ function RootNavigator() {
         name="ExchangeStack"
         component={ExchangeStackView}
         options={{
-          presentation: 'containedTransparentModal',
+          presentation: "containedTransparentModal",
           headerShown: false,
         }}
       />
@@ -118,7 +118,7 @@ function RootNavigator() {
         name="ReceiveStack"
         component={ReceiveStackView}
         options={{
-          presentation: 'containedTransparentModal',
+          presentation: "containedTransparentModal",
           headerShown: false,
         }}
       />
@@ -126,7 +126,7 @@ function RootNavigator() {
         name="SendStack"
         component={SendStackView}
         options={{
-          presentation: 'containedTransparentModal',
+          presentation: "containedTransparentModal",
           headerShown: false,
         }}
       />
@@ -134,7 +134,7 @@ function RootNavigator() {
         name="BuyCryptoStack"
         component={BuyCryptoStackView}
         options={{
-          presentation: 'containedTransparentModal',
+          presentation: "containedTransparentModal",
           headerShown: false,
         }}
       />
@@ -142,12 +142,12 @@ function RootNavigator() {
         name="QrStack"
         component={QrStackView}
         options={{
-          presentation: 'containedTransparentModal',
+          presentation: "containedTransparentModal",
           headerShown: false,
         }}
       />
     </Stack.Navigator>
-  )
+  );
 }
 
 const ExchangeStackView = () => (
@@ -160,11 +160,11 @@ const ExchangeStackView = () => (
       name="ExchangeSelectToken"
       component={ExchangeSelectTokenModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
   </ExchangeStack.Navigator>
-)
+);
 
 const ReceiveStackView = () => (
   <ReceiveStack.Navigator
@@ -176,11 +176,11 @@ const ReceiveStackView = () => (
       name="ReceivePresentQr"
       component={ReceivePresentQrModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
   </ReceiveStack.Navigator>
-)
+);
 
 const SendStackView = () => (
   <SendStack.Navigator
@@ -192,18 +192,18 @@ const SendStackView = () => (
       name="Send"
       component={SendScreen}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
     <SendStack.Screen
       name="SendSuccess"
       component={SendSuccessModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
   </SendStack.Navigator>
-)
+);
 
 const BuyCryptoStackView = () => (
   <BuyCryptoStack.Navigator
@@ -215,11 +215,11 @@ const BuyCryptoStackView = () => (
       name="BuyCrypto"
       component={BuyCryptoModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
   </BuyCryptoStack.Navigator>
-)
+);
 
 const QrStackView = () => (
   <QrStack.Navigator
@@ -231,54 +231,54 @@ const QrStackView = () => (
       name="PresentQr"
       component={PresentQrModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
     <QrStack.Screen
       name="ScanQr"
       component={ScanQrModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
     <QrStack.Screen
       name="ConfirmSend"
       component={ConfirmSendModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
     <QrStack.Screen
       name="TransactionSuccess"
       component={TransactionSuccessModal}
       options={{
-        presentation: 'card',
+        presentation: "card",
       }}
     />
   </QrStack.Navigator>
-)
+);
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createBottomTabNavigator<RootTabParamList>()
+const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors.primaryAppColorLighter,
+        tabBarActiveTintColor: colors.primaryAppColorLighter,
         tabBarStyle: {
-          height: StyleVariables.bottomTabHeight,
-          marginBottom: StyleVariables.bottomTabBottomOffset,
-          alignItems: 'center',
-          justifyContent: 'center',
+          height: styleVariables.bottomTabHeight,
+          marginBottom: styleVariables.bottomTabBottomOffset,
+          alignItems: "center",
+          justifyContent: "center",
           paddingBottom: 0,
-          position: 'absolute',
+          position: "absolute",
           borderTopWidth: 0,
-          width: Layout.window.width - 20,
+          width: layout.window.width - 20,
           marginLeft: 10,
           elevation: 0,
         },
@@ -286,19 +286,19 @@ function BottomTabNavigator() {
         tabBarBackground: () => (
           <LinearGradient
             style={{
-              alignItems: 'center',
-              width: Layout.isSmallDevice
-                ? Layout.window.width - 20
-                : Layout.window.width,
+              alignItems: "center",
+              width: layout.isSmallDevice
+                ? layout.window.width - 20
+                : layout.window.width,
             }}
-            colors={[Colors.primaryBackgroundLighter, '#243251']}
+            colors={[colors.primaryBackgroundLighter, "#243251"]}
           >
             <BottomTabBorder
               preserveAspectRatio={
-                Layout.isSmallDevice ? 'xMinYMin' : 'xMinYMin slice'
+                layout.isSmallDevice ? "xMinYMin" : "xMinYMin slice"
               }
-              width={Layout.window.width - 20}
-              style={{ marginLeft: Layout.isSmallDevice ? 0 : -20 }}
+              width={layout.window.width - 20}
+              style={{ marginLeft: layout.isSmallDevice ? 0 : -20 }}
             />
           </LinearGradient>
         ),
@@ -307,8 +307,8 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
-          title: 'Home',
+        options={({ navigation }: RootTabScreenProps<"Home">) => ({
+          title: "Home",
           headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
@@ -321,9 +321,9 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Collectibles"
         component={CollectiblesScreen}
-        options={({ navigation }: RootTabScreenProps<'Collectibles'>) => ({
+        options={({ navigation }: RootTabScreenProps<"Collectibles">) => ({
           title: en.Header_title_collectibles,
-          headerTitleAlign: 'center',
+          headerTitleAlign: "center",
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveCollectibles style={styles.glow} />
@@ -331,7 +331,7 @@ function BottomTabNavigator() {
               <SvgIcons.TabBar.Collectibles />
             ),
           headerStyle: styles.header,
-          headerTintColor: Colors.primaryFont,
+          headerTintColor: colors.primaryFont,
         })}
       />
 
@@ -340,19 +340,21 @@ function BottomTabNavigator() {
         component={ExchangeScreen}
         listeners={({ navigation, route }) => ({
           tabPress: (e) => {
-            e.preventDefault()
-            navigation.navigate(navigation.isFocused() ? 'Home' : 'ExchangeTab')
+            e.preventDefault();
+            navigation.navigate(
+              navigation.isFocused() ? "Home" : "ExchangeTab"
+            );
           },
         })}
-        options={({ navigation }: RootTabScreenProps<'ExchangeTab'>) => ({
+        options={({ navigation }: RootTabScreenProps<"ExchangeTab">) => ({
           title: en.Header_title_exchange,
-          headerTitleAlign: 'center',
+          headerTitleAlign: "center",
           tabBarIcon: ({ color, focused }) => (
             <View
               style={{
-                position: 'relative',
-                alignItems: 'center',
-                justifyContent: 'center',
+                position: "relative",
+                alignItems: "center",
+                justifyContent: "center",
                 flex: 1,
                 marginTop: -40,
               }}
@@ -360,26 +362,26 @@ function BottomTabNavigator() {
               {focused ? (
                 <>
                   <SvgIcons.TabBar.PolygonOutlined style={styles.glow} />
-                  <SvgIcons.TabBar.Close style={{ position: 'absolute' }} />
+                  <SvgIcons.TabBar.Close style={{ position: "absolute" }} />
                 </>
               ) : (
                 <>
                   <SvgIcons.TabBar.Polygon style={styles.glow} />
-                  <SvgIcons.TabBar.Stacks style={{ position: 'absolute' }} />
+                  <SvgIcons.TabBar.Stacks style={{ position: "absolute" }} />
                 </>
               )}
             </View>
           ),
           headerStyle: styles.header,
-          headerTintColor: Colors.primaryFont,
+          headerTintColor: colors.primaryFont,
         })}
       />
       <BottomTab.Screen
         name="DefiBrowser"
         component={DefiBrowserScreen}
-        options={({ navigation }: RootTabScreenProps<'DefiBrowser'>) => ({
-          title: 'Defi Browser',
-          headerTitleAlign: 'center',
+        options={({ navigation }: RootTabScreenProps<"DefiBrowser">) => ({
+          title: "Defi Browser",
+          headerTitleAlign: "center",
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveDefi style={styles.glow} />
@@ -392,9 +394,9 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Settings"
         component={SettingsScreen}
-        options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
+        options={({ navigation }: RootTabScreenProps<"Settings">) => ({
           title: en.Header_title_settings,
-          headerTitleAlign: 'center',
+          headerTitleAlign: "center",
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveSettings style={styles.glow} />
@@ -402,16 +404,16 @@ function BottomTabNavigator() {
               <SvgIcons.TabBar.Settings />
             ),
           headerStyle: styles.header,
-          headerTintColor: Colors.primaryFont,
+          headerTintColor: colors.primaryFont,
         })}
       />
     </BottomTab.Navigator>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   glow: {
-    shadowColor: Colors.primaryAppColorDarker,
+    shadowColor: colors.primaryAppColorDarker,
     shadowOpacity: 0.5,
     shadowRadius: 16,
     shadowOffset: {
@@ -420,10 +422,10 @@ const styles = StyleSheet.create({
     },
   },
   header: {
-    backgroundColor: Colors.primaryBackgroundDarker,
+    backgroundColor: colors.primaryBackgroundDarker,
     borderBottomWidth: 0,
     elevation: 0,
     shadowOpacity: 0,
-    height: StyleVariables.headerHeight,
+    height: styleVariables.headerHeight,
   },
-})
+});

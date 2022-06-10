@@ -1,9 +1,9 @@
-import Layout from "./Layout";
+import { layout } from "./Layout";
 
-export default {
+export const styleVariables = {
   borderRadius: 8,
   statusBarHeight: 44,
-  headerHeight: Layout.isSmallDevice ? 89 : 109,
+  headerHeight: layout.isSmallDevice ? 89 : 109,
   bottomTabHeight: 80,
-  bottomTabBottomOffset: Layout.isSmallDevice ? 4 : 34,
-}
+  bottomTabBottomOffset: layout.isSmallDevice ? 4 : 34,
+};

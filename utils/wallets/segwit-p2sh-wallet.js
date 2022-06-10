@@ -1,8 +1,8 @@
-import { LegacyWallet } from './legacy-wallet';
-import { ECPairFactory } from 'ecpair';
-const ecc = require('tiny-secp256k1');
+import { LegacyWallet } from "./legacy-wallet";
+import { ECPairFactory } from "ecpair";
+const ecc = require("tiny-secp256k1");
 const ECPair = ECPairFactory(ecc);
-const bitcoin = require('bitcoinjs-lib');
+const bitcoin = require("bitcoinjs-lib");
 
 /**
  * Creates Segwit P2SH Bitcoin address
@@ -20,13 +20,13 @@ function pubkeyToP2shSegwitAddress(pubkey, network) {
 }
 
 export class SegwitP2SHWallet extends LegacyWallet {
-  static type = 'segwitP2SH';
-  static typeReadable = 'SegWit (P2SH)';
-  static segwitType = 'p2sh(p2wpkh)';
+  static type = "segwitP2SH";
+  static typeReadable = "SegWit (P2SH)";
+  static segwitType = "p2sh(p2wpkh)";
 
   static witnessToAddress(witness) {
     try {
-      const pubKey = Buffer.from(witness, 'hex');
+      const pubKey = Buffer.from(witness, "hex");
       return pubkeyToP2shSegwitAddress(pubKey);
     } catch (_) {
       return false;
@@ -41,7 +41,7 @@ export class SegwitP2SHWallet extends LegacyWallet {
    */
   static scriptPubKeyToAddress(scriptPubKey) {
     try {
-      const scriptPubKey2 = Buffer.from(scriptPubKey, 'hex');
+      const scriptPubKey2 = Buffer.from(scriptPubKey, "hex");
       return bitcoin.payments.p2sh({
         output: scriptPubKey2,
         network: bitcoin.networks.bitcoin,
@@ -58,7 +58,7 @@ export class SegwitP2SHWallet extends LegacyWallet {
       const keyPair = ECPair.fromWIF(this.secret);
       const pubKey = keyPair.publicKey;
       if (!keyPair.compressed) {
-        console.warn('only compressed public keys are good for segwit');
+        console.warn("only compressed public keys are good for segwit");
         return false;
       }
       address = pubkeyToP2shSegwitAddress(pubKey);
@@ -81,20 +81,33 @@ export class SegwitP2SHWallet extends LegacyWallet {
    * @param masterFingerprint {number} Decimal number of wallet's master fingerprint
    * @returns {{outputs: Array, tx: Transaction, inputs: Array, fee: Number, psbt: Psbt}}
    */
-  createTransaction(utxos, targets, feeRate, changeAddress, sequence, skipSigning = false, masterFingerprint) {
-    if (targets.length === 0) throw new Error('No destination provided');
+  createTransaction(
+    utxos,
+    targets,
+    feeRate,
+    changeAddress,
+    sequence,
+    skipSigning = false,
+    masterFingerprint
+  ) {
+    if (targets.length === 0) throw new Error("No destination provided");
     // compensating for coinselect inability to deal with segwit inputs, and overriding script length for proper vbytes calculation
     for (const u of utxos) {
       u.script = { length: 50 };
     }
-    const { inputs, outputs, fee } = this.coinselect(utxos, targets, feeRate, changeAddress);
+    const { inputs, outputs, fee } = this.coinselect(
+      utxos,
+      targets,
+      feeRate,
+      changeAddress
+    );
     sequence = sequence || 0xffffffff; // disable RBF by default
     const psbt = new bitcoin.Psbt();
     let c = 0;
     const values = {};
     let keyPair;
 
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       if (!skipSigning) {
         // skiping signing related stuff
         keyPair = ECPair.fromWIF(this.secret); // secret is WIF
@@ -118,7 +131,7 @@ export class SegwitP2SHWallet extends LegacyWallet {
       });
     });
 
-    outputs.forEach(output => {
+    outputs.forEach((output) => {
       // if output has no address - this is change output
       if (!output.address) {
         output.address = changeAddress;

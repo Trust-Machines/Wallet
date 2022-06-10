@@ -1,40 +1,40 @@
-import { StyleSheet, View } from 'react-native'
-import { TextTheme, ThemedText } from '../../shared/ThemedText'
-import { ReceiveStackScreenProps } from '../../types'
-import ModalScreenContainer from '../../shared/ModalScreenContainer'
-import en from '../../en'
-import QrCode from '../../assets/images/qr-placeholder.svg'
-import AppButton, { ButtonTheme } from '../../shared/AppButton'
-import StyleVariables from '../../constants/StyleVariables'
-import { SvgIcons } from '../../assets/images'
-import Colors from '../../constants/Colors'
-import Layout from '../../constants/Layout'
+import { StyleSheet, View } from "react-native";
+import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { ReceiveStackScreenProps } from "../../types";
+import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { en } from "../../en";
+import QrCode from "../../assets/images/qr-placeholder.svg";
+import { AppButton, ButtonTheme } from "../../shared/AppButton";
+import { styleVariables } from "../../constants/StyleVariables";
+import { SvgIcons } from "../../assets/images";
+import { colors } from "../../constants/Colors";
+import { layout } from "../../constants/Layout";
 
-export default function ReceivePresentQrModal({
+export function ReceivePresentQrModal({
   navigation,
-}: ReceiveStackScreenProps<'ReceivePresentQr'>) {
+}: ReceiveStackScreenProps<"ReceivePresentQr">) {
   return (
-    <ModalScreenContainer title={en.Common_receive + ' BTC'}>
+    <ModalScreenContainer title={en.Common_receive + " BTC"}>
       <View
         style={{
           flex: 1,
-          justifyContent: 'space-between',
-          marginBottom: Layout.isSmallDevice ? 0 : '10%',
+          justifyContent: "space-between",
+          marginBottom: layout.isSmallDevice ? 0 : "10%",
         }}
       >
         <View>
           <ThemedText
             theme={TextTheme.NavigationText}
-            styleOverwrite={{ marginTop: Layout.isSmallDevice ? 0 : 20 }}
+            styleOverwrite={{ marginTop: layout.isSmallDevice ? 0 : 20 }}
           >
             {en.Common_btc_address}
           </ThemedText>
           <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{
-              color: Colors.secondaryFont,
-              marginBottom: Layout.isSmallDevice ? 18 : 28,
-              textAlign: 'center',
+              color: colors.secondaryFont,
+              marginBottom: layout.isSmallDevice ? 18 : 28,
+              textAlign: "center",
             }}
           >
             bc1qyl8k4wkahuepwwp3rlmzcqhv6cpc9ccla4
@@ -47,7 +47,7 @@ export default function ReceivePresentQrModal({
           <AppButton
             text={en.Common_copy}
             theme={ButtonTheme.Primary}
-            onPress={() => console.log('pressed')}
+            onPress={() => console.log("pressed")}
             fullWidth
             icon={<SvgIcons.General.Copy />}
             style={{ flex: 1, marginRight: 8 }}
@@ -55,7 +55,7 @@ export default function ReceivePresentQrModal({
           <AppButton
             text={en.Common_share}
             theme={ButtonTheme.Primary}
-            onPress={() => console.log('pressed')}
+            onPress={() => console.log("pressed")}
             fullWidth
             icon={<SvgIcons.General.Share />}
             style={{ flex: 1, marginLeft: 8 }}
@@ -63,15 +63,15 @@ export default function ReceivePresentQrModal({
         </View>
       </View>
     </ModalScreenContainer>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   qrContainer: {
-    backgroundColor: '#FFF',
-    borderRadius: StyleVariables.borderRadius,
+    backgroundColor: "#FFF",
+    borderRadius: styleVariables.borderRadius,
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
-})
+});

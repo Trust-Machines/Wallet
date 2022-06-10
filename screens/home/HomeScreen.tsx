@@ -1,20 +1,34 @@
-import { useEffect } from 'react'
-import { Image, ScrollView, Text, View } from 'react-native'
-import HomeHeader from './components/HomeHeader'
-import { ScreenContainer } from '../../shared/ScreenContainer'
-import { RootTabScreenProps } from '../../types'
-import HomeBalance from './components/HomeBalance'
-import AppButton, { ButtonTheme } from '../../shared/AppButton'
-import en from '../../en'
-import { TextTheme, ThemedText } from '../../shared/ThemedText'
-import Colors from '../../constants/Colors'
-import TransactionItem from './components/TransactionItem'
-import { useAppSelector } from '../../redux/hooks'
-import Layout from '../../constants/Layout'
+import { useEffect } from "react";
+import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import { HomeHeader } from "./components/HomeHeader";
+import { ScreenContainer } from "../../shared/ScreenContainer";
+import { RootTabScreenProps } from "../../types";
+import { HomeBalance } from "./components/HomeBalance";
+import { AppButton, ButtonTheme } from "../../shared/AppButton";
+import { en } from "../../en";
+import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { colors } from "../../constants/Colors";
+import { TransactionItem } from "./components/TransactionItem";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { layout } from "../../constants/Layout";
+import {
+  getAddress,
+  getBalance,
+  getTransactions,
+} from "../../redux/walletSlice";
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const wallet = useAppSelector((state) => state.wallet.currentWallet)
-  useEffect(() => console.log('wallet from state', wallet), [])
+export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+  const dispatch = useAppDispatch();
+  const wallet = useAppSelector((state) => state.wallet.currentWallet);
+  const { value, loading, error } = useAppSelector(
+    (state) => state.wallet.transactions
+  );
+
+  useEffect(() => {
+    dispatch(getAddress(wallet));
+    dispatch(getBalance(wallet));
+    dispatch(getTransactions(wallet));
+  }, []);
 
   return (
     <ScreenContainer withTab>
@@ -22,26 +36,26 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <ScrollView
         style={{
           marginTop: 11,
-          width: Layout.window.width,
+          width: layout.window.width,
           marginLeft: -20,
         }}
-        contentContainerStyle={{ paddingHorizontal: 20, position: 'relative' }}
+        contentContainerStyle={{ paddingHorizontal: 20, position: "relative" }}
         showsVerticalScrollIndicator={false}
       >
         <Image
-          source={require('../../assets/images/home-chart.png')}
-          style={{ position: 'absolute', right: -20 }}
+          source={require("../../assets/images/home-chart.png")}
+          style={{ position: "absolute", right: -20 }}
         />
         <HomeBalance />
-        <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 21 }}>
+        <View style={{ flexDirection: "row", marginTop: 18, marginBottom: 21 }}>
           <AppButton
             theme={ButtonTheme.Primary}
             text={en.Common_receive}
             style={{ flex: 1 }}
             paddingHorizontal={0}
             onPress={() =>
-              navigation.navigate('ReceiveStack', {
-                screen: 'ReceivePresentQr',
+              navigation.navigate("ReceiveStack", {
+                screen: "ReceivePresentQr",
               })
             }
             fullWidth
@@ -51,8 +65,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             text={en.Common_send}
             style={{ flex: 1, marginHorizontal: 16 }}
             onPress={() =>
-              navigation.navigate('SendStack', {
-                screen: 'Send',
+              navigation.navigate("SendStack", {
+                screen: "Send",
               })
             }
             fullWidth
@@ -62,8 +76,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             text={en.Common_buy}
             style={{ flex: 1 }}
             onPress={() =>
-              navigation.navigate('BuyCryptoStack', {
-                screen: 'BuyCrypto',
+              navigation.navigate("BuyCryptoStack", {
+                screen: "BuyCrypto",
               })
             }
             fullWidth
@@ -71,9 +85,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         </View>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
             marginBottom: 16,
           }}
         >
@@ -82,34 +96,42 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           </ThemedText>
           <ThemedText
             theme={TextTheme.CaptionText}
-            styleOverwrite={{ color: Colors.primaryAppColorDarker }}
+            styleOverwrite={{ color: colors.primaryAppColorDarker }}
           >
             {en.Home_view_all}
           </ThemedText>
         </View>
         <Text
           style={{
-            fontFamily: 'Inter_600SemiBold',
+            fontFamily: "Inter_600SemiBold",
             fontSize: 12,
             lineHeight: 15,
-            color: Colors.disabled,
+            color: colors.disabled,
             marginBottom: 8,
           }}
         >
           29 April 2022
         </Text>
         <View style={{ paddingBottom: 30 }}>
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
+          {loading && (
+            <ActivityIndicator
+              size={"large"}
+              color={colors.primaryAppColorLighter}
+              style={{ marginTop: 40 }}
+            />
+          )}
+          {!loading &&
+            !error &&
+            value.map((transaction: any) => {
+              return (
+                <TransactionItem
+                  key={transaction.hash}
+                  transaction={transaction}
+                />
+              );
+            })}
         </View>
       </ScrollView>
     </ScreenContainer>
-  )
+  );
 }

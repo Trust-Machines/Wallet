@@ -1,17 +1,17 @@
-import { LegacyWallet } from './legacy-wallet';
-import Frisbee from 'frisbee';
-import bolt11 from 'bolt11';
-import { BitcoinUnit, Chain } from '../../constants/bitcoinUnits';
+import { LegacyWallet } from "./legacy-wallet";
+import Frisbee from "frisbee";
+import bolt11 from "bolt11";
+import { BitcoinUnit, Chain } from "../../constants/bitcoinUnits";
 export class LightningCustodianWallet extends LegacyWallet {
-  static type = 'lightningCustodianWallet';
-  static typeReadable = 'Lightning';
+  static type = "lightningCustodianWallet";
+  static typeReadable = "Lightning";
 
   constructor(props) {
     super(props);
     this.setBaseURI(); // no args to init with default value
     this.init();
-    this.refresh_token = '';
-    this.access_token = '';
+    this.refresh_token = "";
+    this.access_token = "";
     this._refresh_token_created_ts = 0;
     this._access_token_created_ts = 0;
     this.refill_addressess = [];
@@ -48,7 +48,7 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   getSecret() {
-    return this.secret + '@' + this.baseURI;
+    return this.secret + "@" + this.baseURI;
   }
 
   timeToRefreshBalance() {
@@ -76,7 +76,9 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   refreshTokenExpired() {
-    return (+new Date() - this._refresh_token_created_ts) / 1000 >= 3600 * 24 * 7; // 7d
+    return (
+      (+new Date() - this._refresh_token_created_ts) / 1000 >= 3600 * 24 * 7
+    ); // 7d
   }
 
   generate() {
@@ -84,53 +86,83 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   async createAccount(isTest) {
-    const response = await this._api.post('/create', {
-      body: { partnerid: 'tmwallet', accounttype: (isTest && 'test') || 'common' },
-      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+    const response = await this._api.post("/create", {
+      body: {
+        partnerid: "tmwallet",
+        accounttype: (isTest && "test") || "common",
+      },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
     });
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + (json.message ? json.message : json.error) + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " +
+          (json.message ? json.message : json.error) +
+          " (code " +
+          json.code +
+          ")"
+      );
     }
 
     if (!json.login || !json.password) {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
 
-    this.secret = 'lndhub://' + json.login + ':' + json.password;
+    this.secret = "lndhub://" + json.login + ":" + json.password;
   }
 
   async payInvoice(invoice, freeAmount = 0) {
-    const response = await this._api.post('/payinvoice', {
+    const response = await this._api.post("/payinvoice", {
       body: { invoice: invoice, amount: freeAmount },
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
 
-    if (response.originalResponse && typeof response.originalResponse === 'string') {
+    if (
+      response.originalResponse &&
+      typeof response.originalResponse === "string"
+    ) {
       try {
         response.originalResponse = JSON.parse(response.originalResponse);
       } catch (_) {}
     }
 
-    if (response.originalResponse && response.originalResponse.status && response.originalResponse.status === 503) {
-      throw new Error('Payment is in transit');
+    if (
+      response.originalResponse &&
+      response.originalResponse.status &&
+      response.originalResponse.status === 503
+    ) {
+      throw new Error("Payment is in transit");
     }
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.originalResponse));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " +
+          response.err +
+          " " +
+          JSON.stringify(response.originalResponse)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     this.last_paid_invoice_result = json;
@@ -142,22 +174,29 @@ export class LightningCustodianWallet extends LegacyWallet {
    * @return {Promise.<Array>}
    */
   async getUserInvoices(limit = false) {
-    let limitString = '';
-    if (limit) limitString = '?limit=' + parseInt(limit);
-    const response = await this._api.get('/getuserinvoices' + limitString, {
+    let limitString = "";
+    if (limit) limitString = "?limit=" + parseInt(limit);
+    const response = await this._api.get("/getuserinvoices" + limitString, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.originalResponse));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " +
+          response.err +
+          " " +
+          JSON.stringify(response.originalResponse)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     if (limit) {
@@ -169,7 +208,8 @@ export class LightningCustodianWallet extends LegacyWallet {
         let found = false;
         for (const newInvoice of json) {
           // iterate all NEW invoices
-          if (newInvoice.payment_request === oldInvoice.payment_request) found = true;
+          if (newInvoice.payment_request === oldInvoice.payment_request)
+            found = true;
         }
 
         if (!found) {
@@ -197,33 +237,46 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   isInvoiceGeneratedByWallet(paymentRequest) {
-    return this.user_invoices_raw.some(invoice => invoice.payment_request === paymentRequest);
+    return this.user_invoices_raw.some(
+      (invoice) => invoice.payment_request === paymentRequest
+    );
   }
 
   weOwnAddress(address) {
-    return this.refill_addressess.some(refillAddress => address === refillAddress);
+    return this.refill_addressess.some(
+      (refillAddress) => address === refillAddress
+    );
   }
 
   async addInvoice(amt, memo) {
-    const response = await this._api.post('/addinvoice', {
-      body: { amt: amt + '', memo: memo },
+    const response = await this._api.post("/addinvoice", {
+      body: { amt: amt + "", memo: memo },
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.originalResponse));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " +
+          response.err +
+          " " +
+          JSON.stringify(response.originalResponse)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     if (!json.r_hash || !json.pay_req) {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
 
     return json.pay_req;
@@ -237,29 +290,38 @@ export class LightningCustodianWallet extends LegacyWallet {
    */
   async authorize() {
     let login, password;
-    if (this.secret.indexOf('blitzhub://') !== -1) {
-      login = this.secret.replace('blitzhub://', '').split(':')[0];
-      password = this.secret.replace('blitzhub://', '').split(':')[1];
+    if (this.secret.indexOf("blitzhub://") !== -1) {
+      login = this.secret.replace("blitzhub://", "").split(":")[0];
+      password = this.secret.replace("blitzhub://", "").split(":")[1];
     } else {
-      login = this.secret.replace('lndhub://', '').split(':')[0];
-      password = this.secret.replace('lndhub://', '').split(':')[1];
+      login = this.secret.replace("lndhub://", "").split(":")[0];
+      password = this.secret.replace("lndhub://", "").split(":")[1];
     }
-    const response = await this._api.post('/auth?type=auth', {
+    const response = await this._api.post("/auth?type=auth", {
       body: { login: login, password: password },
-      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     if (!json.access_token || !json.refresh_token) {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
 
     this.refresh_token = json.refresh_token;
@@ -291,22 +353,31 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   async refreshAcessToken() {
-    const response = await this._api.post('/auth?type=refresh_token', {
+    const response = await this._api.post("/auth?type=refresh_token", {
       body: { refresh_token: this.refresh_token },
-      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     if (!json.access_token || !json.refresh_token) {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
 
     this.refresh_token = json.refresh_token;
@@ -316,21 +387,25 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   async fetchBtcAddress() {
-    const response = await this._api.get('/getbtc', {
+    const response = await this._api.get("/getbtc", {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     this.refill_addressess = [];
@@ -359,7 +434,11 @@ export class LightningCustodianWallet extends LegacyWallet {
     this.pending_transactions_raw = this.pending_transactions_raw || [];
     this.user_invoices_raw = this.user_invoices_raw || [];
     this.transactions_raw = this.transactions_raw || [];
-    txs = txs.concat(this.pending_transactions_raw.slice(), this.transactions_raw.slice().reverse(), this.user_invoices_raw.slice()); // slice so array is cloned
+    txs = txs.concat(
+      this.pending_transactions_raw.slice(),
+      this.transactions_raw.slice().reverse(),
+      this.user_invoices_raw.slice()
+    ); // slice so array is cloned
     // transforming to how wallets/list screen expects it
     for (const tx of txs) {
       tx.walletID = this.getID();
@@ -368,28 +447,28 @@ export class LightningCustodianWallet extends LegacyWallet {
         tx.amt = tx.amount * -100000000;
         tx.fee = 0;
         tx.timestamp = tx.time;
-        tx.memo = 'On-chain transaction';
+        tx.memo = "On-chain transaction";
       }
 
-      if (typeof tx.amt !== 'undefined' && typeof tx.fee !== 'undefined') {
+      if (typeof tx.amt !== "undefined" && typeof tx.fee !== "undefined") {
         // lnd tx outgoing
         tx.value = parseInt((tx.amt * 1 + tx.fee * 1) * -1);
       }
 
-      if (tx.type === 'paid_invoice') {
-        tx.memo = tx.memo || 'Lightning payment';
+      if (tx.type === "paid_invoice") {
+        tx.memo = tx.memo || "Lightning payment";
         if (tx.value > 0) tx.value = tx.value * -1; // value already includes fee in it (see lndhub)
         // outer code expects spending transactions to of negative value
       }
 
-      if (tx.type === 'bitcoind_tx') {
-        tx.memo = 'On-chain transaction';
+      if (tx.type === "bitcoind_tx") {
+        tx.memo = "On-chain transaction";
       }
 
-      if (tx.type === 'user_invoice') {
+      if (tx.type === "user_invoice") {
         // incoming ln tx
         tx.value = parseInt(tx.amt);
-        tx.memo = tx.description || 'Lightning invoice';
+        tx.memo = tx.description || "Lightning invoice";
       }
 
       tx.received = new Date(tx.timestamp * 1000).toString();
@@ -400,21 +479,25 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   async fetchPendingTransactions() {
-    const response = await this._api.get('/getpending', {
+    const response = await this._api.get("/getpending", {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     this.pending_transactions_raw = json;
@@ -423,30 +506,36 @@ export class LightningCustodianWallet extends LegacyWallet {
   async fetchTransactions() {
     // TODO: iterate over all available pages
     const limit = 10;
-    let queryRes = '';
+    let queryRes = "";
     const offset = 0;
-    queryRes += '?limit=' + limit;
-    queryRes += '&offset=' + offset;
+    queryRes += "?limit=" + limit;
+    queryRes += "&offset=" + offset;
 
-    const response = await this._api.get('/gettxs' + queryRes, {
+    const response = await this._api.get("/gettxs" + queryRes, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     if (!Array.isArray(json)) {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
 
     this._lastTxFetch = +new Date();
@@ -460,17 +549,19 @@ export class LightningCustodianWallet extends LegacyWallet {
   async fetchBalance(noRetry) {
     await this.checkLogin();
 
-    const response = await this._api.get('/balance', {
+    const response = await this._api.get("/balance", {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
@@ -478,11 +569,15 @@ export class LightningCustodianWallet extends LegacyWallet {
         await this.authorize();
         return this.fetchBalance(true);
       }
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
-    if (!json.BTC || typeof json.BTC.AvailableBalance === 'undefined') {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+    if (!json.BTC || typeof json.BTC.AvailableBalance === "undefined") {
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
 
     this.balance_raw = json;
@@ -507,39 +602,40 @@ export class LightningCustodianWallet extends LegacyWallet {
    * @return {payment_hash: string}
    */
   decodeInvoice(invoice) {
-    const { payeeNodeKey, tags, satoshis, millisatoshis, timestamp } = bolt11.decode(invoice);
+    const { payeeNodeKey, tags, satoshis, millisatoshis, timestamp } =
+      bolt11.decode(invoice);
 
     const decoded = {
       destination: payeeNodeKey,
-      num_satoshis: satoshis ? satoshis.toString() : '0',
-      num_millisatoshis: millisatoshis ? millisatoshis.toString() : '0',
+      num_satoshis: satoshis ? satoshis.toString() : "0",
+      num_millisatoshis: millisatoshis ? millisatoshis.toString() : "0",
       timestamp: timestamp.toString(),
-      fallback_addr: '',
+      fallback_addr: "",
       route_hints: [],
     };
 
     for (let i = 0; i < tags.length; i++) {
       const { tagName, data } = tags[i];
       switch (tagName) {
-        case 'payment_hash':
+        case "payment_hash":
           decoded.payment_hash = data;
           break;
-        case 'purpose_commit_hash':
+        case "purpose_commit_hash":
           decoded.description_hash = data;
           break;
-        case 'min_final_cltv_expiry':
+        case "min_final_cltv_expiry":
           decoded.cltv_expiry = data.toString();
           break;
-        case 'expire_time':
+        case "expire_time":
           decoded.expiry = data.toString();
           break;
-        case 'description':
+        case "description":
           decoded.description = data;
           break;
       }
     }
 
-    if (!decoded.expiry) decoded.expiry = '3600'; // default
+    if (!decoded.expiry) decoded.expiry = "3600"; // default
 
     if (parseInt(decoded.num_satoshis) === 0 && decoded.num_millisatoshis > 0) {
       decoded.num_satoshis = (decoded.num_millisatoshis / 1000).toString();
@@ -549,47 +645,56 @@ export class LightningCustodianWallet extends LegacyWallet {
   }
 
   async fetchInfo() {
-    const response = await this._api.get('/getinfo', {
+    const response = await this._api.get("/getinfo", {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     if (!json.identity_pubkey) {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
     this.info_raw = json;
   }
 
   static async isValidNodeAddress(address) {
-    const apiCall =
-      new Frisbee({
-            baseURI: address,
-          });
-    const response = await apiCall.get('/getinfo', {
+    const apiCall = new Frisbee({
+      baseURI: address,
+    });
+    const response = await apiCall.get("/getinfo", {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
       },
     });
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.code && json.code !== 1) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
     return true;
   }
@@ -621,25 +726,31 @@ export class LightningCustodianWallet extends LegacyWallet {
   async decodeInvoiceRemote(invoice) {
     await this.checkLogin();
 
-    const response = await this._api.get('/decodeinvoice?invoice=' + invoice, {
+    const response = await this._api.get("/decodeinvoice?invoice=" + invoice, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer' + ' ' + this.access_token,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + " " + this.access_token,
       },
     });
 
     const json = response.body;
-    if (typeof json === 'undefined') {
-      throw new Error('API failure: ' + response.err + ' ' + JSON.stringify(response.body));
+    if (typeof json === "undefined") {
+      throw new Error(
+        "API failure: " + response.err + " " + JSON.stringify(response.body)
+      );
     }
 
     if (json && json.error) {
-      throw new Error('API error: ' + json.message + ' (code ' + json.code + ')');
+      throw new Error(
+        "API error: " + json.message + " (code " + json.code + ")"
+      );
     }
 
     if (!json.payment_hash) {
-      throw new Error('API unexpected response: ' + JSON.stringify(response.body));
+      throw new Error(
+        "API unexpected response: " + JSON.stringify(response.body)
+      );
     }
 
     return (this.decoded_invoice_raw = json);

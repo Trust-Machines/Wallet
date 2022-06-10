@@ -1,4 +1,4 @@
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from "expo-linear-gradient";
 import {
   StyleSheet,
   View,
@@ -7,18 +7,18 @@ import {
   Keyboard,
   Image,
   ViewStyle,
-} from 'react-native'
-import Colors from '../constants/Colors'
-import StyleVariables from '../constants/StyleVariables'
+} from "react-native";
+import { colors } from "../constants/Colors";
+import { styleVariables } from "../constants/StyleVariables";
 
 type ScreenContainerProps = {
-  children: React.ReactNode
-  showStars?: boolean
-  paddingTop?: number
-  paddingHorizontal?: number
-  withTab?: boolean
-  styles?: ViewStyle
-}
+  children: React.ReactNode;
+  showStars?: boolean;
+  paddingTop?: number;
+  paddingHorizontal?: number;
+  withTab?: boolean;
+  styles?: ViewStyle;
+};
 
 export function ScreenContainer(props: ScreenContainerProps) {
   return (
@@ -28,33 +28,33 @@ export function ScreenContainer(props: ScreenContainerProps) {
     >
       <View style={styles.container}>
         <StatusBar
-          barStyle={'light-content'}
+          barStyle={"light-content"}
           translucent
-          backgroundColor={'transparent'}
+          backgroundColor={"transparent"}
         />
         <LinearGradient
           colors={[
-            Colors.primaryBackgroundDarker,
-            Colors.primaryBackgroundLighter,
+            colors.primaryBackgroundDarker,
+            colors.primaryBackgroundLighter,
           ]}
           style={styles.container}
         >
           {props.showStars && (
             <Image
               style={styles.image}
-              source={require('../assets/images/constellations-background.png')}
+              source={require("../assets/images/constellations-background.png")}
             />
           )}
           <View
             style={[
               styles.contentWrapper,
               {
-                paddingTop: props.paddingTop ?? StyleVariables.statusBarHeight,
+                paddingTop: props.paddingTop ?? styleVariables.statusBarHeight,
                 paddingHorizontal: props.paddingHorizontal ?? 20,
                 paddingBottom: props.withTab
-                  ? StyleVariables.bottomTabHeight +
-                    StyleVariables.bottomTabBottomOffset
-                  : 20,
+                  ? styleVariables.bottomTabHeight +
+                    styleVariables.bottomTabBottomOffset
+                  : 0,
                 ...props.styles,
               },
             ]}
@@ -64,7 +64,7 @@ export function ScreenContainer(props: ScreenContainerProps) {
         </LinearGradient>
       </View>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
-    width: '100%',
-    position: 'absolute',
+    width: "100%",
+    position: "absolute",
     top: 0,
     left: 0,
   },
-})
+});

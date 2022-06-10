@@ -1,9 +1,9 @@
-import b58 from 'bs58check';
-import { AbstractHDElectrumWallet } from './abstract-hd-electrum-wallet';
-import BIP32Factory from 'bip32';
-import * as ecc from 'tiny-secp256k1';
+import b58 from "bs58check";
+import { AbstractHDElectrumWallet } from "./abstract-hd-electrum-wallet";
+import BIP32Factory from "bip32";
+import * as ecc from "tiny-secp256k1";
 const bip32 = BIP32Factory(ecc);
-const bitcoin = require('bitcoinjs-lib');
+const bitcoin = require("bitcoinjs-lib");
 
 /**
  * HD Wallet (BIP39).
@@ -11,9 +11,9 @@ const bitcoin = require('bitcoinjs-lib');
  * @see https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki
  */
 export class HDSegwitP2SHWallet extends AbstractHDElectrumWallet {
-  static type = 'HDsegwitP2SH';
-  static typeReadable = 'HD SegWit (BIP49 P2SH)';
-  static segwitType = 'p2sh(p2wpkh)';
+  static type = "HDsegwitP2SH";
+  static typeReadable = "HD SegWit (BIP49 P2SH)";
+  static segwitType = "p2sh(p2wpkh)";
   static derivationPath = "m/49'/0'/0'";
 
   allowSend() {
@@ -43,11 +43,13 @@ export class HDSegwitP2SHWallet extends AbstractHDElectrumWallet {
   _getNodeAddressByIndex(node, index) {
     index = index * 1; // cast to int
     if (node === 0) {
-      if (this.external_addresses_cache[index]) return this.external_addresses_cache[index]; // cache hit
+      if (this.external_addresses_cache[index])
+        return this.external_addresses_cache[index]; // cache hit
     }
 
     if (node === 1) {
-      if (this.internal_addresses_cache[index]) return this.internal_addresses_cache[index]; // cache hit
+      if (this.internal_addresses_cache[index])
+        return this.internal_addresses_cache[index]; // cache hit
     }
 
     if (node === 0 && !this._node0) {
@@ -64,11 +66,15 @@ export class HDSegwitP2SHWallet extends AbstractHDElectrumWallet {
 
     let address;
     if (node === 0) {
-      address = this.constructor._nodeToP2shSegwitAddress(this._node0.derive(index));
+      address = this.constructor._nodeToP2shSegwitAddress(
+        this._node0.derive(index)
+      );
     }
 
     if (node === 1) {
-      address = this.constructor._nodeToP2shSegwitAddress(this._node1.derive(index));
+      address = this.constructor._nodeToP2shSegwitAddress(
+        this._node1.derive(index)
+      );
     }
 
     if (node === 0) {
@@ -101,7 +107,7 @@ export class HDSegwitP2SHWallet extends AbstractHDElectrumWallet {
     // bitcoinjs does not support ypub yet, so we just convert it from xpub
     let data = b58.decode(xpub);
     data = data.slice(4);
-    data = Buffer.concat([Buffer.from('049d7cb2', 'hex'), data]);
+    data = Buffer.concat([Buffer.from("049d7cb2", "hex"), data]);
     this._xpub = b58.encode(data);
 
     return this._xpub;

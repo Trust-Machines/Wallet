@@ -1,39 +1,39 @@
-import { Pressable, StyleSheet, View } from 'react-native'
-import { TextTheme, ThemedText } from '../../shared/ThemedText'
-import { QrStackScreenProps } from '../../types'
-import ModalScreenContainer from '../../shared/ModalScreenContainer'
-import en from '../../en'
-import AppButton, { ButtonTheme } from '../../shared/AppButton'
-import StyleVariables from '../../constants/StyleVariables'
-import Colors from '../../constants/Colors'
-import { useState } from 'react'
-import Layout from '../../constants/Layout'
+import { Pressable, StyleSheet, View } from "react-native";
+import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { QrStackScreenProps } from "../../types";
+import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { en } from "../../en";
+import { AppButton, ButtonTheme } from "../../shared/AppButton";
+import { styleVariables } from "../../constants/StyleVariables";
+import { colors } from "../../constants/Colors";
+import { useState } from "react";
+import { layout } from "../../constants/Layout";
 
 enum Tokens {
-  TKN1 = 'TKN1',
-  TKN2 = 'TKN2',
+  TKN1 = "TKN1",
+  TKN2 = "TKN2",
 }
 
 type TokenProps = {
-  token: Tokens | undefined
-}
+  token: Tokens | undefined;
+};
 
-export default function ConfirmSendModal({
+export function ConfirmSendModal({
   navigation,
-}: QrStackScreenProps<'ConfirmSend'>) {
+}: QrStackScreenProps<"ConfirmSend">) {
   const [selectedToken, setSelectedToken] = useState<Tokens | undefined>(
     undefined
-  )
-  const [amount, setAmount] = useState<string>('1,000 STX')
+  );
+  const [amount, setAmount] = useState<string>("1,000 STX");
 
   function Token(props: TokenProps) {
     function handleSelectToken() {
       if (props.token && props.token !== selectedToken) {
-        setSelectedToken(Tokens[props.token])
-        setAmount(`30 ${props.token}`)
+        setSelectedToken(Tokens[props.token]);
+        setAmount(`30 ${props.token}`);
       } else {
-        setSelectedToken(undefined)
-        setAmount('1,000 STX')
+        setSelectedToken(undefined);
+        setAmount("1,000 STX");
       }
     }
 
@@ -44,8 +44,8 @@ export default function ConfirmSendModal({
           {
             backgroundColor:
               props.token === selectedToken
-                ? Colors.primaryAppColorDarker
-                : Colors.primaryBackgroundLighter,
+                ? colors.primaryAppColorDarker
+                : colors.primaryBackgroundLighter,
           },
         ]}
         onPress={handleSelectToken}
@@ -60,7 +60,7 @@ export default function ConfirmSendModal({
           </View>
         </View>
       </Pressable>
-    )
+    );
   }
 
   return (
@@ -68,17 +68,17 @@ export default function ConfirmSendModal({
       <View
         style={{
           flex: 1,
-          justifyContent: 'space-between',
-          marginBottom: Layout.isSmallDevice ? 0 : '10%',
+          justifyContent: "space-between",
+          marginBottom: layout.isSmallDevice ? 0 : "10%",
         }}
       >
         <View>
           <ThemedText
             theme={TextTheme.LabelText}
             styleOverwrite={{
-              marginTop: Layout.isSmallDevice ? 4 : 31,
+              marginTop: layout.isSmallDevice ? 4 : 31,
               marginBottom: 4,
-              textAlign: 'center',
+              textAlign: "center",
             }}
           >
             {en.Common_send}
@@ -93,8 +93,8 @@ export default function ConfirmSendModal({
             theme={TextTheme.LabelText}
             styleOverwrite={{
               marginBottom: 20,
-              color: Colors.primaryAppColorLighter,
-              textAlign: 'center',
+              color: colors.primaryAppColorLighter,
+              textAlign: "center",
             }}
           >
             ~$31.5
@@ -103,7 +103,7 @@ export default function ConfirmSendModal({
             theme={TextTheme.LabelText}
             styleOverwrite={{
               marginBottom: 12,
-              alignSelf: 'flex-start',
+              alignSelf: "flex-start",
             }}
           >
             {en.Qr_flow_swapping_assets_label}
@@ -112,38 +112,38 @@ export default function ConfirmSendModal({
           <Token token={Tokens.TKN2} />
         </View>
         <AppButton
-          text={en.Common_send + ' ' + amount}
+          text={en.Common_send + " " + amount}
           theme={ButtonTheme.Primary}
-          onPress={() => navigation.navigate('TransactionSuccess')}
+          onPress={() => navigation.navigate("TransactionSuccess")}
           fullWidth
         />
       </View>
     </ModalScreenContainer>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   tokenContainer: {
-    borderRadius: StyleVariables.borderRadius,
+    borderRadius: styleVariables.borderRadius,
     height: 79,
     paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 16,
   },
   tokenImgPlaceholder: {
     height: 32,
     width: 32,
     borderRadius: 16,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: "#F8F9FA",
   },
   tokenAmountContainer: {
     paddingVertical: 4,
     paddingHorizontal: 14,
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: Colors.disabled,
+    borderColor: colors.disabled,
     marginTop: 4,
   },
-})
+});

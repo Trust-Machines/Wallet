@@ -1,21 +1,23 @@
-import { Image, ScrollView, StyleSheet, View } from 'react-native'
-import { TextTheme, ThemedText } from '../../shared/ThemedText'
-import { SendStackScreenProps } from '../../types'
-import ModalScreenContainer from '../../shared/ModalScreenContainer'
-import en from '../../en'
-import AppButton, { ButtonTheme } from '../../shared/AppButton'
-import StyleVariables from '../../constants/StyleVariables'
-import Colors from '../../constants/Colors'
+import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { SendStackScreenProps } from "../../types";
+import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { en } from "../../en";
+import { AppButton, ButtonTheme } from "../../shared/AppButton";
+import { styleVariables } from "../../constants/StyleVariables";
+import { colors } from "../../constants/Colors";
+import { satoshiToBitcoinString } from "../../utils/helpers";
+import { Assets } from "../../constants/CommonEnums";
 
-export default function SendSuccessModal({
+export function SendSuccessModal({
   navigation,
-}: SendStackScreenProps<'SendSuccess'>) {
+  route,
+}: SendStackScreenProps<"SendSuccess">) {
+  const { transactionId, fee } = route.params;
+
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ paddingBottom: 20 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ThemedText
           theme={TextTheme.Headline2Text}
           styleOverwrite={{ paddingHorizontal: 20 }}
@@ -23,37 +25,43 @@ export default function SendSuccessModal({
           {en.Qr_flow_transaction_success_title}
         </ThemedText>
         <Image
-          source={require('../../assets/images/success-graphics.png')}
-          style={{ alignSelf: 'center' }}
+          source={require("../../assets/images/success-graphics.png")}
+          style={{ alignSelf: "center" }}
         />
 
         <View style={styles.technicalDetailsContainer}>
           <View style={styles.stretchContainer}>
             <ThemedText
               theme={TextTheme.DetailText}
-              styleOverwrite={{ color: Colors.secondaryFont }}
+              styleOverwrite={{ color: colors.secondaryFont }}
             >
               Fee
             </ThemedText>
-            <ThemedText theme={TextTheme.LabelText}>2 STX</ThemedText>
+            <ThemedText theme={TextTheme.LabelText}>
+              {satoshiToBitcoinString(fee)} {Assets.BTC}
+            </ThemedText>
           </View>
 
           <View style={styles.stretchContainer}>
             <ThemedText
               theme={TextTheme.DetailText}
-              styleOverwrite={{ color: Colors.secondaryFont }}
+              styleOverwrite={styles.labelText}
             >
               Transaction Hash
             </ThemedText>
-            <ThemedText theme={TextTheme.LabelText}>
-              611ea15f45311bd...
+            <ThemedText
+              theme={TextTheme.LabelText}
+              numberOfLines={1}
+              styleOverwrite={{ flexShrink: 1 }}
+            >
+              {transactionId}
             </ThemedText>
           </View>
 
           <View style={styles.stretchContainer}>
             <ThemedText
               theme={TextTheme.DetailText}
-              styleOverwrite={{ color: Colors.secondaryFont }}
+              styleOverwrite={styles.labelText}
             >
               Block
             </ThemedText>
@@ -63,7 +71,7 @@ export default function SendSuccessModal({
           <View style={styles.stretchContainer}>
             <ThemedText
               theme={TextTheme.DetailText}
-              styleOverwrite={{ color: Colors.secondaryFont }}
+              styleOverwrite={styles.labelText}
             >
               Network
             </ThemedText>
@@ -79,24 +87,28 @@ export default function SendSuccessModal({
         />
       </ScrollView>
     </ModalScreenContainer>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   stretchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   technicalDetailsContainer: {
-    backgroundColor: Colors.inputBackground,
-    borderRadius: StyleVariables.borderRadius,
+    backgroundColor: colors.inputBackground,
+    borderRadius: styleVariables.borderRadius,
     borderWidth: 1,
-    borderColor: Colors.disabled,
+    borderColor: colors.disabled,
     paddingTop: 20,
     paddingHorizontal: 14,
     marginBottom: 23,
     marginTop: 8,
   },
-})
+  labelText: {
+    color: colors.secondaryFont,
+    marginRight: 20,
+  },
+});

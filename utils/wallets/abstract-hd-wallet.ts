@@ -1,9 +1,9 @@
-import { LegacyWallet } from './legacy-wallet';
-import * as bip39 from 'bip39';
-import { BIP32Interface } from 'bip32';
-import * as bip39custom from './bip39_custom';
-import ElectrumHelper from '../ElectrumHelper';
-import { Transaction } from './types';
+import { LegacyWallet } from "./legacy-wallet";
+import * as bip39 from "bip39";
+import { BIP32Interface } from "bip32";
+import * as bip39custom from "./bip39_custom";
+import ElectrumHelper from "../ElectrumHelper";
+import { Transaction } from "./types";
 
 type AbstractHDWalletStatics = {
   derivationPath?: string;
@@ -13,8 +13,8 @@ type AbstractHDWalletStatics = {
  * @deprecated
  */
 export class AbstractHDWallet extends LegacyWallet {
-  static type = 'abstract';
-  static typeReadable = 'abstract';
+  static type = "abstract";
+  static typeReadable = "abstract";
 
   next_free_address_index: number; // eslint-disable-line camelcase
   next_free_change_address_index: number; // eslint-disable-line camelcase
@@ -35,7 +35,7 @@ export class AbstractHDWallet extends LegacyWallet {
     this.next_free_change_address_index = 0;
     this.internal_addresses_cache = {}; // index => address
     this.external_addresses_cache = {}; // index => address
-    this._xpub = ''; // cache
+    this._xpub = ""; // cache
     this.usedAddresses = [];
     this._address_to_wif_cache = {};
     this.gap_limit = 20;
@@ -57,7 +57,7 @@ export class AbstractHDWallet extends LegacyWallet {
   }
 
   generate(): Promise<void> {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   allowSend(): boolean {
@@ -65,7 +65,7 @@ export class AbstractHDWallet extends LegacyWallet {
   }
 
   getTransactions(): Transaction[] {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   /**
@@ -79,7 +79,9 @@ export class AbstractHDWallet extends LegacyWallet {
 
   setSecret(newSecret: string): this {
     this.secret = newSecret.trim().toLowerCase();
-    this.secret = this.secret.replace(/[^a-zA-Z0-9]/g, ' ').replace(/\s+/g, ' ');
+    this.secret = this.secret
+      .replace(/[^a-zA-Z0-9]/g, " ")
+      .replace(/\s+/g, " ");
 
     // Try to match words to the default bip39 wordlist and complete partial words
     const wordlist = bip39.wordlists[bip39.getDefaultWordlist()];
@@ -94,9 +96,9 @@ export class AbstractHDWallet extends LegacyWallet {
     }, new Map<string, string | false>());
 
     this.secret = this.secret
-      .split(' ')
-      .map(word => lookupMap.get(word) || word)
-      .join(' ');
+      .split(" ")
+      .map((word) => lookupMap.get(word) || word)
+      .join(" ");
 
     return this;
   }
@@ -125,17 +127,19 @@ export class AbstractHDWallet extends LegacyWallet {
    */
   async getAddressAsync(): Promise<string> {
     // looking for free external address
-    let freeAddress = '';
+    let freeAddress = "";
     let c;
     for (c = 0; c < this.gap_limit + 1; c++) {
       if (this.next_free_address_index + c < 0) continue;
-      const address = this._getExternalAddressByIndex(this.next_free_address_index + c);
+      const address = this._getExternalAddressByIndex(
+        this.next_free_address_index + c
+      );
       this.external_addresses_cache[this.next_free_address_index + c] = address; // updating cache just for any case
       let txs = [];
       try {
         txs = await ElectrumHelper.getTransactionsByAddress(address);
       } catch (Err: any) {
-        console.warn('ElectrumHelper.getTransactionsByAddress()', Err.message);
+        console.warn("ElectrumHelper.getTransactionsByAddress()", Err.message);
       }
       if (txs.length === 0) {
         // found free address
@@ -147,7 +151,9 @@ export class AbstractHDWallet extends LegacyWallet {
 
     if (!freeAddress) {
       // could not find in cycle above, give up
-      freeAddress = this._getExternalAddressByIndex(this.next_free_address_index + c); // we didnt check this one, maybe its free
+      freeAddress = this._getExternalAddressByIndex(
+        this.next_free_address_index + c
+      ); // we didnt check this one, maybe its free
       this.next_free_address_index += c; // now points to this one
     }
     this._address = freeAddress;
@@ -163,17 +169,20 @@ export class AbstractHDWallet extends LegacyWallet {
    */
   async getChangeAddressAsync(): Promise<string> {
     // looking for free internal address
-    let freeAddress = '';
+    let freeAddress = "";
     let c;
     for (c = 0; c < this.gap_limit + 1; c++) {
       if (this.next_free_change_address_index + c < 0) continue;
-      const address = this._getInternalAddressByIndex(this.next_free_change_address_index + c);
-      this.internal_addresses_cache[this.next_free_change_address_index + c] = address; // updating cache just for any case
+      const address = this._getInternalAddressByIndex(
+        this.next_free_change_address_index + c
+      );
+      this.internal_addresses_cache[this.next_free_change_address_index + c] =
+        address; // updating cache just for any case
       let txs = [];
       try {
         txs = await ElectrumHelper.getTransactionsByAddress(address);
       } catch (Err: any) {
-        console.warn('ElectrumHelper.getTransactionsByAddress()', Err.message);
+        console.warn("ElectrumHelper.getTransactionsByAddress()", Err.message);
       }
       if (txs.length === 0) {
         // found free address
@@ -185,7 +194,9 @@ export class AbstractHDWallet extends LegacyWallet {
 
     if (!freeAddress) {
       // could not find in cycle above, give up
-      freeAddress = this._getInternalAddressByIndex(this.next_free_change_address_index + c); // we didnt check this one, maybe its free
+      freeAddress = this._getInternalAddressByIndex(
+        this.next_free_change_address_index + c
+      ); // we didnt check this one, maybe its free
       this.next_free_change_address_index += c; // now points to this one
     }
     this._address = freeAddress;
@@ -203,23 +214,23 @@ export class AbstractHDWallet extends LegacyWallet {
   }
 
   _getExternalWIFByIndex(index: number): string {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   _getInternalWIFByIndex(index: number): string {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   _getExternalAddressByIndex(index: number): string {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   _getInternalAddressByIndex(index: number): string {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   getXpub(): string {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   /**
@@ -231,7 +242,7 @@ export class AbstractHDWallet extends LegacyWallet {
    * @returns {Promise<void>}
    */
   async fetchTransactions(): Promise<void> {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 
   /**
@@ -242,58 +253,67 @@ export class AbstractHDWallet extends LegacyWallet {
    * @return {String} WIF if found
    */
   _getWifForAddress(address: string): string {
-    if (this._address_to_wif_cache[address]) return this._address_to_wif_cache[address]; // cache hit
+    if (this._address_to_wif_cache[address])
+      return this._address_to_wif_cache[address]; // cache hit
 
     // fast approach, first lets iterate over all addressess we have in cache
     for (const indexStr of Object.keys(this.internal_addresses_cache)) {
       const index = parseInt(indexStr);
       if (this._getInternalAddressByIndex(index) === address) {
-        return (this._address_to_wif_cache[address] = this._getInternalWIFByIndex(index));
+        return (this._address_to_wif_cache[address] =
+          this._getInternalWIFByIndex(index));
       }
     }
 
     for (const indexStr of Object.keys(this.external_addresses_cache)) {
       const index = parseInt(indexStr);
       if (this._getExternalAddressByIndex(index) === address) {
-        return (this._address_to_wif_cache[address] = this._getExternalWIFByIndex(index));
+        return (this._address_to_wif_cache[address] =
+          this._getExternalWIFByIndex(index));
       }
     }
 
     // no luck - lets iterate over all addresses we have up to first unused address index
-    for (let c = 0; c <= this.next_free_change_address_index + this.gap_limit; c++) {
+    for (
+      let c = 0;
+      c <= this.next_free_change_address_index + this.gap_limit;
+      c++
+    ) {
       const possibleAddress = this._getInternalAddressByIndex(c);
       if (possibleAddress === address) {
-        return (this._address_to_wif_cache[address] = this._getInternalWIFByIndex(c));
+        return (this._address_to_wif_cache[address] =
+          this._getInternalWIFByIndex(c));
       }
     }
 
     for (let c = 0; c <= this.next_free_address_index + this.gap_limit; c++) {
       const possibleAddress = this._getExternalAddressByIndex(c);
       if (possibleAddress === address) {
-        return (this._address_to_wif_cache[address] = this._getExternalWIFByIndex(c));
+        return (this._address_to_wif_cache[address] =
+          this._getExternalWIFByIndex(c));
       }
     }
 
-    throw new Error('Could not find WIF for ' + address);
+    throw new Error("Could not find WIF for " + address);
   }
 
   async fetchBalance(): Promise<void> {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   /**
    * @inheritDoc
    */
   async fetchUtxo(): Promise<void> {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   _getDerivationPathByAddress(address: string): string | false {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   _getNodePubkeyByIndex(node: number, index: number): Buffer | undefined {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   /**

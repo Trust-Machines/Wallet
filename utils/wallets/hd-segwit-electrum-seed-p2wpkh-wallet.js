@@ -1,10 +1,10 @@
-import b58 from 'bs58check';
-import { HDSegwitBech32Wallet } from './hd-segwit-bech32-wallet';
-import BIP32Factory from 'bip32';
-import * as ecc from 'tiny-secp256k1';
+import b58 from "bs58check";
+import { HDSegwitBech32Wallet } from "./hd-segwit-bech32-wallet";
+import BIP32Factory from "bip32";
+import * as ecc from "tiny-secp256k1";
 
-const bitcoin = require('bitcoinjs-lib');
-const mn = require('electrum-mnemonic');
+const bitcoin = require("bitcoinjs-lib");
+const mn = require("electrum-mnemonic");
 const bip32 = BIP32Factory(ecc);
 
 const PREFIX = mn.PREFIXES.segwit;
@@ -16,8 +16,8 @@ const PREFIX = mn.PREFIXES.segwit;
  * @see https://electrum.readthedocs.io/en/latest/seedphrase.html
  */
 export class HDSegwitElectrumSeedP2WPKHWallet extends HDSegwitBech32Wallet {
-  static type = 'HDSegwitElectrumSeedP2WPKHWallet';
-  static typeReadable = 'HD Electrum (BIP32 P2WPKH)';
+  static type = "HDSegwitElectrumSeedP2WPKHWallet";
+  static typeReadable = "HD Electrum (BIP32 P2WPKH)";
   static derivationPath = "m/0'";
 
   validateMnemonic() {
@@ -25,7 +25,7 @@ export class HDSegwitElectrumSeedP2WPKHWallet extends HDSegwitBech32Wallet {
   }
 
   async generate() {
-    throw new Error('Not implemented');
+    throw new Error("Not implemented");
   }
 
   getXpub() {
@@ -40,7 +40,7 @@ export class HDSegwitElectrumSeedP2WPKHWallet extends HDSegwitBech32Wallet {
     // bitcoinjs does not support zpub yet, so we just convert it from xpub
     let data = b58.decode(xpub);
     data = data.slice(4);
-    data = Buffer.concat([Buffer.from('04b24746', 'hex'), data]);
+    data = Buffer.concat([Buffer.from("04b24746", "hex"), data]);
     this._xpub = b58.encode(data);
 
     return this._xpub;
@@ -48,7 +48,8 @@ export class HDSegwitElectrumSeedP2WPKHWallet extends HDSegwitBech32Wallet {
 
   _getInternalAddressByIndex(index) {
     index = index * 1; // cast to int
-    if (this.internal_addresses_cache[index]) return this.internal_addresses_cache[index]; // cache hit
+    if (this.internal_addresses_cache[index])
+      return this.internal_addresses_cache[index]; // cache hit
 
     const xpub = this.constructor._zpubToXpub(this.getXpub());
     const node = bip32.fromBase58(xpub);
@@ -61,7 +62,8 @@ export class HDSegwitElectrumSeedP2WPKHWallet extends HDSegwitBech32Wallet {
 
   _getExternalAddressByIndex(index) {
     index = index * 1; // cast to int
-    if (this.external_addresses_cache[index]) return this.external_addresses_cache[index]; // cache hit
+    if (this.external_addresses_cache[index])
+      return this.external_addresses_cache[index]; // cache hit
 
     const xpub = this.constructor._zpubToXpub(this.getXpub());
     const node = bip32.fromBase58(xpub);

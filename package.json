@@ -24,6 +24,7 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "@reduxjs/toolkit": "^1.8.2",
+    "@stacks/prettier-config": "^0.0.10",
     "@tradle/react-native-http": "^2.0.0",
     "aezeed": "^0.0.5",
     "assert": "^2.0.0",

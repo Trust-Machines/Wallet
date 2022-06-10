@@ -1,8 +1,8 @@
-import { AbstractHDElectrumWallet } from './abstract-hd-electrum-wallet';
-import BIP32Factory from 'bip32';
-import * as ecc from 'tiny-secp256k1';
+import { AbstractHDElectrumWallet } from "./abstract-hd-electrum-wallet";
+import BIP32Factory from "bip32";
+import * as ecc from "tiny-secp256k1";
 const bip32 = BIP32Factory(ecc);
-const ElectrumHelper = require('../ElectrumHelper');
+const ElectrumHelper = require("../ElectrumHelper");
 
 /**
  * HD Wallet (BIP39).
@@ -10,8 +10,8 @@ const ElectrumHelper = require('../ElectrumHelper');
  * @see https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
  */
 export class HDLegacyP2PKHWallet extends AbstractHDElectrumWallet {
-  static type = 'HDlegacyP2PKH';
-  static typeReadable = 'HD Legacy (BIP44 P2PKH)';
+  static type = "HDlegacyP2PKH";
+  static typeReadable = "HD Legacy (BIP44 P2PKH)";
   static derivationPath = "m/44'/0'/0'";
 
   allowSend() {
@@ -51,11 +51,13 @@ export class HDLegacyP2PKHWallet extends AbstractHDElectrumWallet {
   _getNodeAddressByIndex(node, index) {
     index = index * 1; // cast to int
     if (node === 0) {
-      if (this.external_addresses_cache[index]) return this.external_addresses_cache[index]; // cache hit
+      if (this.external_addresses_cache[index])
+        return this.external_addresses_cache[index]; // cache hit
     }
 
     if (node === 1) {
-      if (this.internal_addresses_cache[index]) return this.internal_addresses_cache[index]; // cache hit
+      if (this.internal_addresses_cache[index])
+        return this.internal_addresses_cache[index]; // cache hit
     }
 
     if (node === 0 && !this._node0) {
@@ -72,11 +74,15 @@ export class HDLegacyP2PKHWallet extends AbstractHDElectrumWallet {
 
     let address;
     if (node === 0) {
-      address = this.constructor._nodeToLegacyAddress(this._node0.derive(index));
+      address = this.constructor._nodeToLegacyAddress(
+        this._node0.derive(index)
+      );
     }
 
     if (node === 1) {
-      address = this.constructor._nodeToLegacyAddress(this._node1.derive(index));
+      address = this.constructor._nodeToLegacyAddress(
+        this._node1.derive(index)
+      );
     }
 
     if (node === 0) {
@@ -92,9 +98,9 @@ export class HDLegacyP2PKHWallet extends AbstractHDElectrumWallet {
     await super.fetchUtxo();
     // now we need to fetch txhash for each input as required by PSBT
     const txhexes = await ElectrumHelper.multiGetTransactionByTxid(
-      this.getUtxo().map(x => x.txid),
+      this.getUtxo().map((x) => x.txid),
       50,
-      false,
+      false
     );
 
     const newUtxos = [];
@@ -110,7 +116,10 @@ export class HDLegacyP2PKHWallet extends AbstractHDElectrumWallet {
     const pubkey = this._getPubkeyByAddress(input.address);
     const path = this._getDerivationPathByAddress(input.address, 44);
 
-    if (!input.txhex) throw new Error('UTXO is missing txhex of the input, which is required by PSBT for non-segwit input');
+    if (!input.txhex)
+      throw new Error(
+        "UTXO is missing txhex of the input, which is required by PSBT for non-segwit input"
+      );
 
     psbt.addInput({
       hash: input.txid,
@@ -124,7 +133,7 @@ export class HDLegacyP2PKHWallet extends AbstractHDElectrumWallet {
         },
       ],
       // non-segwit inputs now require passing the whole previous tx as Buffer
-      nonWitnessUtxo: Buffer.from(input.txhex, 'hex'),
+      nonWitnessUtxo: Buffer.from(input.txhex, "hex"),
     });
 
     return psbt;
