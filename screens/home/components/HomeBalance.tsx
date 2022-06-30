@@ -7,16 +7,9 @@ import { useAppSelector } from "../../../redux/hooks";
 import { satoshiToBitcoinString } from "../../../utils/helpers";
 
 export function HomeBalance() {
-  const { value, loading, error } = useAppSelector(
-    (state) => state.wallet.currentWalletBalance
+  const { balance, balanceLoading, balanceError } = useAppSelector(
+    (state) => state.balance
   );
-
-  const balance = {
-    STX: satoshiToBitcoinString(value),
-    USD: "10,761.61",
-    change: "+3%",
-    lastUpdated: "5 seconds ago",
-  };
 
   return (
     <View style={{ height: 166, justifyContent: "space-between" }}>
@@ -36,13 +29,13 @@ export function HomeBalance() {
               marginBottom: 0,
             }}
           >
-            {loading ? (
+            {balanceLoading ? (
               <ActivityIndicator
                 size="small"
                 color={colors.primaryAppColorLighter}
               />
             ) : (
-              balance.STX
+              satoshiToBitcoinString(balance)
             )}{" "}
             {Assets.BTC}
           </ThemedText>
@@ -50,11 +43,11 @@ export function HomeBalance() {
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: colors.primaryAppColorLighter }}
           >
-            {balance.change}
+            +3%
           </ThemedText>
         </View>
         <ThemedText theme={TextTheme.LabelText}>
-          ${balance.USD}&nbsp;
+          $10,761.61&nbsp;
           <ThemedText
             theme={TextTheme.LabelText}
             styleOverwrite={{ color: colors.secondaryFont }}
@@ -71,7 +64,7 @@ export function HomeBalance() {
           color: colors.disabled,
         }}
       >
-        {en.Home_last_updated_label}:&nbsp;{balance.lastUpdated}
+        {en.Home_last_updated_label}:&nbsp;5 seconds ago
       </Text>
     </View>
   );

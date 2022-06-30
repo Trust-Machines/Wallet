@@ -12,18 +12,12 @@ import { en } from "../../en";
 import { styleVariables } from "../../constants/StyleVariables";
 import { colors } from "../../constants/Colors";
 import { useEffect, useState } from "react";
-import {
-  bitcoinToSatoshiInteger,
-  formatAddress,
-  safeParseFloat,
-} from "../../utils/helpers";
+import { formatAddress, safeParseFloat } from "../../utils/helpers";
 import { SvgIcons } from "../../assets/images";
 import { Contact } from "./components/Contact";
 import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { HDSegwitBech32Wallet } from "../../utils/wallets";
+import useTransactionSending from "../../hooks/useTransactionSending";
 import { useAppSelector } from "../../redux/hooks";
-const ElectrumHelper = require("../../utils/ElectrumHelper");
-const bitcoin = require("bitcoinjs-lib");
 
 export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
   const [amount, setAmount] = useState("0");
@@ -33,7 +27,7 @@ export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
   const [addressInputValue, setAddressInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const wallet = useAppSelector((state) => state.wallet.currentWallet);
+  const { wallet } = useAppSelector((state) => state.wallet);
 
   useEffect(() => {
     if (addressInputValue) {
@@ -41,63 +35,19 @@ export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
     }
   }, [addressInputValue]);
 
-  const broadcast = async (tx: number) => {
-    await ElectrumHelper.ping();
-    await ElectrumHelper.waitTillConnected();
-    const result = await wallet.broadcastTx(tx);
-    if (!result) {
-      console.log(`Error! Couldn't broadcast transaction`);
-    }
-    return result;
-  };
-
   const handleTransactionSending = async () => {
-    setLoading(true);
     setError(false);
+    setLoading(true);
+    const address = selectedContactAddress ?? addressInputValue;
+    const result = await useTransactionSending({ address, amount }, wallet);
 
-    await wallet.fetchBalance();
-    console.log("wallet balance", wallet.getBalance());
-
-    await wallet.fetchTransactions();
-    console.log("wallet transactions", wallet.getTransactions());
-
-    const fees = await ElectrumHelper.estimateFees();
-    console.log("fast tx fee", fees.fast);
-
-    const changeAddress = await wallet.getChangeAddressAsync();
-    console.log("changeAddress", changeAddress);
-
-    console.log("utxo", wallet.getUtxo());
-
-    const sendToAddress = selectedContactAddress ?? addressInputValue;
-    const amountToSendInSats = bitcoinToSatoshiInteger(safeParseFloat(amount));
-
-    const { tx, outputs, psbt, fee } = wallet.createTransaction(
-      wallet.getUtxo(),
-      [{ address: sendToAddress, value: amountToSendInSats }],
-      fees.fast,
-      changeAddress,
-      HDSegwitBech32Wallet.defaultRBFSequence
-    );
-
-    try {
-      await broadcast(tx.toHex());
-      const transactionId = bitcoin.Transaction.fromHex(tx.toHex()).getId();
-      console.log("Transaction ID on btc network: ", transactionId);
-
-      if (!!transactionId) {
-        console.log("transaction success");
-        setError(false);
-        navigation.navigate("SendSuccess", { transactionId, fee: fees.fast });
-      } else {
-        setError(true);
-      }
-    } catch (e) {
-      console.log("broadcast failed", e);
+    if (result.success && result.data) {
+      navigation.navigate("SendSuccess", result.data);
+    } else {
       setError(true);
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
   return (

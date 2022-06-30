@@ -1,18 +1,32 @@
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { ReceiveStackScreenProps } from "../../types";
 import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
 import { en } from "../../en";
-import QrCode from "../../assets/images/qr-placeholder.svg";
+import QRCode from "react-native-qrcode-svg";
 import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { styleVariables } from "../../constants/StyleVariables";
 import { SvgIcons } from "../../assets/images";
 import { colors } from "../../constants/Colors";
 import { layout } from "../../constants/Layout";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useEffect } from "react";
+import { getAddress } from "../../redux/addressSlice";
+import { createQr } from "../../utils/helpers";
 
 export function ReceivePresentQrModal({
   navigation,
 }: ReceiveStackScreenProps<"ReceivePresentQr">) {
+  const dispatch = useAppDispatch();
+  const { wallet } = useAppSelector((state) => state.wallet);
+  const { address, addressLoading, addressError } = useAppSelector(
+    (state) => state.address
+  );
+
+  useEffect(() => {
+    dispatch(getAddress(wallet));
+  }, []);
+
   return (
     <ModalScreenContainer title={en.Common_receive + " BTC"}>
       <View
@@ -37,11 +51,21 @@ export function ReceivePresentQrModal({
               textAlign: "center",
             }}
           >
-            bc1qyl8k4wkahuepwwp3rlmzcqhv6cpc9ccla4
+            {addressLoading ? "" : address}
           </ThemedText>
-          <View style={styles.qrContainer}>
-            <QrCode />
-          </View>
+          {addressLoading ? (
+            <ActivityIndicator
+              size={"large"}
+              color={colors.primaryAppColorLighter}
+            />
+          ) : (
+            <View style={styles.qrContainer}>
+              <QRCode
+                value={createQr(address)}
+                size={layout.window.width - 120}
+              />
+            </View>
+          )}
         </View>
         <View style={styles.buttonContainer}>
           <AppButton
@@ -70,6 +94,7 @@ const styles = StyleSheet.create({
   qrContainer: {
     backgroundColor: "#FFF",
     borderRadius: styleVariables.borderRadius,
+    padding: 40,
   },
   buttonContainer: {
     flexDirection: "row",

@@ -11,23 +11,22 @@ import { colors } from "../../constants/Colors";
 import { TransactionItem } from "./components/TransactionItem";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { layout } from "../../constants/Layout";
-import {
-  getAddress,
-  getBalance,
-  getTransactions,
-} from "../../redux/walletSlice";
+import { getBalance } from "../../redux/balanceSlice";
+import { getTransactions } from "../../redux/transactionsSlice";
+import { getAddress } from "../../redux/addressSlice";
 
 export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const dispatch = useAppDispatch();
-  const wallet = useAppSelector((state) => state.wallet.currentWallet);
-  const { value, loading, error } = useAppSelector(
-    (state) => state.wallet.transactions
-  );
+  const { wallet } = useAppSelector((state) => state.wallet);
+  const { transactions, transactionsLoading, transactionsError } =
+    useAppSelector((state) => state.transactions);
 
   useEffect(() => {
-    dispatch(getAddress(wallet));
-    dispatch(getBalance(wallet));
-    dispatch(getTransactions(wallet));
+    if (!!wallet) {
+      dispatch(getAddress(wallet));
+      dispatch(getBalance(wallet));
+      dispatch(getTransactions(wallet));
+    }
   }, []);
 
   return (
@@ -113,16 +112,16 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           29 April 2022
         </Text>
         <View style={{ paddingBottom: 30 }}>
-          {loading && (
+          {transactionsLoading && (
             <ActivityIndicator
               size={"large"}
               color={colors.primaryAppColorLighter}
               style={{ marginTop: 40 }}
             />
           )}
-          {!loading &&
-            !error &&
-            value.map((transaction: any) => {
+          {!transactionsLoading &&
+            !transactionsError &&
+            transactions.map((transaction: any) => {
               return (
                 <TransactionItem
                   key={transaction.hash}

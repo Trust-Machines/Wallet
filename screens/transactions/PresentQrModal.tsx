@@ -1,16 +1,31 @@
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { QrStackScreenProps } from "../../types";
 import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
 import { en } from "../../en";
-import QrCode from "../../assets/images/qr-placeholder.svg";
 import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { styleVariables } from "../../constants/StyleVariables";
 import { layout } from "../../constants/Layout";
+import QRCode from "react-native-qrcode-svg";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getAddress } from "../../redux/addressSlice";
+import { colors } from "../../constants/Colors";
+import { createQr } from "../../utils/helpers";
 
 export function PresentQrModal({
   navigation,
 }: QrStackScreenProps<"PresentQr">) {
+  const dispatch = useAppDispatch();
+  const { wallet } = useAppSelector((state) => state.wallet);
+  const { address, addressLoading, addressError } = useAppSelector(
+    (state) => state.address
+  );
+
+  useEffect(() => {
+    dispatch(getAddress(wallet));
+  }, []);
+
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
       <View
@@ -30,9 +45,30 @@ export function PresentQrModal({
           >
             {en.Qr_flow_present_qr_title}
           </ThemedText>
-          <View style={styles.qrContainer}>
-            <QrCode />
-          </View>
+          {addressLoading ? (
+            <ActivityIndicator
+              size={"large"}
+              color={colors.primaryAppColorLighter}
+            />
+          ) : (
+            <>
+              <View style={styles.qrContainer}>
+                <QRCode
+                  value={createQr(address)}
+                  size={layout.window.width - 120}
+                />
+              </View>
+              <ThemedText
+                theme={TextTheme.CaptionText}
+                styleOverwrite={{
+                  color: colors.secondaryFont,
+                  textAlign: "center",
+                }}
+              >
+                {address}
+              </ThemedText>
+            </>
+          )}
         </View>
         <AppButton
           text={en.Qr_flow_present_qr_button_text}
@@ -52,5 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderRadius: styleVariables.borderRadius,
     alignItems: "center",
+    padding: 40,
+    marginBottom: 12,
   },
 });

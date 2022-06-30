@@ -6,59 +6,33 @@ import { colors } from "../../constants/Colors";
 import { en } from "../../en";
 import { RootStackScreenProps } from "../../types";
 import { styleVariables } from "../../constants/StyleVariables";
-import { useState } from "react";
-import { startImport } from "../../utils/wallets/wallet-import";
-import { saveCurrentWallet } from "../../redux/walletSlice";
-import { useAppDispatch } from "../../redux/hooks";
-import { saveSecurely, SecureKeys } from "../../utils/secureStore";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { layout } from "../../constants/Layout";
+import { importWallet } from "../../redux/walletSlice";
 
 export function WalletLoginScreen({
   navigation,
 }: RootStackScreenProps<"WalletLogin">) {
+  const dispatch = useAppDispatch();
   const [seedPhrase, setSeedPhrase] = useState<string>(
     // 'guitar pattern avocado lion dizzy fiber noble scatter change vehicle lunar pluck draw fatal earth'
     "liar knee pioneer critic water gospel another butter like purity garment member"
   );
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
+  const { wallet, walletLoading, walletError } = useAppSelector(
+    (state) => state.wallet
+  );
 
-  const handleNextPress = () => {
-    let walletType: string = "";
-    // TODO seed phrase validation
+  useEffect(() => {}, [wallet, walletLoading, walletError]);
+
+  const handleNextPress = async () => {
     if (seedPhrase.length) {
-      setLoading(true);
-      const onProgress = (data: any) => {
-        walletType = data;
-        console.log("onProgress", data);
-      };
-
-      const onWallet = async (wallet: any) => {
-        const id = wallet.getID();
-        console.log("WALLETID: ", id);
-        let subtitle;
-        try {
-          subtitle = wallet.getDerivationPath?.();
-
-          await saveSecurely(SecureKeys.WalletType, walletType);
-          dispatch(saveCurrentWallet(wallet));
-          await saveSecurely(SecureKeys.SeedPhrase, wallet.secret);
-          setLoading(false);
-          navigation.navigate("Root");
-        } catch (e) {
-          setLoading(false);
-          setError(true);
-          console.log("onWallet error", e);
-        }
-      };
-
-      const onPassword = () => {
-        const pass = "123456"; // Should prompt the user to set a password or sth
-        return pass;
-      };
-
-      startImport(seedPhrase, true, true, onProgress, onWallet, onPassword);
+      try {
+        await dispatch(importWallet(seedPhrase)).unwrap();
+        navigation.navigate("Root");
+      } catch (err) {
+        console.log("wallet import error", err);
+      }
     }
   };
 
@@ -76,13 +50,13 @@ export function WalletLoginScreen({
       >
         {en.Wallet_login_screen_subtitle}
       </ThemedText>
-      {loading ? (
+      {walletLoading ? (
         <ActivityIndicator
           size={"large"}
           color={colors.primaryAppColorLighter}
           style={{ marginTop: "25%" }}
         />
-      ) : error ? (
+      ) : walletError ? (
         <ThemedText theme={TextTheme.NavigationText}>
           Something went wrong
         </ThemedText>

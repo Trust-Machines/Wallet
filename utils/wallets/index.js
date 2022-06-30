@@ -7,7 +7,7 @@ export * from "./hd-legacy-breadwallet-wallet";
 export * from "./hd-legacy-p2pkh-wallet";
 export * from "./watch-only-wallet";
 export * from "./lightning-custodian-wallet";
-export * from "./lightning-ldk-wallet";
+// export * from "./lightning-ldk-wallet";
 export * from "./abstract-hd-wallet";
 export * from "./hd-segwit-bech32-wallet";
 export * from "./hd-legacy-electrum-seed-p2pkh-wallet";

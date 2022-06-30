@@ -1,5 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import walletReducer from "./walletSlice";
+import balanceReducer from "./balanceSlice";
+import transactionsSlice from "./transactionsSlice";
+import addressSlice from "./addressSlice";
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -8,6 +11,9 @@ export const store = configureStore({
     }),
   reducer: {
     wallet: walletReducer,
+    balance: balanceReducer,
+    transactions: transactionsSlice,
+    address: addressSlice
   },
 });
 

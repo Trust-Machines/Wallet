@@ -10,6 +10,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Assets } from "./constants/CommonEnums";
+import { TransactionDetails } from "./hooks/useTransactionSending";
 
 declare global {
   namespace ReactNavigation {
@@ -62,8 +63,8 @@ export type ExchangeStackScreenProps<
 export type QrStackParamList = {
   PresentQr: undefined;
   ScanQr: undefined;
-  ConfirmSend: undefined;
-  TransactionSuccess: undefined;
+  ConfirmSend: { address: string; amount: string };
+  TransactionSuccess: TransactionDetails;
 };
 
 export type QrStackScreenProps<Screen extends keyof QrStackParamList> =
@@ -79,7 +80,7 @@ export type ReceiveStackScreenProps<
 
 export type SendStackParamList = {
   Send: undefined;
-  SendSuccess: { transactionId: string; fee: number };
+  SendSuccess: TransactionDetails;
 };
 
 export type SendStackScreenProps<Screen extends keyof SendStackParamList> =

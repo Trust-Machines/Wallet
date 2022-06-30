@@ -8,9 +8,7 @@ import { formatAddress } from "../../../utils/helpers";
 
 export function HomeHeader() {
   const navigation = useNavigation();
-  const { value, loading, error } = useAppSelector(
-    (state) => state.wallet.currentWalletAddress
-  );
+  const { address } = useAppSelector((state) => state.address);
 
   return (
     <View style={styles.container}>
@@ -18,7 +16,7 @@ export function HomeHeader() {
       <View>
         <Text style={styles.walletName}>My TrustMachines Wallet</Text>
         <Text style={styles.address}>
-          {loading ? "" : `${formatAddress(value)}`}
+          {address.length ? `${formatAddress(address)}` : ""}
         </Text>
       </View>
       <Pressable
