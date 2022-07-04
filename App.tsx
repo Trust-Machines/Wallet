@@ -11,6 +11,9 @@ import {
 } from "@expo-google-fonts/inter";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { LogBox } from "react-native";
+
+LogBox.ignoreAllLogs();
 
 export function App() {
   let [fontsLoaded] = useFonts({

@@ -9,16 +9,23 @@ import { formatAddress } from "../../../utils/helpers";
 export function HomeHeader() {
   const navigation = useNavigation();
   const { address } = useAppSelector((state) => state.address);
+  const { currentWalletLabel } = useAppSelector((state) => state.wallet);
 
   return (
     <View style={styles.container}>
       <SvgIcons.TabBar.Wallet style={{ marginLeft: -20 }} />
-      <View>
-        <Text style={styles.walletName}>My TrustMachines Wallet</Text>
+      <Pressable
+        onPress={() =>
+          navigation.navigate("WalletsStack", { screen: "WalletSelector" })
+        }
+      >
+        <Text style={styles.walletName}>
+          {currentWalletLabel ?? formatAddress(address)}
+        </Text>
         <Text style={styles.address}>
           {address.length ? `${formatAddress(address)}` : ""}
         </Text>
-      </View>
+      </Pressable>
       <Pressable
         onPress={() => navigation.navigate("QrStack", { screen: "PresentQr" })}
       >

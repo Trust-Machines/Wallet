@@ -11,6 +11,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Assets } from "./constants/CommonEnums";
 import { TransactionDetails } from "./hooks/useTransactionSending";
+import { EncryptedSeed } from "./utils/asyncStorageHelper";
 
 declare global {
   namespace ReactNavigation {
@@ -25,11 +26,21 @@ export type RootStackParamList = {
   ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
   SendStack: NavigatorScreenParams<SendStackParamList>;
   BuyCryptoStack: NavigatorScreenParams<BuyCryptoStackParamList>;
+  WalletsStack: NavigatorScreenParams<WalletsStackParamList>;
+  NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
   Start: undefined;
   Biometrics: undefined;
+  AcceptTOS: { flow: "import" | "generate" };
   SaveRecoveryPhrase: undefined;
   CreateWalletSuccess: undefined;
   WalletLogin: undefined;
+  SetPassword: { seedPhrase: string };
+  UnlockWallet: {
+    encryptedSeedPhrase: EncryptedSeed;
+    onValidationFinished(success: boolean): void;
+  };
+  WalletLabel: { flow: "import" | "generate" };
+  AddNewWallet: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -93,3 +104,31 @@ export type BuyCryptoStackParamList = {
 export type BuyCryptoStackScreenProps<
   Screen extends keyof BuyCryptoStackParamList
 > = NativeStackScreenProps<BuyCryptoStackParamList, Screen>;
+
+export type WalletsStackParamList = {
+  WalletSelector: undefined;
+  UnlockWallet: {
+    encryptedSeedPhrase: EncryptedSeed;
+    onValidationFinished(success: boolean, password: string): void;
+  };
+};
+
+export type WalletsStackScreenProps<
+  Screen extends keyof WalletsStackParamList
+> = NativeStackScreenProps<WalletsStackParamList, Screen>;
+
+export type NewWalletStackParamList = {
+  AddNewWallet: undefined;
+  UnlockWallet: {
+    encryptedSeedPhrase: EncryptedSeed;
+    onValidationFinished(success: boolean, password: string): void;
+  };
+  SaveRecoveryPhrase: { password: string };
+  CreateWalletSuccess: undefined;
+  WalletLogin: { password: string };
+  // TODO wallet label
+};
+
+export type NewWalletStackScreenProps<
+  Screen extends keyof NewWalletStackParamList
+> = NativeStackScreenProps<NewWalletStackParamList, Screen>;

@@ -14,12 +14,14 @@ import { BiometricsScreen } from "../screens/auth/BiometricsScreen";
 import {
   BuyCryptoStackParamList,
   ExchangeStackParamList,
+  NewWalletStackParamList,
   QrStackParamList,
   ReceiveStackParamList,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
   SendStackParamList,
+  WalletsStackParamList,
 } from "../types";
 import { en } from "../en";
 import LinkingConfiguration from "./LinkingConfiguration";
@@ -45,6 +47,12 @@ import { SettingsScreen } from "../screens/settings/SettingsScreen";
 import { BuyCryptoModal } from "../screens/transactions/BuyCryptoModal";
 import { WalletLoginScreen } from "../screens/auth/WalletLoginScreen";
 import { SvgIcons } from "../assets/images";
+import { AcceptTOSScreen } from "../screens/auth/AcceptTOSScreen";
+import { SetPasswordScreen } from "../screens/auth/SetPasswordScreen";
+import { UnlockWalletScreen } from "../screens/auth/UnlockWalletScreen";
+import { SetWalletLabelScreen } from "../screens/auth/SetWalletLabelScreen";
+import { WalletSelectorModal } from "../screens/wallets/WalletSelectorModal";
+import { AddNewWalletScreen } from "../screens/wallets/AddNewWallet";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -72,6 +80,8 @@ const ReceiveStack = createNativeStackNavigator<ReceiveStackParamList>();
 const SendStack = createNativeStackNavigator<SendStackParamList>();
 const BuyCryptoStack = createNativeStackNavigator<BuyCryptoStackParamList>();
 const QrStack = createNativeStackNavigator<QrStackParamList>();
+const WalletsStack = createNativeStackNavigator<WalletsStackParamList>();
+const NewWalletStack = createNativeStackNavigator<NewWalletStackParamList>();
 
 function RootNavigator() {
   return (
@@ -92,6 +102,16 @@ function RootNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="AcceptTOS"
+        component={AcceptTOSScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="WalletLabel"
+        component={SetWalletLabelScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="SaveRecoveryPhrase"
         component={SaveRecoveryPhraseScreen}
         options={{ headerShown: false }}
@@ -104,6 +124,21 @@ function RootNavigator() {
       <Stack.Screen
         name="WalletLogin"
         component={WalletLoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SetPassword"
+        component={SetPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UnlockWallet"
+        component={UnlockWalletScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NewWalletStack"
+        component={NewWalletStackView}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -146,9 +181,61 @@ function RootNavigator() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="WalletsStack"
+        component={WalletsStackView}
+        options={{
+          presentation: "containedTransparentModal",
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
+
+const NewWalletStackView = () => (
+  <NewWalletStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <NewWalletStack.Screen
+      name="AddNewWallet"
+      component={AddNewWalletScreen}
+      options={{
+        presentation: "card",
+      }}
+    />
+    <NewWalletStack.Screen
+      name="UnlockWallet"
+      component={UnlockWalletScreen}
+      options={{
+        presentation: "card",
+      }}
+    />
+    <NewWalletStack.Screen
+      name="SaveRecoveryPhrase"
+      component={SaveRecoveryPhraseScreen}
+      options={{
+        presentation: "card",
+      }}
+    />
+    <NewWalletStack.Screen
+      name="WalletLogin"
+      component={WalletLoginScreen}
+      options={{
+        presentation: "card",
+      }}
+    />
+    <NewWalletStack.Screen
+      name="CreateWalletSuccess"
+      component={CreateWalletSuccessScreen}
+      options={{
+        presentation: "card",
+      }}
+    />
+  </NewWalletStack.Navigator>
+);
 
 const ExchangeStackView = () => (
   <ExchangeStack.Navigator
@@ -256,6 +343,28 @@ const QrStackView = () => (
       }}
     />
   </QrStack.Navigator>
+);
+
+const WalletsStackView = () => (
+  <WalletsStack.Navigator
+    initialRouteName="WalletSelector"
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <WalletsStack.Screen
+      name="WalletSelector"
+      component={WalletSelectorModal}
+      options={{
+        presentation: "card",
+      }}
+    />
+    <WalletsStack.Screen
+      name="UnlockWallet"
+      component={UnlockWalletScreen}
+      options={{ headerShown: false }}
+    />
+  </WalletsStack.Navigator>
 );
 
 /**

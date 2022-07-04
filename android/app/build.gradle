@@ -184,7 +184,6 @@ android {
 }
 
 dependencies {
-    implementation files("../../node_modules/rn-ldk/android/libs/LDK-release.aar")
     implementation project(':react-native-fs')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
