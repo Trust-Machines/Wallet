@@ -1,59 +1,81 @@
 import { useNavigation } from "@react-navigation/native";
-import { Pressable } from "react-native";
-import { getAddress } from "../../../redux/addressSlice";
-import { getBalance } from "../../../redux/balanceSlice";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { getTransactions } from "../../../redux/transactionsSlice";
-import {
-  setCurrentWalletID,
-  setCurrentWalletLabel,
-} from "../../../redux/walletSlice";
+import { Pressable, StyleSheet } from "react-native";
+import { colors } from "../../../constants/Colors";
+import { styleVariables } from "../../../constants/StyleVariables";
+import { useAppSelector } from "../../../redux/hooks";
 import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import {
-  CachedWallet,
-  EncryptedSeed,
-  storeCurrentWalletIdToAsyncStorage,
-} from "../../../utils/asyncStorageHelper";
+import { CachedWallet } from "../../../utils/asyncStorageHelper";
 
 type WalletProps = {
   wallet: CachedWallet;
   walletID: string;
+  selectWallet(wallet: any, walletID: string): void;
+  selected: boolean;
 };
 
-export const Wallet = ({ wallet, walletID }: WalletProps) => {
-  const { walletObject, walletLoading } = useAppSelector(
-    (state) => state.wallet
-  );
+export const Wallet = ({
+  wallet,
+  walletID,
+  selectWallet,
+  selected,
+}: WalletProps) => {
+  const { wallets, currentWalletID } = useAppSelector((state) => state.wallet);
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
-
-  const switchWallet = (seed: EncryptedSeed) => {
-    navigation.navigate("WalletsStack", {
-      screen: "UnlockWallet",
-      params: {
-        encryptedSeedPhrase: seed,
-        onValidationFinished: async (success: boolean) => {
-          if (success) {
-            dispatch(setCurrentWalletID(walletID));
-            dispatch(setCurrentWalletLabel(wallet.label));
-            await storeCurrentWalletIdToAsyncStorage(walletID);
-            console.log("WWW OBJ", walletObject.secret);
-            dispatch(getAddress(walletObject));
-            dispatch(getBalance(walletObject));
-            dispatch(getTransactions(walletObject));
-
-            navigation.navigate("WalletsStack", { screen: "WalletSelector" });
-          } else {
-            console.log("error");
-          }
-        },
-      },
-    });
-  };
 
   return (
-    <Pressable onPress={() => switchWallet(wallet.seed)}>
+    <Pressable
+      onPress={() => selectWallet(wallet, walletID)}
+      style={[
+        styles.wallet,
+        {
+          backgroundColor: selected
+            ? colors.primaryAppColorDarker
+            : colors.primaryBackgroundLighter,
+        },
+      ]}
+    >
       <ThemedText theme={TextTheme.LabelText}>{wallet.label}</ThemedText>
+      <Pressable
+        style={styles.edit}
+        onPress={() => {
+          navigation.navigate("WalletsStack", {
+            screen: "UnlockWallet",
+            params: {
+              encryptedSeedPhrase: wallets[currentWalletID].seed,
+              onValidationFinished: (success: boolean, password: string) => {
+                if (success) {
+                  navigation.navigate("WalletsStack", {
+                    screen: "EditWallet",
+                    params: { wallet, id: walletID },
+                  });
+                } else {
+                  console.log("error");
+                }
+              },
+            },
+          });
+        }}
+      >
+        <ThemedText theme={TextTheme.CaptionText}>Edit</ThemedText>
+      </Pressable>
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  wallet: {
+    borderRadius: styleVariables.borderRadius,
+    paddingLeft: 20,
+    height: 60,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  edit: {
+    width: 60,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

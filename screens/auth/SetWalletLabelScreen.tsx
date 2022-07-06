@@ -4,27 +4,54 @@ import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { colors } from "../../constants/Colors";
 import { en } from "../../en";
-import { RootStackScreenProps } from "../../types";
+import { CommonStackScreenProps } from "../../types";
 import { styleVariables } from "../../constants/StyleVariables";
 import { useState } from "react";
 import { layout } from "../../constants/Layout";
-import { useAppDispatch } from "../../redux/hooks";
-import { setCurrentWalletLabel } from "../../redux/walletSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setNewWalletLabel } from "../../redux/walletSlice";
+import { useNavigation } from "@react-navigation/native";
 
 export function SetWalletLabelScreen({
-  navigation,
   route,
-}: RootStackScreenProps<"WalletLabel">) {
+}: CommonStackScreenProps<"WalletLabel">) {
   const [label, setLabel] = useState<string>("");
+  const { wallets, currentWalletID } = useAppSelector((state) => state.wallet);
+
   const dispatch = useAppDispatch();
   const { flow } = route.params;
+  const navigation = useNavigation();
 
   const saveLabel = async () => {
     if (label.length) {
-      dispatch(setCurrentWalletLabel(label));
-      navigation.navigate(
-        flow === "generate" ? "SaveRecoveryPhrase" : "WalletLogin"
-      );
+      dispatch(setNewWalletLabel(label));
+
+      // if user is logged in to a wallet
+      if (Object.keys(wallets).length) {
+        navigation.navigate("NewWalletStack", {
+          screen: "UnlockWallet",
+          params: {
+            // the current encrypted seed is used to validate the password
+            encryptedSeedPhrase: wallets[currentWalletID].seed,
+            onValidationFinished: (success: boolean, password: string) => {
+              if (success) {
+                navigation.navigate("NewWalletStack", {
+                  screen:
+                    flow === "generate" ? "SaveRecoveryPhrase" : "WalletLogin",
+                  params: { password },
+                });
+              } else {
+                console.log("error");
+              }
+            },
+          },
+        });
+      } else {
+        navigation.navigate("OnboardingStack", {
+          screen: flow === "generate" ? "SaveRecoveryPhrase" : "WalletLogin",
+          params: {},
+        });
+      }
     }
   };
 

@@ -83,6 +83,21 @@ export const addWalletToAsyncStorage = async (
   );
 };
 
+export const removeWalletFromAsyncStorage = async (
+  idToRemove: string
+): Promise<void> => {
+  let wallets = await getWalletsFromAsyncStorage();
+  console.log("DELETE1", wallets);
+
+  if (wallets) {
+    delete wallets[idToRemove];
+  }
+
+  console.log("DELETE2", wallets);
+
+  await AsyncStorage.setItem(StorageKeys.Wallets, JSON.stringify(wallets));
+};
+
 export const removeFromAsyncStorage = async (
   key: StorageKeys
 ): Promise<void> => {

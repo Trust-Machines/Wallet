@@ -4,7 +4,7 @@ import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { colors } from "../../constants/Colors";
 import { en } from "../../en";
-import { RootStackScreenProps } from "../../types";
+import { OnboardingStackScreenProps } from "../../types";
 import { layout } from "../../constants/Layout";
 import { useEffect, useState } from "react";
 import {
@@ -20,11 +20,15 @@ import {
   setWallets,
 } from "../../redux/walletSlice";
 import { mapSeedToEncryptedSeed } from "../../utils/mappers";
+import { useNavigation } from "@react-navigation/native";
 const ElectrumHelper = require("../../utils/ElectrumHelper");
 
-export function StartScreen({ navigation }: RootStackScreenProps<"Start">) {
+export function StartScreen({
+  navigation,
+}: OnboardingStackScreenProps<"Start">) {
   const [loading, setLoading] = useState<Boolean>(false);
   const dispatch = useAppDispatch();
+  const nav = useNavigation();
 
   useEffect(() => {
     //clearAsyncStorage();
@@ -69,7 +73,7 @@ export function StartScreen({ navigation }: RootStackScreenProps<"Start">) {
         encryptedSeedPhrase: mapSeedToEncryptedSeed(encryptedSeedPhrase),
         onValidationFinished: (success: boolean) => {
           if (success) {
-            navigation.navigate("Root");
+            nav.navigate("Root");
           } else {
             console.log("error");
           }

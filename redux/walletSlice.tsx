@@ -10,6 +10,7 @@ interface WalletState {
   walletLoading: boolean;
   walletError: boolean;
   wallets: CachedWallets;
+  newWalletLabel: string;
 }
 
 const initialState: WalletState = {
@@ -19,6 +20,7 @@ const initialState: WalletState = {
   walletLoading: false,
   walletError: false,
   wallets: {},
+  newWalletLabel: "",
 };
 
 // TODO add type parameter
@@ -87,6 +89,9 @@ export const walletSlice = createSlice({
     setWallets: (state, action: PayloadAction<CachedWallets>) => {
       state.wallets = action.payload;
     },
+    setNewWalletLabel: (state, action: PayloadAction<string>) => {
+      state.newWalletLabel = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -95,7 +100,6 @@ export const walletSlice = createSlice({
         state.walletLoading = true;
       })
       .addCase(importWallet.fulfilled, (state, action) => {
-        console.log("WWWOOO", action.payload.walletObject.secret);
         state.walletObject = action.payload.walletObject;
         state.walletLoading = false;
 
@@ -116,6 +120,7 @@ export const {
   setCurrentWalletLabel,
   setCurrentWalletID,
   setWallets,
+  setNewWalletLabel,
 } = walletSlice.actions;
 
 export default walletSlice.reducer;

@@ -2,16 +2,18 @@ import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { en } from "../../en";
-import { RootStackScreenProps } from "../../types";
+import { OnboardingStackScreenProps } from "../../types";
 import { AppSwitch } from "../../shared/AppSwitch";
 import { useState } from "react";
 import { Image, View } from "react-native";
 import { layout } from "../../constants/Layout";
+import { useNavigation } from "@react-navigation/native";
 
 export function BiometricsScreen({
-  navigation,
-}: RootStackScreenProps<"Biometrics">) {
+  route,
+}: OnboardingStackScreenProps<"Biometrics">) {
   const [isBiometricsEnabled, setIsBiometricsEnabed] = useState(false);
+  const navigation = useNavigation();
 
   function onToggleSwitch(value: boolean) {
     setIsBiometricsEnabed(value);
@@ -50,7 +52,12 @@ export function BiometricsScreen({
         />
       </View>
       <AppButton
-        onPress={() => navigation.navigate("SaveRecoveryPhrase")}
+        onPress={() =>
+          navigation.navigate("OnboardingStack", {
+            screen: "SaveRecoveryPhrase",
+            params: {},
+          })
+        }
         text={en.Common_next}
         theme={isBiometricsEnabled ? ButtonTheme.Primary : ButtonTheme.Disabled}
         fullWidth

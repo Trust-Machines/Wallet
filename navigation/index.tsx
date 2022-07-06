@@ -13,8 +13,10 @@ import { StartScreen } from "../screens/auth/StartScreen";
 import { BiometricsScreen } from "../screens/auth/BiometricsScreen";
 import {
   BuyCryptoStackParamList,
+  CommonStackParamList,
   ExchangeStackParamList,
   NewWalletStackParamList,
+  OnboardingStackParamList,
   QrStackParamList,
   ReceiveStackParamList,
   RootStackParamList,
@@ -53,6 +55,7 @@ import { UnlockWalletScreen } from "../screens/auth/UnlockWalletScreen";
 import { SetWalletLabelScreen } from "../screens/auth/SetWalletLabelScreen";
 import { WalletSelectorModal } from "../screens/wallets/WalletSelectorModal";
 import { AddNewWalletScreen } from "../screens/wallets/AddNewWallet";
+import { EditWalletModal } from "../screens/wallets/EditWalletModal";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -74,7 +77,12 @@ export function Navigation() {
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
+
+const CommonStack = createNativeStackNavigator<CommonStackParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const OnboardingStack = createNativeStackNavigator<
+  OnboardingStackParamList & CommonStackParamList
+>();
 const ExchangeStack = createNativeStackNavigator<ExchangeStackParamList>();
 const ReceiveStack = createNativeStackNavigator<ReceiveStackParamList>();
 const SendStack = createNativeStackNavigator<SendStackParamList>();
@@ -83,37 +91,19 @@ const QrStack = createNativeStackNavigator<QrStackParamList>();
 const WalletsStack = createNativeStackNavigator<WalletsStackParamList>();
 const NewWalletStack = createNativeStackNavigator<NewWalletStackParamList>();
 
-function RootNavigator() {
+const getCommonScreens = (
+  Stack: ReturnType<typeof createNativeStackNavigator>
+) => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Start"
-        component={StartScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Biometrics"
-        component={BiometricsScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="AcceptTOS"
-        component={AcceptTOSScreen}
-        options={{ headerShown: false }}
-      />
+    <>
       <Stack.Screen
         name="WalletLabel"
         component={SetWalletLabelScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SaveRecoveryPhrase"
-        component={SaveRecoveryPhraseScreen}
+        name="UnlockWallet"
+        component={UnlockWalletScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -127,13 +117,25 @@ function RootNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SetPassword"
-        component={SetPasswordScreen}
+        name="SaveRecoveryPhrase"
+        component={SaveRecoveryPhraseScreen}
+        options={{ headerShown: false }}
+      />
+    </>
+  );
+};
+
+function RootNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="OnboardingStack">
+      <Stack.Screen
+        name="Root"
+        component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="UnlockWallet"
-        component={UnlockWalletScreen}
+        name="OnboardingStack"
+        component={OnboardingStackView}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -193,49 +195,63 @@ function RootNavigator() {
   );
 }
 
-const NewWalletStackView = () => (
-  <NewWalletStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
-    <NewWalletStack.Screen
-      name="AddNewWallet"
-      component={AddNewWalletScreen}
-      options={{
-        presentation: "card",
+const OnboardingStackView = () => {
+  const commonScreens = getCommonScreens(
+    OnboardingStack as ReturnType<typeof createNativeStackNavigator>
+  );
+
+  return (
+    <OnboardingStack.Navigator
+      screenOptions={{
+        headerShown: false,
       }}
-    />
-    <NewWalletStack.Screen
-      name="UnlockWallet"
-      component={UnlockWalletScreen}
-      options={{
-        presentation: "card",
+    >
+      <OnboardingStack.Screen
+        name="Start"
+        component={StartScreen}
+        options={{ headerShown: false }}
+      />
+      <OnboardingStack.Screen
+        name="Biometrics"
+        component={BiometricsScreen}
+        options={{ headerShown: false }}
+      />
+      <OnboardingStack.Screen
+        name="AcceptTOS"
+        component={AcceptTOSScreen}
+        options={{ headerShown: false }}
+      />
+      <OnboardingStack.Screen
+        name="SetPassword"
+        component={SetPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      {commonScreens}
+    </OnboardingStack.Navigator>
+  );
+};
+
+const NewWalletStackView = () => {
+  const commonScreens = getCommonScreens(
+    NewWalletStack as ReturnType<typeof createNativeStackNavigator>
+  );
+  return (
+    <NewWalletStack.Navigator
+      screenOptions={{
+        headerShown: false,
       }}
-    />
-    <NewWalletStack.Screen
-      name="SaveRecoveryPhrase"
-      component={SaveRecoveryPhraseScreen}
-      options={{
-        presentation: "card",
-      }}
-    />
-    <NewWalletStack.Screen
-      name="WalletLogin"
-      component={WalletLoginScreen}
-      options={{
-        presentation: "card",
-      }}
-    />
-    <NewWalletStack.Screen
-      name="CreateWalletSuccess"
-      component={CreateWalletSuccessScreen}
-      options={{
-        presentation: "card",
-      }}
-    />
-  </NewWalletStack.Navigator>
-);
+    >
+      <NewWalletStack.Screen
+        name="AddNewWallet"
+        component={AddNewWalletScreen}
+        options={{
+          presentation: "card",
+        }}
+      />
+      {commonScreens}
+    </NewWalletStack.Navigator>
+  );
+};
 
 const ExchangeStackView = () => (
   <ExchangeStack.Navigator
@@ -363,6 +379,13 @@ const WalletsStackView = () => (
       name="UnlockWallet"
       component={UnlockWalletScreen}
       options={{ headerShown: false }}
+    />
+    <WalletsStack.Screen
+      name="EditWallet"
+      component={EditWalletModal}
+      options={{
+        presentation: "card",
+      }}
     />
   </WalletsStack.Navigator>
 );

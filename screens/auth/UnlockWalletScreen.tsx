@@ -4,20 +4,17 @@ import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { colors } from "../../constants/Colors";
 import { en } from "../../en";
-import { RootStackScreenProps, WalletsStackScreenProps } from "../../types";
+import { CommonStackScreenProps } from "../../types";
 import { styleVariables } from "../../constants/StyleVariables";
 import { useState } from "react";
 import { layout } from "../../constants/Layout";
-import { decrypt, encrypt } from "../../utils/helpers";
+import { decrypt } from "../../utils/helpers";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { importWallet } from "../../redux/walletSlice";
 
 export function UnlockWalletScreen({
-  navigation,
   route,
-}:
-  | RootStackScreenProps<"UnlockWallet">
-  | WalletsStackScreenProps<"UnlockWallet">) {
+}: CommonStackScreenProps<"UnlockWallet">) {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 

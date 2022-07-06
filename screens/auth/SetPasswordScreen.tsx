@@ -4,7 +4,7 @@ import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { colors } from "../../constants/Colors";
 import { en } from "../../en";
-import { RootStackScreenProps } from "../../types";
+import { OnboardingStackScreenProps, RootStackScreenProps } from "../../types";
 import { styleVariables } from "../../constants/StyleVariables";
 import { useState } from "react";
 import { layout } from "../../constants/Layout";
@@ -27,11 +27,11 @@ import {
 export function SetPasswordScreen({
   navigation,
   route,
-}: RootStackScreenProps<"SetPassword">) {
+}: OnboardingStackScreenProps<"SetPassword">) {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const { walletLoading, walletError, currentWalletLabel, currentWalletID } =
+  const { walletLoading, walletError, newWalletLabel, currentWalletID } =
     useAppSelector((state) => state.wallet);
 
   const { seedPhrase } = route.params;
@@ -48,11 +48,12 @@ export function SetPasswordScreen({
 
       try {
         await dispatch(importWallet(decryptedWalletSeed)).unwrap();
-        console.log("SAVE!!!", currentWalletID, currentWalletLabel);
+        console.log("SAVE!!!", currentWalletID, newWalletLabel);
+        dispatch(setCurrentWalletLabel(newWalletLabel));
         await addWalletToAsyncStorage({
           encryptedWalletSeed: encrypt(decryptedWalletSeed, password),
           walletID: currentWalletID,
-          walletLabel: currentWalletLabel,
+          walletLabel: newWalletLabel,
         });
         await storeCurrentWalletIdToAsyncStorage(currentWalletID);
         const storedWallets = await getWalletsFromAsyncStorage();

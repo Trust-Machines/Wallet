@@ -11,7 +11,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Assets } from "./constants/CommonEnums";
 import { TransactionDetails } from "./hooks/useTransactionSending";
-import { EncryptedSeed } from "./utils/asyncStorageHelper";
+import { CachedWallet, EncryptedSeed } from "./utils/asyncStorageHelper";
 
 declare global {
   namespace ReactNavigation {
@@ -21,6 +21,7 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+  OnboardingStack: NavigatorScreenParams<OnboardingStackParamList>;
   ExchangeStack: NavigatorScreenParams<ExchangeStackParamList>;
   QrStack: NavigatorScreenParams<QrStackParamList>;
   ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
@@ -28,19 +29,6 @@ export type RootStackParamList = {
   BuyCryptoStack: NavigatorScreenParams<BuyCryptoStackParamList>;
   WalletsStack: NavigatorScreenParams<WalletsStackParamList>;
   NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
-  Start: undefined;
-  Biometrics: undefined;
-  AcceptTOS: { flow: "import" | "generate" };
-  SaveRecoveryPhrase: undefined;
-  CreateWalletSuccess: undefined;
-  WalletLogin: undefined;
-  SetPassword: { seedPhrase: string };
-  UnlockWallet: {
-    encryptedSeedPhrase: EncryptedSeed;
-    onValidationFinished(success: boolean): void;
-  };
-  WalletLabel: { flow: "import" | "generate" };
-  AddNewWallet: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -59,6 +47,31 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
   >;
+
+export type CommonStackParamList = {
+  SaveRecoveryPhrase: { password?: string };
+  CreateWalletSuccess: undefined;
+  WalletLogin: { password?: string };
+  UnlockWallet: {
+    encryptedSeedPhrase: EncryptedSeed;
+    onValidationFinished(success: boolean, password?: string): void;
+  };
+  WalletLabel: { flow: "import" | "generate" };
+};
+
+export type CommonStackScreenProps<Screen extends keyof CommonStackParamList> =
+  NativeStackScreenProps<CommonStackParamList, Screen>;
+
+export type OnboardingStackParamList = CommonStackParamList & {
+  Start: undefined;
+  Biometrics: undefined;
+  AcceptTOS: { flow: "import" | "generate" };
+  SetPassword: { seedPhrase: string };
+};
+
+export type OnboardingStackScreenProps<
+  Screen extends keyof OnboardingStackParamList
+> = NativeStackScreenProps<OnboardingStackParamList, Screen>;
 
 export type ExchangeStackParamList = {
   ExchangeSelectToken: {
@@ -111,22 +124,15 @@ export type WalletsStackParamList = {
     encryptedSeedPhrase: EncryptedSeed;
     onValidationFinished(success: boolean, password: string): void;
   };
+  EditWallet: { wallet: CachedWallet; id: string };
 };
 
 export type WalletsStackScreenProps<
   Screen extends keyof WalletsStackParamList
 > = NativeStackScreenProps<WalletsStackParamList, Screen>;
 
-export type NewWalletStackParamList = {
+export type NewWalletStackParamList = CommonStackParamList & {
   AddNewWallet: undefined;
-  UnlockWallet: {
-    encryptedSeedPhrase: EncryptedSeed;
-    onValidationFinished(success: boolean, password: string): void;
-  };
-  SaveRecoveryPhrase: { password: string };
-  CreateWalletSuccess: undefined;
-  WalletLogin: { password: string };
-  // TODO wallet label
 };
 
 export type NewWalletStackScreenProps<

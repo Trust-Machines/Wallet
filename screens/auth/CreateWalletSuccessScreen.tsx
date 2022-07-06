@@ -1,14 +1,18 @@
 import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { ScreenContainer } from "../../shared/ScreenContainer";
 import { en } from "../../en";
-import { RootStackScreenProps } from "../../types";
+import { CommonStackScreenProps } from "../../types";
 import { AppSuccess } from "../../shared/AppSuccess";
 import { View } from "react-native";
 import { layout } from "../../constants/Layout";
+import { useNavigation } from "@react-navigation/native";
+import { useAppSelector } from "../../redux/hooks";
 
 export function CreateWalletSuccessScreen({
-  navigation,
-}: RootStackScreenProps<"CreateWalletSuccess">) {
+  route,
+}: CommonStackScreenProps<"CreateWalletSuccess">) {
+  const { wallets } = useAppSelector((state) => state.wallet);
+  const navigation = useNavigation();
   return (
     <ScreenContainer
       showStars
@@ -24,7 +28,11 @@ export function CreateWalletSuccessScreen({
         />
       </View>
       <AppButton
-        onPress={() => navigation.navigate("Root")}
+        onPress={() =>
+          navigation.navigate(
+            Object.keys(wallets).length ? "WalletsStack" : "Root"
+          )
+        }
         text={en.Create_wallet_success_button_text}
         theme={ButtonTheme.Primary}
         fullWidth={true}
