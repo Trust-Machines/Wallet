@@ -11,8 +11,8 @@ export function TransactionItem({ transaction }: any) {
   console.log("TRANSACTION", transaction);
 
   const address = transaction.inputs[0].addresses[0];
-  const pending =
-    transaction.blocktime === 0 || transaction.confirmations === 0;
+  const pending = transaction.confirmations < 2;
+  // TODO handle failed
 
   return (
     <Pressable
@@ -23,7 +23,7 @@ export function TransactionItem({ transaction }: any) {
         borderRadius: styleVariables.borderRadius,
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 16,
+        marginBottom: 8,
       }}
       key={hash}
     >

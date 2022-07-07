@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import {
-  ActivityIndicator,
   FlatList,
   Image,
   RefreshControl,
   ScrollView,
-  Text,
   View,
 } from "react-native";
 import { HomeHeader } from "./components/HomeHeader";
@@ -22,6 +20,7 @@ import { layout } from "../../constants/Layout";
 import { getBalance } from "../../redux/balanceSlice";
 import { getTransactions } from "../../redux/transactionsSlice";
 import { getAddress } from "../../redux/addressSlice";
+import { useFocusEffect } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const dispatch = useAppDispatch();
@@ -31,12 +30,11 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const { transactions, transactionsLoading, transactionsError } =
     useAppSelector((state) => state.transactions);
 
-  useEffect(() => {
-    if (!!walletObject) {
-      console.log("HOME WALLET", walletObject);
+  useFocusEffect(
+    useCallback(() => {
       getHomeData();
-    }
-  }, [currentWalletID]);
+    }, [currentWalletID])
+  );
 
   const getHomeData = () => {
     dispatch(getAddress(walletObject));
@@ -123,14 +121,14 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           <ThemedText theme={TextTheme.LabelText}>
             {en.Home_your_transactions}
           </ThemedText>
-          <ThemedText
+          {/* <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: colors.primaryAppColorDarker }}
           >
             {en.Home_view_all}
-          </ThemedText>
+          </ThemedText> */}
         </View>
-        <Text
+        {/* <Text
           style={{
             fontFamily: "Inter_600SemiBold",
             fontSize: 12,
@@ -140,19 +138,10 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           }}
         >
           29 April 2022
-        </Text>
+        </Text> */}
         <View style={{ paddingBottom: 30 }}>
-          {/* {transactionsLoading && (
-            <ActivityIndicator
-              size={"large"}
-              color={colors.primaryAppColorLighter}
-              style={{ marginTop: 40 }}
-            />
-          )} */}
           {!transactionsError && (
             <FlatList
-              // refreshing={transactionsLoading}
-              // onRefresh={() => dispatch(getTransactions(walletObject))}
               nestedScrollEnabled
               data={transactions}
               renderItem={(item: any) => renderItem(item)}
