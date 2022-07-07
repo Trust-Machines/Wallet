@@ -13,9 +13,13 @@ import {
   importWallet,
   setCurrentWalletLabel,
   setNewWalletLabel,
+  setWallets,
 } from "../../redux/walletSlice";
 import { useNavigation } from "@react-navigation/native";
-import { addWalletToAsyncStorage } from "../../utils/asyncStorageHelper";
+import {
+  addWalletToAsyncStorage,
+  getWalletsFromAsyncStorage,
+} from "../../utils/asyncStorageHelper";
 import { encrypt } from "../../utils/helpers";
 
 export function WalletLoginScreen({
@@ -44,6 +48,16 @@ export function WalletLoginScreen({
             encryptedWalletSeed: encrypt(seedPhrase, route.params.password),
             walletID: walletObject.getID(),
             walletLabel: newWalletLabel,
+          });
+
+          const storedWallets = await getWalletsFromAsyncStorage();
+          if (storedWallets) {
+            dispatch(setWallets(storedWallets));
+          }
+
+          navigation.navigate("NewWalletStack", {
+            screen: "CreateWalletSuccess",
+            params: { isFirstWallet: false },
           });
         }
       } catch (err) {
