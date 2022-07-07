@@ -9,9 +9,10 @@ import { layout } from "../../constants/Layout";
 import { Assets } from "../../constants/CommonEnums";
 import useTransactionSending from "../../hooks/useTransactionSending";
 import { useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { styleVariables } from "../../constants/StyleVariables";
 import { safeParseFloat } from "../../utils/helpers";
+import { getTransactions } from "../../redux/transactionsSlice";
 
 // enum Tokens {
 //   TKN1 = "TKN1",
@@ -36,6 +37,7 @@ export function ConfirmSendModal({
     route.params.amount.length ? route.params.amount : "0"
   );
   const { walletObject } = useAppSelector((state) => state.wallet);
+  const dispatch = useAppDispatch();
 
   const handleTransactionSending = async () => {
     setError(false);
@@ -46,6 +48,8 @@ export function ConfirmSendModal({
     );
 
     if (result.success && result.data) {
+      // TODO
+      await dispatch(getTransactions(walletObject));
       navigation.navigate("TransactionSuccess", result.data);
     } else {
       setError(true);

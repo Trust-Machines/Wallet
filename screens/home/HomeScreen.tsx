@@ -1,5 +1,13 @@
-import { useEffect } from "react";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { HomeHeader } from "./components/HomeHeader";
 import { ScreenContainer } from "../../shared/ScreenContainer";
 import { RootTabScreenProps } from "../../types";
@@ -26,11 +34,23 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   useEffect(() => {
     if (!!walletObject) {
       console.log("HOME WALLET", walletObject);
-      dispatch(getAddress(walletObject));
-      dispatch(getBalance(walletObject));
-      dispatch(getTransactions(walletObject));
+      getHomeData();
     }
   }, [currentWalletID]);
+
+  const getHomeData = () => {
+    dispatch(getAddress(walletObject));
+    dispatch(getBalance(walletObject));
+    dispatch(getTransactions(walletObject));
+  };
+
+  const renderItem = ({ item }: any) => {
+    if (transactions.length) {
+      return <TransactionItem transaction={item} />;
+    } else {
+      return <View></View>;
+    }
+  };
 
   return (
     <ScreenContainer withTab>
@@ -43,6 +63,13 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         }}
         contentContainerStyle={{ paddingHorizontal: 20, position: "relative" }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            enabled={true}
+            refreshing={transactionsLoading}
+            onRefresh={getHomeData}
+          />
+        }
       >
         <Image
           source={require("../../assets/images/home-chart.png")}
@@ -115,23 +142,23 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           29 April 2022
         </Text>
         <View style={{ paddingBottom: 30 }}>
-          {transactionsLoading && (
+          {/* {transactionsLoading && (
             <ActivityIndicator
               size={"large"}
               color={colors.primaryAppColorLighter}
               style={{ marginTop: 40 }}
             />
+          )} */}
+          {!transactionsError && (
+            <FlatList
+              // refreshing={transactionsLoading}
+              // onRefresh={() => dispatch(getTransactions(walletObject))}
+              nestedScrollEnabled
+              data={transactions}
+              renderItem={(item: any) => renderItem(item)}
+              keyExtractor={(item) => item.hash}
+            />
           )}
-          {!transactionsLoading &&
-            !transactionsError &&
-            transactions.map((transaction: any) => {
-              return (
-                <TransactionItem
-                  key={transaction.hash}
-                  transaction={transaction}
-                />
-              );
-            })}
         </View>
       </ScrollView>
     </ScreenContainer>
