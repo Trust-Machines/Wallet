@@ -66,7 +66,8 @@ export const decrypt = (hash: any, password: string): string => {
 
 export const timestampToDate = (timestamp: number): string => {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const date = new Date(timestamp);
+  const date = new Date(timestamp * 1000);
+  console.log("DATE", date, timestamp)
 
   const hours = date.getHours()
   const minutes = date.getMinutes()
