@@ -5,17 +5,26 @@ import { styleVariables } from "../../../constants/StyleVariables";
 import { Assets } from "../../../constants/CommonEnums";
 import { SvgIcons } from "../../../assets/images";
 import { formatAddress, satoshiToBitcoinString } from "../../../utils/helpers";
+import { useNavigation } from "@react-navigation/native";
 
 export function TransactionItem({ transaction }: any) {
   const { value, hash } = transaction;
   console.log("TRANSACTION", transaction);
+  const navigation = useNavigation();
 
   const address = transaction.inputs[0].addresses[0];
   const pending = transaction.confirmations < 2;
   // TODO handle failed
 
+  const handleTransactionPress = () => {
+    navigation.navigate("TransactionDetails", {
+      transactionHash: transaction.hash,
+    });
+  };
+
   return (
     <Pressable
+      onPress={handleTransactionPress}
       style={{
         height: 64,
         padding: 8,

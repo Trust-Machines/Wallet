@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   StyleProp,
   StyleSheet,
   TouchableOpacity,
@@ -14,6 +15,7 @@ export enum ButtonTheme {
   Primary = "Primary",
   NoBorder = "NoBorder",
   Disabled = "Disabled",
+  Filled = "Filled",
 }
 
 type AppButtonProps = {
@@ -25,6 +27,7 @@ type AppButtonProps = {
   style?: StyleProp<ViewStyle>;
   icon?: React.ReactNode;
   paddingHorizontal?: number;
+  loading?: boolean;
 };
 
 export function AppButton(props: AppButtonProps) {
@@ -49,12 +52,19 @@ export function AppButton(props: AppButtonProps) {
           }}
         >
           {props.icon || null}
-          <ThemedText
-            theme={TextTheme.ButtonText}
-            styleOverwrite={{ color: buttonColors[props.theme].text }}
-          >
-            {props.text}
-          </ThemedText>
+          {props.loading ? (
+            <ActivityIndicator
+              size="small"
+              color={colors.primaryAppColorLighter}
+            />
+          ) : (
+            <ThemedText
+              theme={TextTheme.ButtonText}
+              styleOverwrite={{ color: buttonColors[props.theme].text }}
+            >
+              {props.text}
+            </ThemedText>
+          )}
         </View>
       </LinearGradient>
     </TouchableOpacity>
@@ -95,5 +105,11 @@ const buttonColors = {
     text: colors.disabledFont,
     gradientStartColor: colors.disabled,
     gradientEndColor: colors.disabled,
+  },
+  [ButtonTheme.Filled]: {
+    bg: colors.primaryBackgroundLighter,
+    text: colors.primaryFont,
+    gradientStartColor: colors.primaryBackgroundLighter,
+    gradientEndColor: colors.primaryBackgroundLighter,
   },
 };

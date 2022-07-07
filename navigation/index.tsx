@@ -56,6 +56,7 @@ import { SetWalletLabelScreen } from "../screens/auth/SetWalletLabelScreen";
 import { WalletSelectorModal } from "../screens/wallets/WalletSelectorModal";
 import { AddNewWalletScreen } from "../screens/wallets/AddNewWallet";
 import { EditWalletModal } from "../screens/wallets/EditWalletModal";
+import { TransactionDetails } from "../screens/transaction-details/TransactionDetailsScreen";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -78,7 +79,6 @@ export function Navigation() {
  * https://reactnavigation.org/docs/modal
  */
 
-const CommonStack = createNativeStackNavigator<CommonStackParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const OnboardingStack = createNativeStackNavigator<
   OnboardingStackParamList & CommonStackParamList
@@ -189,6 +189,16 @@ function RootNavigator() {
         options={{
           presentation: "containedTransparentModal",
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="TransactionDetails"
+        component={TransactionDetails}
+        options={{
+          title: en.Header_title_transaction_details,
+          headerStyle: styles.header,
+          headerTintColor: colors.primaryFont,
+          headerTitleAlign: "center",
         }}
       />
     </Stack.Navigator>

@@ -29,6 +29,7 @@ export type RootStackParamList = {
   BuyCryptoStack: NavigatorScreenParams<BuyCryptoStackParamList>;
   WalletsStack: NavigatorScreenParams<WalletsStackParamList>;
   NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
+  TransactionDetails: { transactionHash: string };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
