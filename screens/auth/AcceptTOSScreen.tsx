@@ -2,7 +2,7 @@ import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { en } from "../../en";
-import { RootStackScreenProps } from "../../types";
+import { OnboardingStackScreenProps } from "../../types";
 import { AppSwitch } from "../../shared/AppSwitch";
 import { useState } from "react";
 import { Image, View } from "react-native";
@@ -11,7 +11,7 @@ import { layout } from "../../constants/Layout";
 export function AcceptTOSScreen({
   navigation,
   route,
-}: RootStackScreenProps<"AcceptTOS">) {
+}: OnboardingStackScreenProps<"AcceptTOS">) {
   const [isAccepted, setIsAccepted] = useState(false);
   const { flow } = route.params;
 

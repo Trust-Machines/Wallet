@@ -17,7 +17,9 @@ import { getAddress } from "../../redux/addressSlice";
 
 export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const dispatch = useAppDispatch();
-  const { walletObject } = useAppSelector((state) => state.wallet);
+  const { walletObject, currentWalletID } = useAppSelector(
+    (state) => state.wallet
+  );
   const { transactions, transactionsLoading, transactionsError } =
     useAppSelector((state) => state.transactions);
 
@@ -28,7 +30,7 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
       dispatch(getBalance(walletObject));
       dispatch(getTransactions(walletObject));
     }
-  }, []);
+  }, [currentWalletID]);
 
   return (
     <ScreenContainer withTab>

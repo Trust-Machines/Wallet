@@ -3,18 +3,26 @@ import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { en } from "../../en";
-import {
-  NewWalletStackParamList,
-  NewWalletStackScreenProps,
-  RootStackScreenProps,
-} from "../../types";
+import { NewWalletStackScreenProps } from "../../types";
 import { layout } from "../../constants/Layout";
 import { useAppSelector } from "../../redux/hooks";
+import { useNavigation } from "@react-navigation/native";
 
 export function AddNewWalletScreen({
-  navigation,
+  route,
 }: NewWalletStackScreenProps<"AddNewWallet">) {
-  const { wallets, currentWalletID } = useAppSelector((state) => state.wallet);
+  const { wallets } = useAppSelector((state) => state.wallet);
+  const navigation = useNavigation();
+
+  const handleButtonPress = (flow: "generate" | "import") => {
+    navigation.navigate(
+      Object.keys(wallets).length ? "NewWalletStack" : "OnboardingStack",
+      {
+        screen: "WalletLabel",
+        params: { flow },
+      }
+    );
+  };
 
   return (
     <ScreenContainer
@@ -38,36 +46,14 @@ export function AddNewWalletScreen({
 
       <View style={{ marginTop: "auto" }}>
         <AppButton
-          onPress={() =>
-            navigation.navigate("UnlockWallet", {
-              encryptedSeedPhrase: wallets[currentWalletID].seed,
-              onValidationFinished: (success: boolean, password: string) => {
-                if (success) {
-                  navigation.navigate("SaveRecoveryPhrase", { password });
-                } else {
-                  console.log("error");
-                }
-              },
-            })
-          }
+          onPress={() => handleButtonPress("generate")}
           text={en.Add_new_wallet_generate_button_text}
           theme={ButtonTheme.Primary}
           fullWidth
           marginBottom={9}
         />
         <AppButton
-          onPress={() =>
-            navigation.navigate("UnlockWallet", {
-              encryptedSeedPhrase: wallets[currentWalletID].seed,
-              onValidationFinished: (success: boolean, password: string) => {
-                if (success) {
-                  navigation.navigate("WalletLogin", { password });
-                } else {
-                  console.log("error");
-                }
-              },
-            })
-          }
+          onPress={() => handleButtonPress("import")}
           text={en.Add_new_wallet_import_button_text}
           theme={ButtonTheme.NoBorder}
           fullWidth

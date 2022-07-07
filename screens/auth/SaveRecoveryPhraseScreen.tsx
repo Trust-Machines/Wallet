@@ -4,15 +4,15 @@ import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { colors } from "../../constants/Colors";
 import { en } from "../../en";
-import { NewWalletStackScreenProps, RootStackScreenProps } from "../../types";
+import { CommonStackScreenProps } from "../../types";
 import { SvgIcons } from "../../assets/images";
 import { HDSegwitP2SHWallet } from "../../utils/wallets/hd-segwit-p2sh-wallet";
 import { useEffect, useState } from "react";
 import { layout } from "../../constants/Layout";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  importWallet,
-  setCurrentWalletID,
+  setCurrentWalletLabel,
+  setNewWalletLabel,
   setWallets,
 } from "../../redux/walletSlice";
 import { encrypt } from "../../utils/helpers";
@@ -23,18 +23,16 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export function SaveRecoveryPhraseScreen({
-  navigation,
+  //navigation,
   route,
-}:
-  | RootStackScreenProps<"SaveRecoveryPhrase">
-  | NewWalletStackScreenProps<"SaveRecoveryPhrase">) {
+}: CommonStackScreenProps<"SaveRecoveryPhrase">) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [seedPhrase, setSeedPhrase] = useState<string[] | undefined>(undefined);
   const [generatedWallet, setGeneratedWallet] = useState<any>(undefined);
-  const { wallets } = useAppSelector((state) => state.wallet);
+  const { wallets, newWalletLabel } = useAppSelector((state) => state.wallet);
   const dispatch = useAppDispatch();
-  const nav = useNavigation();
+  const navigation = useNavigation();
 
   useEffect(() => {
     createWallet();
@@ -77,37 +75,36 @@ export function SaveRecoveryPhraseScreen({
   const handleButtonClick = async () => {
     if (seedPhrase && seedPhrase.length) {
       // In case it's the user's first wallet password setting is needed
-      console.log("asd", Object.keys(wallets).length, route.params?.password);
       if (!Object.keys(wallets).length) {
-        console.log("1");
-        nav.navigate("SetPassword", {
-          seedPhrase: seedPhrase.join(" "),
+        dispatch(setCurrentWalletLabel(newWalletLabel));
+        navigation.navigate("OnboardingStack", {
+          screen: "SetPassword",
+          params: { seedPhrase: seedPhrase.join(" ") },
         });
       } else if (route.params?.password) {
-        console.log("2");
         try {
-          //await dispatch(importWallet(seedPhrase.join(" "))).unwrap();
-          console.log("SAVE!!! new wallet", generatedWallet.getID());
           const addWallet = await addWalletToAsyncStorage({
             encryptedWalletSeed: encrypt(
               seedPhrase.join(" "),
               route.params.password
             ),
             walletID: generatedWallet.getID(),
-            walletLabel: "Label",
+            walletLabel: newWalletLabel,
           });
           const storedWallets = await getWalletsFromAsyncStorage();
           if (storedWallets) {
             dispatch(setWallets(storedWallets));
           }
 
-          nav.navigate("CreateWalletSuccess");
+          navigation.navigate("NewWalletStack", {
+            screen: "CreateWalletSuccess",
+          });
         } catch (err) {
           console.log("wallet import error", err);
         }
-        // TODO success screen
-        nav.navigate("CreateWalletSuccess");
       }
+
+      dispatch(setNewWalletLabel(""));
     }
   };
 

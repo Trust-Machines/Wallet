@@ -5,15 +5,52 @@ import { en } from "../../en";
 import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { styleVariables } from "../../constants/StyleVariables";
 import { layout } from "../../constants/Layout";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Wallet } from "./components/Wallet";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import {
+  setCurrentWalletID,
+  setCurrentWalletLabel,
+} from "../../redux/walletSlice";
+import { storeCurrentWalletIdToAsyncStorage } from "../../utils/asyncStorageHelper";
 
-export function WalletSelectorModal({
-  navigation,
-}: WalletsStackScreenProps<"WalletSelector">) {
+export function WalletSelectorModal({}: //navigation,
+WalletsStackScreenProps<"WalletSelector">) {
+  const [selectedWallet, setSelectedWallet] = useState<any>(undefined);
+  const [selectedWalletID, setSelectedWalletID] = useState<string | undefined>(
+    undefined
+  );
   const { wallets } = useAppSelector((state) => state.wallet);
-  const nav = useNavigation();
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+
+  const switchWallet = () => {
+    if (selectedWallet && selectedWalletID) {
+      navigation.navigate("WalletsStack", {
+        screen: "UnlockWallet",
+        params: {
+          encryptedSeedPhrase: selectedWallet.seed,
+          onValidationFinished: async (success: boolean) => {
+            if (success) {
+              await storeCurrentWalletIdToAsyncStorage(selectedWalletID);
+              dispatch(setCurrentWalletID(selectedWalletID));
+              dispatch(setCurrentWalletLabel(selectedWallet.label));
+
+              navigation.navigate("Root", { screen: "Home" });
+            } else {
+              console.log("error");
+            }
+          },
+        },
+      });
+    }
+  };
+
+  const handleSelectWallet = (wallet: any, walletID: string) => {
+    setSelectedWallet(wallet);
+    setSelectedWalletID(walletID);
+  };
 
   return (
     <ModalScreenContainer title={en.Wallet_selector_modal_title}>
@@ -27,7 +64,14 @@ export function WalletSelectorModal({
         <ScrollView>
           {Object.keys(wallets).map((walletID: string) => {
             const wallet = wallets[walletID];
-            return <Wallet wallet={wallet} walletID={walletID} />;
+            return (
+              <Wallet
+                wallet={wallet}
+                walletID={walletID}
+                selectWallet={() => handleSelectWallet(wallet, walletID)}
+                selected={walletID === selectedWalletID}
+              />
+            );
           })}
         </ScrollView>
         <View style={{ flexDirection: "row" }}>
@@ -35,15 +79,17 @@ export function WalletSelectorModal({
             text={en.Wallet_selector_add_new_button_text}
             theme={ButtonTheme.Primary}
             onPress={() =>
-              nav.navigate("NewWalletStack", { screen: "AddNewWallet" })
+              navigation.navigate("NewWalletStack", { screen: "AddNewWallet" })
             }
             fullWidth
             style={{ flex: 1, marginRight: 10 }}
           />
           <AppButton
             text={en.Wallet_selector_use_selected_button_text}
-            theme={ButtonTheme.Primary}
-            onPress={() => navigation.goBack()}
+            theme={
+              !!selectedWalletID ? ButtonTheme.Primary : ButtonTheme.Disabled
+            }
+            onPress={() => switchWallet()}
             fullWidth
             style={{ flex: 1, marginLeft: 10 }}
           />

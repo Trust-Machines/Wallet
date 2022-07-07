@@ -4,48 +4,54 @@ import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { colors } from "../../constants/Colors";
 import { en } from "../../en";
-import { NewWalletStackScreenProps, RootStackScreenProps } from "../../types";
+import { CommonStackScreenProps } from "../../types";
 import { styleVariables } from "../../constants/StyleVariables";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { layout } from "../../constants/Layout";
-import { importWallet } from "../../redux/walletSlice";
+import {
+  importWallet,
+  setCurrentWalletLabel,
+  setNewWalletLabel,
+} from "../../redux/walletSlice";
 import { useNavigation } from "@react-navigation/native";
 import { addWalletToAsyncStorage } from "../../utils/asyncStorageHelper";
 import { encrypt } from "../../utils/helpers";
 
 export function WalletLoginScreen({
   route,
-}:
-  | RootStackScreenProps<"WalletLogin">
-  | NewWalletStackScreenProps<"WalletLogin">) {
+}: CommonStackScreenProps<"WalletLogin">) {
   const dispatch = useAppDispatch();
   const [seedPhrase, setSeedPhrase] = useState<string>(
     "liar knee pioneer critic water gospel another butter like purity garment member"
   );
-  const { walletLoading, walletError, wallets, walletObject } = useAppSelector(
-    (state) => state.wallet
-  );
+  const { walletLoading, walletError, wallets, walletObject, newWalletLabel } =
+    useAppSelector((state) => state.wallet);
   const navigation = useNavigation();
 
   const handleNextPress = async () => {
     if (seedPhrase.length) {
       try {
         await dispatch(importWallet(seedPhrase)).unwrap();
-        console.log("KYSSS", Object.keys(wallets).length);
+        // if the user doesn't have a wallet yet
         if (!Object.keys(wallets).length) {
-          console.log("111");
-          navigation.navigate("SetPassword", { seedPhrase });
+          dispatch(setCurrentWalletLabel(newWalletLabel));
+          navigation.navigate("OnboardingStack", {
+            screen: "SetPassword",
+            params: { seedPhrase },
+          });
         } else if (route.params?.password) {
           await addWalletToAsyncStorage({
             encryptedWalletSeed: encrypt(seedPhrase, route.params.password),
             walletID: walletObject.getID(),
-            walletLabel: "Label",
+            walletLabel: newWalletLabel,
           });
         }
       } catch (err) {
         console.log("wallet import error", err);
       }
+
+      dispatch(setNewWalletLabel(""));
     }
   };
 
