@@ -4,7 +4,7 @@ import { ScreenContainer } from "../../shared/ScreenContainer";
 import { TextTheme, ThemedText } from "../../shared/ThemedText";
 import { colors } from "../../constants/Colors";
 import { en } from "../../en";
-import { OnboardingStackScreenProps, RootStackScreenProps } from "../../types";
+import { OnboardingStackScreenProps } from "../../types";
 import { styleVariables } from "../../constants/StyleVariables";
 import { useState } from "react";
 import { layout } from "../../constants/Layout";
@@ -12,16 +12,14 @@ import { decrypt, encrypt } from "../../utils/helpers";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   importWallet,
-  setCurrentWalletID,
   setCurrentWalletLabel,
+  setNewWalletLabel,
   setWallets,
 } from "../../redux/walletSlice";
 import {
   addWalletToAsyncStorage,
   getWalletsFromAsyncStorage,
-  StorageKeys,
   storeCurrentWalletIdToAsyncStorage,
-  storeDataToAsyncStorage,
 } from "../../utils/asyncStorageHelper";
 
 export function SetPasswordScreen({
@@ -49,7 +47,9 @@ export function SetPasswordScreen({
       try {
         await dispatch(importWallet(decryptedWalletSeed)).unwrap();
         console.log("SAVE!!!", currentWalletID, newWalletLabel);
+
         dispatch(setCurrentWalletLabel(newWalletLabel));
+        dispatch(setNewWalletLabel(""));
         await addWalletToAsyncStorage({
           encryptedWalletSeed: encrypt(decryptedWalletSeed, password),
           walletID: currentWalletID,
@@ -60,7 +60,8 @@ export function SetPasswordScreen({
         if (storedWallets) {
           dispatch(setWallets(storedWallets));
         }
-        navigation.navigate("CreateWalletSuccess");
+
+        navigation.navigate("CreateWalletSuccess", { isFirstWallet: true });
       } catch (err) {
         console.log("wallet import error", err);
       }

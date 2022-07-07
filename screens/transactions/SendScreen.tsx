@@ -27,7 +27,7 @@ export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
   const [addressInputValue, setAddressInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const { wallet } = useAppSelector((state) => state.wallet);
+  const { walletObject } = useAppSelector((state) => state.wallet);
 
   useEffect(() => {
     if (addressInputValue) {
@@ -39,7 +39,10 @@ export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
     setError(false);
     setLoading(true);
     const address = selectedContactAddress ?? addressInputValue;
-    const result = await useTransactionSending({ address, amount }, wallet);
+    const result = await useTransactionSending(
+      { address, amount },
+      walletObject
+    );
 
     if (result.success && result.data) {
       navigation.navigate("SendSuccess", result.data);

@@ -76,7 +76,6 @@ export function SaveRecoveryPhraseScreen({
     if (seedPhrase && seedPhrase.length) {
       // In case it's the user's first wallet password setting is needed
       if (!Object.keys(wallets).length) {
-        dispatch(setCurrentWalletLabel(newWalletLabel));
         navigation.navigate("OnboardingStack", {
           screen: "SetPassword",
           params: { seedPhrase: seedPhrase.join(" ") },
@@ -95,16 +94,16 @@ export function SaveRecoveryPhraseScreen({
           if (storedWallets) {
             dispatch(setWallets(storedWallets));
           }
+          dispatch(setNewWalletLabel(""));
 
           navigation.navigate("NewWalletStack", {
             screen: "CreateWalletSuccess",
+            params: { isFirstWallet: false },
           });
         } catch (err) {
           console.log("wallet import error", err);
         }
       }
-
-      dispatch(setNewWalletLabel(""));
     }
   };
 

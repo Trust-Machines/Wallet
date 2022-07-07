@@ -35,12 +35,15 @@ export function ConfirmSendModal({
   const [amount, setAmount] = useState<string>(
     route.params.amount.length ? route.params.amount : "0"
   );
-  const { wallet } = useAppSelector((state) => state.wallet);
+  const { walletObject } = useAppSelector((state) => state.wallet);
 
   const handleTransactionSending = async () => {
     setError(false);
     setLoading(true);
-    const result = await useTransactionSending({ address, amount }, wallet);
+    const result = await useTransactionSending(
+      { address, amount },
+      walletObject
+    );
 
     if (result.success && result.data) {
       navigation.navigate("TransactionSuccess", result.data);

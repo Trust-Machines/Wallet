@@ -35,7 +35,6 @@ export function WalletLoginScreen({
         await dispatch(importWallet(seedPhrase)).unwrap();
         // if the user doesn't have a wallet yet
         if (!Object.keys(wallets).length) {
-          dispatch(setCurrentWalletLabel(newWalletLabel));
           navigation.navigate("OnboardingStack", {
             screen: "SetPassword",
             params: { seedPhrase },
@@ -50,8 +49,6 @@ export function WalletLoginScreen({
       } catch (err) {
         console.log("wallet import error", err);
       }
-
-      dispatch(setNewWalletLabel(""));
     }
   };
 
