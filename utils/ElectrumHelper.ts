@@ -18,7 +18,7 @@ async function _getRealm() {
   if (_realm) return _realm;
 
   const password = bitcoin.crypto
-    .sha256(Buffer.from("fyegjitkyf[eqjnc.lf"))
+    .sha256(Buffer.from("fyegjitkyf[eqjnc.lf")) // TODO: Replace
     .toString("hex");
   const buf = Buffer.from(password + password, "hex");
   const encryptionKey = Int8Array.from(buf);

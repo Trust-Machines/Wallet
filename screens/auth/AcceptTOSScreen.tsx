@@ -7,16 +7,16 @@ import { AppSwitch } from "../../shared/AppSwitch";
 import { useState } from "react";
 import { Image, View } from "react-native";
 import { layout } from "../../constants/Layout";
-import { useNavigation } from "@react-navigation/native";
 
-export function BiometricsScreen({
+export function AcceptTOSScreen({
+  navigation,
   route,
-}: OnboardingStackScreenProps<"Biometrics">) {
-  const [isBiometricsEnabled, setIsBiometricsEnabed] = useState(false);
-  const navigation = useNavigation();
+}: OnboardingStackScreenProps<"AcceptTOS">) {
+  const [isAccepted, setIsAccepted] = useState(false);
+  const { flow } = route.params;
 
   function onToggleSwitch(value: boolean) {
-    setIsBiometricsEnabed(value);
+    setIsAccepted(value);
   }
 
   return (
@@ -36,30 +36,25 @@ export function BiometricsScreen({
           source={require("../../assets/images/biometrics-screen-graphics.png")}
         />
         <ThemedText theme={TextTheme.Headline2Text}>
-          {en.Biometrics_screen_title}
+          {en.Accept_TOS_title}
         </ThemedText>
         <ThemedText
           theme={TextTheme.BodyText}
           styleOverwrite={{ marginBottom: layout.isSmallDevice ? "5%" : "20%" }}
         >
-          {en.Biometrics_screen_subtitle}
+          {en.Accept_TOS_subtitle}
         </ThemedText>
         <AppSwitch
           onToggle={(value: boolean) => onToggleSwitch(value)}
-          value={isBiometricsEnabled}
-          firstLineText={en.Biometrics_switch_text_first_line}
-          secondLineText={en.Biometrics_switch_text_second_line}
+          value={isAccepted}
+          firstLineText={en.Accept_TOS_switch_text_first_line}
+          secondLineText={en.Accept_TOS_switch_text_second_line}
         />
       </View>
       <AppButton
-        onPress={() =>
-          navigation.navigate("OnboardingStack", {
-            screen: "SaveRecoveryPhrase",
-            params: {},
-          })
-        }
+        onPress={() => navigation.navigate("WalletLabel", { flow })}
         text={en.Common_next}
-        theme={isBiometricsEnabled ? ButtonTheme.Primary : ButtonTheme.Disabled}
+        theme={isAccepted ? ButtonTheme.Primary : ButtonTheme.Disabled}
         fullWidth
       />
     </ScreenContainer>

@@ -5,15 +5,15 @@ import { colors } from "../../constants/Colors";
 import { styleVariables } from "../../constants/StyleVariables";
 import { en } from "../../en";
 import { SvgIcons } from "../../assets/images";
-import { deleteFromSecureStore, SecureKeys } from "../../utils/secureStore";
+import { clearAsyncStorage } from "../../utils/asyncStorageHelper";
 
 export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
   type LabelProps = {
     label: string;
   };
 
-  const handleLogout = (): void => {
-    deleteFromSecureStore(SecureKeys.SeedPhrase);
+  const handleLogout = async (): Promise<void> => {
+    const cleared = await clearAsyncStorage();
     navigation.navigate("Start");
   };
 

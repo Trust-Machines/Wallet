@@ -17,13 +17,13 @@ export function PresentQrModal({
   navigation,
 }: QrStackScreenProps<"PresentQr">) {
   const dispatch = useAppDispatch();
-  const { wallet } = useAppSelector((state) => state.wallet);
+  const { walletObject } = useAppSelector((state) => state.wallet);
   const { address, addressLoading, addressError } = useAppSelector(
     (state) => state.address
   );
 
   useEffect(() => {
-    dispatch(getAddress(wallet));
+    dispatch(getAddress(walletObject));
   }, []);
 
   return (

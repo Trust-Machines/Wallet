@@ -17,17 +17,20 @@ import { getAddress } from "../../redux/addressSlice";
 
 export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const dispatch = useAppDispatch();
-  const { wallet } = useAppSelector((state) => state.wallet);
+  const { walletObject, currentWalletID } = useAppSelector(
+    (state) => state.wallet
+  );
   const { transactions, transactionsLoading, transactionsError } =
     useAppSelector((state) => state.transactions);
 
   useEffect(() => {
-    if (!!wallet) {
-      dispatch(getAddress(wallet));
-      dispatch(getBalance(wallet));
-      dispatch(getTransactions(wallet));
+    if (!!walletObject) {
+      console.log("HOME WALLET", walletObject);
+      dispatch(getAddress(walletObject));
+      dispatch(getBalance(walletObject));
+      dispatch(getTransactions(walletObject));
     }
-  }, []);
+  }, [currentWalletID]);
 
   return (
     <ScreenContainer withTab>

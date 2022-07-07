@@ -1,23 +1,18 @@
 import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import { ScreenContainer } from "../../shared/ScreenContainer";
 import { en } from "../../en";
-import { RootStackScreenProps } from "../../types";
-import { AppSwitch } from "../../shared/AppSwitch";
-import { useState } from "react";
-import { colors } from "../../constants/Colors";
+import { CommonStackScreenProps } from "../../types";
 import { AppSuccess } from "../../shared/AppSuccess";
 import { View } from "react-native";
 import { layout } from "../../constants/Layout";
+import { useNavigation } from "@react-navigation/native";
+import { useAppSelector } from "../../redux/hooks";
 
 export function CreateWalletSuccessScreen({
-  navigation,
-}: RootStackScreenProps<"CreateWalletSuccess">) {
-  const [isAccepted, setIsAccepted] = useState(false);
-
-  function onToggleSwitch(value: boolean) {
-    setIsAccepted(value);
-  }
-
+  route,
+}: CommonStackScreenProps<"CreateWalletSuccess">) {
+  const { wallets } = useAppSelector((state) => state.wallet);
+  const navigation = useNavigation();
   return (
     <ScreenContainer
       showStars
@@ -31,20 +26,15 @@ export function CreateWalletSuccessScreen({
           text={en.Create_wallet_success_text}
           style={{ marginTop: layout.isSmallDevice ? 0 : "10%" }}
         />
-        <View style={{ marginTop: layout.isSmallDevice ? "5%" : "20%" }}>
-          <AppSwitch
-            onToggle={(value: boolean) => onToggleSwitch(value)}
-            value={isAccepted}
-            firstLineText={en.Create_wallet_success_switch_text_first_line}
-            secondLineText={en.Create_wallet_success_switch_text_second_line}
-            secondLineTextColor={colors.primaryAppColorLighter}
-          />
-        </View>
       </View>
       <AppButton
-        onPress={() => navigation.navigate("Root")}
+        onPress={() =>
+          navigation.navigate(
+            Object.keys(wallets).length ? "WalletsStack" : "Root"
+          )
+        }
         text={en.Create_wallet_success_button_text}
-        theme={isAccepted ? ButtonTheme.Primary : ButtonTheme.Disabled}
+        theme={ButtonTheme.Primary}
         fullWidth={true}
       />
     </ScreenContainer>
