@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "tm",
+    "scheme": "tmwallet://",
     "slug": "tm",
     "version": "1.0.0",
     "orientation": "portrait",
