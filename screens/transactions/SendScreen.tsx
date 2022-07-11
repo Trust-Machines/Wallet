@@ -5,20 +5,20 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { SendStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
-import { styleVariables } from "../../constants/StyleVariables";
-import { colors } from "../../constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
+import { colors } from "@constants/Colors";
 import { useEffect, useState } from "react";
-import { formatAddress, safeParseFloat } from "../../utils/helpers";
-import { SvgIcons } from "../../assets/images";
+import { formatAddress, safeParseFloat } from "@utils/helpers";
+import { SvgIcons } from "@assets/images";
 import { Contact } from "./components/Contact";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import useTransactionSending from "../../hooks/useTransactionSending";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getTransactions } from "../../redux/transactionsSlice";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import useTransactionSending from "@hooks/useTransactionSending";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import { getTransactions } from "@redux/transactionsSlice";
 
 export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
   const [amount, setAmount] = useState("0");

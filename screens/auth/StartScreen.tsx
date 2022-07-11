@@ -1,27 +1,27 @@
 import { ActivityIndicator, Image, View } from "react-native";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import { en } from "../../en";
 import { OnboardingStackScreenProps } from "../../types";
-import { layout } from "../../constants/Layout";
+import { layout } from "@constants/Layout";
 import { useEffect, useState } from "react";
 import {
   clearAsyncStorage,
   getDataFromAsyncStorage,
   getWalletsFromAsyncStorage,
   StorageKeys,
-} from "../../utils/asyncStorageHelper";
-import { useAppDispatch } from "../../redux/hooks";
+} from "@utils/asyncStorageHelper";
+import { useAppDispatch } from "@redux/hooks";
 import {
   setCurrentWalletID,
   setCurrentWalletLabel,
   setWallets,
-} from "../../redux/walletSlice";
-import { mapSeedToEncryptedSeed } from "../../utils/mappers";
+} from "@redux/walletSlice";
+import { mapSeedToEncryptedSeed } from "@utils/mappers";
 import { useNavigation } from "@react-navigation/native";
-const ElectrumHelper = require("../../utils/ElectrumHelper");
+const ElectrumHelper = require("@utils/ElectrumHelper");
 
 export function StartScreen({
   navigation,
@@ -94,7 +94,7 @@ export function StartScreen({
     >
       <View>
         <Image
-          source={require("../../assets/images/start-screen-graphics.png")}
+          source={require("@assets/images/start-screen-graphics.png")}
           style={{
             marginTop: layout.isSmallDevice ? "0%" : "20%",
             alignSelf: "center",

@@ -1,6 +1,6 @@
 import { StyleSheet, Switch, View } from "react-native";
-import { colors } from "../constants/Colors";
-import { styleVariables } from "../constants/StyleVariables";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
 import { TextTheme, ThemedText } from "./ThemedText";
 
 type SwitchProps = {

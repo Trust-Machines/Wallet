@@ -1,11 +1,11 @@
 import { Image, View } from "react-native";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { en } from "../../en";
 import { NewWalletStackScreenProps } from "../../types";
-import { layout } from "../../constants/Layout";
-import { useAppSelector } from "../../redux/hooks";
+import { layout } from "@constants/Layout";
+import { useAppSelector } from "@redux/hooks";
 import { useNavigation } from "@react-navigation/native";
 
 export function AddNewWalletScreen({
@@ -33,7 +33,7 @@ export function AddNewWalletScreen({
     >
       <View>
         <Image
-          source={require("../../assets/images/start-screen-graphics.png")}
+          source={require("@assets/images/start-screen-graphics.png")}
           style={{
             marginTop: layout.isSmallDevice ? "0%" : "20%",
             alignSelf: "center",

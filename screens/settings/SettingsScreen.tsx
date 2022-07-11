@@ -1,13 +1,13 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { ScreenContainer } from "../../shared/ScreenContainer";
+import { ScreenContainer } from "@shared/ScreenContainer";
 import { RootTabScreenProps } from "../../types";
-import { colors } from "../../constants/Colors";
-import { styleVariables } from "../../constants/StyleVariables";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
 import { en } from "../../en";
-import { SvgIcons } from "../../assets/images";
-import { clearAsyncStorage } from "../../utils/asyncStorageHelper";
-import { useAppDispatch } from "../../redux/hooks";
-import { setWallets } from "../../redux/walletSlice";
+import { SvgIcons } from "@assets/images";
+import { clearAsyncStorage } from "@utils/asyncStorageHelper";
+import { useAppDispatch } from "@redux/hooks";
+import { setWallets } from "@redux/walletSlice";
 
 export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
   const dispatch = useAppDispatch();

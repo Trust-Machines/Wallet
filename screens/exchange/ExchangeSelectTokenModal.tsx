@@ -1,12 +1,12 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
-import { styleVariables } from "../../constants/StyleVariables";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
 import { ExchangeStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
-import { Assets } from "../../constants/CommonEnums";
-import { assetIcons } from "../../constants/AssetIcons";
+import { Assets } from "@constants/CommonEnums";
+import { assetIcons } from "@constants/AssetIcons";
 
 export type TokenProps = {
   amount: number;

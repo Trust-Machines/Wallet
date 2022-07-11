@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { Pressable, StyleSheet } from "react-native";
-import { colors } from "../../../constants/Colors";
-import { styleVariables } from "../../../constants/StyleVariables";
-import { useAppSelector } from "../../../redux/hooks";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import { CachedWallet } from "../../../utils/asyncStorageHelper";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
+import { useAppSelector } from "@redux/hooks";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { CachedWallet } from "@utils/asyncStorageHelper";
 
 type WalletProps = {
   wallet: CachedWallet;

@@ -1,26 +1,26 @@
 import { View, StyleSheet, TextInput, ActivityIndicator } from "react-native";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import { en } from "../../en";
 import { OnboardingStackScreenProps } from "../../types";
-import { styleVariables } from "../../constants/StyleVariables";
+import { styleVariables } from "@constants/StyleVariables";
 import { useState } from "react";
-import { layout } from "../../constants/Layout";
-import { decrypt, encrypt } from "../../utils/helpers";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { layout } from "@constants/Layout";
+import { decrypt, encrypt } from "@utils/helpers";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import {
   importWallet,
   setCurrentWalletLabel,
   setNewWalletLabel,
   setWallets,
-} from "../../redux/walletSlice";
+} from "@redux/walletSlice";
 import {
   addWalletToAsyncStorage,
   getWalletsFromAsyncStorage,
   storeCurrentWalletIdToAsyncStorage,
-} from "../../utils/asyncStorageHelper";
+} from "@utils/asyncStorageHelper";
 
 export function SetPasswordScreen({
   navigation,

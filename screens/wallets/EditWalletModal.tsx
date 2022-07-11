@@ -1,20 +1,20 @@
 import { Alert, StyleSheet, TextInput, View } from "react-native";
 import { WalletsStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { styleVariables } from "../../constants/StyleVariables";
-import { layout } from "../../constants/Layout";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { styleVariables } from "@constants/StyleVariables";
+import { layout } from "@constants/Layout";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { useState } from "react";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import {
   addWalletToAsyncStorage,
   getWalletsFromAsyncStorage,
   removeWalletFromAsyncStorage,
-} from "../../utils/asyncStorageHelper";
-import { setCurrentWalletLabel, setWallets } from "../../redux/walletSlice";
+} from "@utils/asyncStorageHelper";
+import { setCurrentWalletLabel, setWallets } from "@redux/walletSlice";
 
 export function EditWalletModal({
   route,

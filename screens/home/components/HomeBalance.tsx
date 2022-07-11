@@ -1,10 +1,10 @@
 import { Text, View } from "react-native";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { en } from "../../../en";
-import { Assets } from "../../../constants/CommonEnums";
-import { colors } from "../../../constants/Colors";
-import { useAppSelector } from "../../../redux/hooks";
-import { satoshiToBitcoinString } from "../../../utils/helpers";
+import { Assets } from "@constants/CommonEnums";
+import { colors } from "@constants/Colors";
+import { useAppSelector } from "@redux/hooks";
+import { satoshiToBitcoinString } from "@utils/helpers";
 
 export function HomeBalance() {
   const { balance } = useAppSelector((state) => state.balance);

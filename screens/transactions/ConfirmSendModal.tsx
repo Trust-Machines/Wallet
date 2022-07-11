@@ -1,18 +1,18 @@
 import { ActivityIndicator, StyleSheet, TextInput, View } from "react-native";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { QrStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { colors } from "../../constants/Colors";
-import { layout } from "../../constants/Layout";
-import { Assets } from "../../constants/CommonEnums";
-import useTransactionSending from "../../hooks/useTransactionSending";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { colors } from "@constants/Colors";
+import { layout } from "@constants/Layout";
+import { Assets } from "@constants/CommonEnums";
+import useTransactionSending from "@hooks/useTransactionSending";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { styleVariables } from "../../constants/StyleVariables";
-import { safeParseFloat } from "../../utils/helpers";
-import { getTransactions } from "../../redux/transactionsSlice";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import { styleVariables } from "@constants/StyleVariables";
+import { safeParseFloat } from "@utils/helpers";
+import { getTransactions } from "@redux/transactionsSlice";
 
 // enum Tokens {
 //   TKN1 = "TKN1",

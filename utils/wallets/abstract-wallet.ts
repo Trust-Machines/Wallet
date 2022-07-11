@@ -1,4 +1,4 @@
-import { BitcoinUnit, Chain } from "../../constants/bitcoinUnits";
+import { BitcoinUnit, Chain } from "@constants/bitcoinUnits";
 import b58 from "bs58check";
 import createHash from "create-hash";
 import {

@@ -1,12 +1,12 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { BuyCryptoStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { styleVariables } from "../../constants/StyleVariables";
-import { colors } from "../../constants/Colors";
-import { SvgIcons } from "../../assets/images";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { styleVariables } from "@constants/StyleVariables";
+import { colors } from "@constants/Colors";
+import { SvgIcons } from "@assets/images";
 
 export function BuyCryptoModal({
   navigation,

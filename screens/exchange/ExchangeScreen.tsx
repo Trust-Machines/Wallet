@@ -5,19 +5,19 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { RootTabScreenProps } from "../../types";
-import { SvgIcons } from "../../assets/images";
+import { SvgIcons } from "@assets/images";
 import { en } from "../../en";
-import { colors } from "../../constants/Colors";
-import { Assets } from "../../constants/CommonEnums";
+import { colors } from "@constants/Colors";
+import { Assets } from "@constants/CommonEnums";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { layout } from "../../constants/Layout";
+import { layout } from "@constants/Layout";
 import { ExchangeInput } from "./components/ExchangeInput";
-import { styleVariables } from "../../constants/StyleVariables";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
+import { styleVariables } from "@constants/StyleVariables";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
 
 export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const [payAsset, setPayAsset] = useState(Assets.STX);

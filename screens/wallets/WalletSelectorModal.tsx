@@ -1,19 +1,16 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import { WalletsStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { styleVariables } from "../../constants/StyleVariables";
-import { layout } from "../../constants/Layout";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { styleVariables } from "@constants/StyleVariables";
+import { layout } from "@constants/Layout";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { Wallet } from "./components/Wallet";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import {
-  setCurrentWalletID,
-  setCurrentWalletLabel,
-} from "../../redux/walletSlice";
-import { storeCurrentWalletIdToAsyncStorage } from "../../utils/asyncStorageHelper";
+import { setCurrentWalletID, setCurrentWalletLabel } from "@redux/walletSlice";
+import { storeCurrentWalletIdToAsyncStorage } from "@utils/asyncStorageHelper";
 
 export function WalletSelectorModal({}: //navigation,
 WalletsStackScreenProps<"WalletSelector">) {

@@ -1,16 +1,16 @@
 import { View, StyleSheet, TextInput, ActivityIndicator } from "react-native";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import { en } from "../../en";
 import { CommonStackScreenProps } from "../../types";
-import { styleVariables } from "../../constants/StyleVariables";
+import { styleVariables } from "@constants/StyleVariables";
 import { useState } from "react";
-import { layout } from "../../constants/Layout";
-import { decrypt } from "../../utils/helpers";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { importWallet } from "../../redux/walletSlice";
+import { layout } from "@constants/Layout";
+import { decrypt } from "@utils/helpers";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import { importWallet } from "@redux/walletSlice";
 
 export function UnlockWalletScreen({
   route,

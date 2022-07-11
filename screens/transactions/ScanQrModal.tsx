@@ -1,14 +1,14 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { QrStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
-import { layout } from "../../constants/Layout";
+import { layout } from "@constants/Layout";
 import { BarCodeScanningResult, Camera } from "expo-camera";
 import { useEffect, useState } from "react";
-import { colors } from "../../constants/Colors";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { colors } from "@constants/Colors";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { parseQr } from "../../utils/helpers";
+import { parseQr } from "@utils/helpers";
 
 export function ScanQrModal({ navigation }: QrStackScreenProps<"ScanQr">) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);

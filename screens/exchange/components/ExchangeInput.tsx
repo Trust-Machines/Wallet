@@ -5,12 +5,12 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import { Assets } from "../../../constants/CommonEnums";
-import { SvgIcons } from "../../../assets/images";
-import { colors } from "../../../constants/Colors";
-import { assetIcons } from "../../../constants/AssetIcons";
-import { safeParseFloat } from "../../../utils/helpers";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { Assets } from "@constants/CommonEnums";
+import { SvgIcons } from "@assets/images";
+import { colors } from "@constants/Colors";
+import { assetIcons } from "@constants/AssetIcons";
+import { safeParseFloat } from "@utils/helpers";
 
 export type ExchangeInputProps = {
   amount: number;

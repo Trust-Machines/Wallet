@@ -1,6 +1,6 @@
-import { bitcoinToSatoshiInteger, safeParseFloat } from "../utils/helpers";
-import { HDSegwitBech32Wallet } from "../utils/wallets";
-const ElectrumHelper = require("../utils/ElectrumHelper");
+import { bitcoinToSatoshiInteger, safeParseFloat } from "@utils/helpers";
+import { HDSegwitBech32Wallet } from "@utils/wallets";
+const ElectrumHelper = require("@utils/ElectrumHelper");
 const bitcoin = require("bitcoinjs-lib");
 
 export type TransactionDetails = {

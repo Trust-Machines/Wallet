@@ -1,6 +1,17 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "experimentalDecorators": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": ["assets/*"],
+      "@constants/*": ["constants/*"],
+      "@hooks/*": ["hooks/*"],
+      "@redux/*": ["redux/*"],
+      "@screens/*": ["screens/*"],
+      "@shared/*": ["shared/*"],
+      "@utils/*": ["utils/*"],
+    }
+  },
 }

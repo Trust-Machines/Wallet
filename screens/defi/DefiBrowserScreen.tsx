@@ -1,10 +1,10 @@
 import { StyleSheet, TextInput, View } from "react-native";
-import { ScreenContainer } from "../../shared/ScreenContainer";
+import { ScreenContainer } from "@shared/ScreenContainer";
 import { RootTabScreenProps } from "../../types";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
-import { styleVariables } from "../../constants/StyleVariables";
-import { SvgIcons } from "../../assets/images";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
+import { SvgIcons } from "@assets/images";
 import { en } from "../../en";
 
 export function DefiBrowserScreen({

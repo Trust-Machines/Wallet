@@ -7,11 +7,11 @@ import {
   Pressable,
   ImageSourcePropType,
 } from "react-native";
-import { ScreenContainer } from "../../shared/ScreenContainer";
+import { ScreenContainer } from "@shared/ScreenContainer";
 import { RootTabScreenProps } from "../../types";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
-import { styleVariables } from "../../constants/StyleVariables";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
 
 export function CollectiblesScreen({
   navigation,
@@ -24,61 +24,61 @@ export function CollectiblesScreen({
 
   const arts = [
     {
-      image: require("../../assets/images/art1.png"),
+      image: require("@assets/images/art1.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 1,
     },
     {
-      image: require("../../assets/images/art2.png"),
+      image: require("@assets/images/art2.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 2,
     },
     {
-      image: require("../../assets/images/art3.png"),
+      image: require("@assets/images/art3.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 3,
     },
     {
-      image: require("../../assets/images/art4.png"),
+      image: require("@assets/images/art4.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 4,
     },
     {
-      image: require("../../assets/images/art5.png"),
+      image: require("@assets/images/art5.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 5,
     },
     {
-      image: require("../../assets/images/art6.png"),
+      image: require("@assets/images/art6.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 6,
     },
     {
-      image: require("../../assets/images/art5.png"),
+      image: require("@assets/images/art5.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 7,
     },
     {
-      image: require("../../assets/images/art6.png"),
+      image: require("@assets/images/art6.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 8,
     },
     {
-      image: require("../../assets/images/art5.png"),
+      image: require("@assets/images/art5.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 9,
     },
     {
-      image: require("../../assets/images/art6.png"),
+      image: require("@assets/images/art6.png"),
       title: "Melek Arican",
       artist: "Ayse Lutfiye Atli",
       id: 10,

@@ -1,5 +1,5 @@
 // import RNFS from "react-native-fs";
-// import { BitcoinUnit, Chain } from "../../constants/bitcoinUnits";
+// import { BitcoinUnit, Chain } from "@constants/bitcoinUnits";
 // import RnLdk from "rn-ldk/src/index";
 // import { LightningCustodianWallet } from "./lightning-custodian-wallet";
 // import AsyncStorage from "@react-native-async-storage/async-storage";

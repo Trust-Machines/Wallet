@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CachedWallets } from "../utils/asyncStorageHelper";
-import { startImport } from "../utils/wallets/wallet-import";
+import { CachedWallets } from "@utils/asyncStorageHelper";
+import { startImport } from "@utils/wallets/wallet-import";
 import type { RootState } from "./store";
 
 interface WalletState {

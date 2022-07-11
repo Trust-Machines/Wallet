@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { colors } from "../../../constants/Colors";
+import { colors } from "@constants/Colors";
 import { useNavigation } from "@react-navigation/native";
-import { styleVariables } from "../../../constants/StyleVariables";
-import { SvgIcons } from "../../../assets/images";
-import { useAppSelector } from "../../../redux/hooks";
-import { formatAddress } from "../../../utils/helpers";
+import { styleVariables } from "@constants/StyleVariables";
+import { SvgIcons } from "@assets/images";
+import { useAppSelector } from "@redux/hooks";
+import { formatAddress } from "@utils/helpers";
 
 export function HomeHeader() {
   const navigation = useNavigation();
