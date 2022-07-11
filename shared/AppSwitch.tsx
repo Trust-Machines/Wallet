@@ -1,7 +1,7 @@
-import { StyleSheet, Switch, View } from "react-native";
-import { colors } from "@constants/Colors";
-import { styleVariables } from "@constants/StyleVariables";
-import { TextTheme, ThemedText } from "./ThemedText";
+import { StyleSheet, Switch, View } from 'react-native';
+import { colors } from '@constants/Colors';
+import { styleVariables } from '@constants/StyleVariables';
+import { TextTheme, ThemedText } from './ThemedText';
 
 type SwitchProps = {
   onToggle(value: boolean): void;
@@ -19,7 +19,7 @@ export function AppSwitch(props: SwitchProps) {
         <ThemedText
           theme={TextTheme.BodyText}
           styleOverwrite={{
-            textAlign: "left",
+            textAlign: 'left',
             color: props.firstLineTextColor || colors.primaryFont,
           }}
         >
@@ -29,9 +29,9 @@ export function AppSwitch(props: SwitchProps) {
           <ThemedText
             theme={TextTheme.BodyText}
             styleOverwrite={{
-              textAlign: "left",
+              textAlign: 'left',
               color: props.secondLineTextColor || colors.primaryFont,
-              fontFamily: "Inter_700Bold",
+              fontFamily: 'Inter_700Bold',
             }}
           >
             {props.secondLineText}
@@ -39,8 +39,8 @@ export function AppSwitch(props: SwitchProps) {
         )}
       </View>
       <Switch
-        trackColor={{ false: "#767577", true: colors.primaryAppColorDarker }}
-        thumbColor={"#FFFFFF"}
+        trackColor={{ false: '#767577', true: colors.primaryAppColorDarker }}
+        thumbColor={'#FFFFFF'}
         ios_backgroundColor="#767577"
         onValueChange={props.onToggle}
         value={props.value}
@@ -52,14 +52,14 @@ export function AppSwitch(props: SwitchProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
     borderRadius: styleVariables.borderRadius,
     padding: 16,
     backgroundColor: colors.primaryBackgroundDarker,
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   switch: {
     borderWidth: 1,

@@ -1,21 +1,21 @@
-"use strict";
+'use strict';
 var __importDefault =
   (this && this.__importDefault) ||
   function (mod) {
     return mod && mod.__esModule ? mod : { default: mod };
   };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.decodeBc32Data =
   exports.encodeBc32Data =
   exports.encodeSegwitAddress =
   exports.decodeSegwitAddress =
   exports.Bech32Version =
     void 0;
-var bech32_1 = __importDefault(require("./bech32"));
+var bech32_1 = __importDefault(require('./bech32'));
 var Bech32Version;
 (function (Bech32Version) {
-  Bech32Version[(Bech32Version["Origin"] = 1)] = "Origin";
-  Bech32Version[(Bech32Version["bis"] = 2)] = "bis";
+  Bech32Version[(Bech32Version['Origin'] = 1)] = 'Origin';
+  Bech32Version[(Bech32Version['bis'] = 2)] = 'bis';
 })((Bech32Version = exports.Bech32Version || (exports.Bech32Version = {})));
 var convertBits = function (data, fromBits, toBits, pad) {
   var acc = 0;
@@ -45,12 +45,7 @@ var convertBits = function (data, fromBits, toBits, pad) {
 };
 exports.decodeSegwitAddress = function (hrp, addr) {
   var dec = bech32_1.default.decode(addr);
-  if (
-    dec === null ||
-    dec.hrp !== hrp ||
-    dec.data.length < 1 ||
-    dec.data[0] > 16
-  ) {
+  if (dec === null || dec.hrp !== hrp || dec.data.length < 1 || dec.data[0] > 16) {
     return null;
   }
   var res = convertBits(Uint8Array.from(dec.data.slice(1)), 5, 8, false);
@@ -74,18 +69,14 @@ exports.encodeSegwitAddress = function (hrp, version, program) {
   return ret;
 };
 exports.encodeBc32Data = function (hex) {
-  var data = Buffer.from(hex, "hex");
-  return bech32_1.default.encode(
-    null,
-    convertBits(data, 8, 5, true),
-    Bech32Version.bis
-  );
+  var data = Buffer.from(hex, 'hex');
+  return bech32_1.default.encode(null, convertBits(data, 8, 5, true), Bech32Version.bis);
 };
 exports.decodeBc32Data = function (data) {
   var result = bech32_1.default.decode(data);
   if (result) {
     var res = convertBits(Buffer.from(result.data), 5, 8, false);
-    return Buffer.from(res).toString("hex");
+    return Buffer.from(res).toString('hex');
   } else {
     return null;
   }

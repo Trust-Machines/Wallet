@@ -1,11 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import walletReducer from "./walletSlice";
-import balanceReducer from "./balanceSlice";
-import transactionsSlice from "./transactionsSlice";
-import addressSlice from "./addressSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import walletReducer from './walletSlice';
+import balanceReducer from './balanceSlice';
+import transactionsSlice from './transactionsSlice';
+import addressSlice from './addressSlice';
 
 export const store = configureStore({
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
@@ -13,7 +13,7 @@ export const store = configureStore({
     wallet: walletReducer,
     balance: balanceReducer,
     transactions: transactionsSlice,
-    address: addressSlice
+    address: addressSlice,
   },
 });
 

@@ -1,21 +1,21 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { ScreenContainer } from "@shared/ScreenContainer";
-import { RootTabScreenProps } from "../../types";
-import { colors } from "@constants/Colors";
-import { styleVariables } from "@constants/StyleVariables";
-import { en } from "../../en";
-import { SvgIcons } from "@assets/images";
-import { clearAsyncStorage } from "@utils/asyncStorageHelper";
-import { useAppDispatch } from "@redux/hooks";
-import { setWallets } from "@redux/walletSlice";
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScreenContainer } from '@shared/ScreenContainer';
+import { RootTabScreenProps } from '../../types';
+import { colors } from '@constants/Colors';
+import { styleVariables } from '@constants/StyleVariables';
+import { en } from '../../en';
+import { SvgIcons } from '@assets/images';
+import { clearAsyncStorage } from '@utils/asyncStorageHelper';
+import { useAppDispatch } from '@redux/hooks';
+import { setWallets } from '@redux/walletSlice';
 
-export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
+export function SettingsScreen({ navigation }: RootTabScreenProps<'Settings'>) {
   const dispatch = useAppDispatch();
 
   const handleLogout = async (): Promise<void> => {
     dispatch(setWallets({}));
     const cleared = await clearAsyncStorage();
-    navigation.navigate("OnboardingStack", { screen: "Start" });
+    navigation.navigate('OnboardingStack', { screen: 'Start' });
   };
 
   const Label = ({ label }: { label: string }) => {
@@ -41,12 +41,7 @@ export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
         onPress={props.handlePress}
       >
         <View>
-          <Text
-            style={[
-              styles.itemTitle,
-              { color: props.color ?? colors.primaryFont },
-            ]}
-          >
+          <Text style={[styles.itemTitle, { color: props.color ?? colors.primaryFont }]}>
             {props.title}
           </Text>
           {props.secondaryText ? (
@@ -67,10 +62,10 @@ export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
         <Label label={en.Settings_label_profile} />
         <View style={styles.itemGroup}>
           <Item
-            title={"My TrustMachines Wallet"}
-            secondaryText={"9Hvt...0a0b"}
+            title={'My TrustMachines Wallet'}
+            secondaryText={'9Hvt...0a0b'}
             withChevron
-            handlePress={() => console.log("pressed")}
+            handlePress={() => console.log('pressed')}
           />
         </View>
 
@@ -79,13 +74,13 @@ export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
           <Item
             title={en.Settings_screen_recovery_phrase}
             withChevron
-            handlePress={() => console.log("pressed")}
+            handlePress={() => console.log('pressed')}
           />
           <Separator />
           <Item
             title={en.Settings_screen_app_lock}
             withChevron
-            handlePress={() => console.log("pressed")}
+            handlePress={() => console.log('pressed')}
           />
         </View>
 
@@ -94,7 +89,7 @@ export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
           <Item
             title={en.Settings_screen_notifications_settings}
             withChevron
-            handlePress={() => console.log("pressed")}
+            handlePress={() => console.log('pressed')}
           />
         </View>
 
@@ -103,7 +98,7 @@ export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
           <Item
             title={en.Settings_screen_contact_us}
             withChevron
-            handlePress={() => console.log("pressed")}
+            handlePress={() => console.log('pressed')}
           />
           <Separator />
           <Item
@@ -120,7 +115,7 @@ export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
 
 const styles = StyleSheet.create({
   labelText: {
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: 'Inter_600SemiBold',
     fontSize: 16,
     lineHeight: 19,
     color: colors.secondaryFont,
@@ -128,20 +123,20 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   item: {
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingLeft: 16,
     paddingRight: 8,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   itemTitle: {
-    fontFamily: "Inter_700Bold",
+    fontFamily: 'Inter_700Bold',
     fontSize: 16,
     lineHeight: 19,
     color: colors.primaryFont,
   },
   secondaryText: {
-    fontFamily: "Inter_400Regular",
+    fontFamily: 'Inter_400Regular',
     fontSize: 14,
     lineHeight: 17,
     color: colors.secondaryFont,

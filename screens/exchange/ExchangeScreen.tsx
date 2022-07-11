@@ -1,25 +1,19 @@
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  Pressable,
-  ScrollView,
-} from "react-native";
-import { ScreenContainer } from "@shared/ScreenContainer";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { RootTabScreenProps } from "../../types";
-import { SvgIcons } from "@assets/images";
-import { en } from "../../en";
-import { colors } from "@constants/Colors";
-import { Assets } from "@constants/CommonEnums";
-import { useEffect, useState } from "react";
-import { LinearGradient } from "expo-linear-gradient";
-import { layout } from "@constants/Layout";
-import { ExchangeInput } from "./components/ExchangeInput";
-import { styleVariables } from "@constants/StyleVariables";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { StyleSheet, View, SafeAreaView, Pressable, ScrollView } from 'react-native';
+import { ScreenContainer } from '@shared/ScreenContainer';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { RootTabScreenProps } from '../../types';
+import { SvgIcons } from '@assets/images';
+import { en } from '../../en';
+import { colors } from '@constants/Colors';
+import { Assets } from '@constants/CommonEnums';
+import { useEffect, useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
+import { layout } from '@constants/Layout';
+import { ExchangeInput } from './components/ExchangeInput';
+import { styleVariables } from '@constants/StyleVariables';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
 
-export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
+export function ExchangeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [payAsset, setPayAsset] = useState(Assets.STX);
   const [payAmount, setPayAmount] = useState(0);
   const [receiveAsset, setReceiveAsset] = useState(Assets.BTC);
@@ -34,13 +28,13 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
     setReceiveAmount(payAmount);
   }
 
-  function openAssetSelectorModal(type: "pay" | "receive"): void {
-    navigation.navigate("ExchangeStack", {
-      screen: "ExchangeSelectToken",
+  function openAssetSelectorModal(type: 'pay' | 'receive'): void {
+    navigation.navigate('ExchangeStack', {
+      screen: 'ExchangeSelectToken',
       params: {
         type,
-        onGoBack: (type: "pay" | "receive", asset: Assets) => {
-          if (type === "pay") {
+        onGoBack: (type: 'pay' | 'receive', asset: Assets) => {
+          if (type === 'pay') {
             setPayAsset(asset);
           } else {
             setReceiveAsset(asset);
@@ -57,10 +51,7 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
         style={{ width: layout.window.width, marginLeft: -20 }}
       >
         <LinearGradient
-          colors={[
-            colors.primaryBackgroundDarker,
-            colors.primaryBackgroundLighter,
-          ]}
+          colors={[colors.primaryBackgroundDarker, colors.primaryBackgroundLighter]}
           style={styles.swapBox}
         >
           <View style={styles.stretchContainer}>
@@ -76,7 +67,7 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
             >
               {en.Common_balance}:&nbsp;
               <ThemedText theme={TextTheme.CaptionText}>
-                333.3&nbsp;{" "}
+                333.3&nbsp;{' '}
                 <ThemedText
                   theme={TextTheme.CaptionText}
                   styleOverwrite={{ color: colors.secondaryFont }}
@@ -88,9 +79,9 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
           </View>
           <ExchangeInput
             amount={payAmount}
-            setAmount={(value) => setPayAmount(value)}
+            setAmount={value => setPayAmount(value)}
             asset={payAsset}
-            openAssetSelectorModal={() => openAssetSelectorModal("pay")}
+            openAssetSelectorModal={() => openAssetSelectorModal('pay')}
           />
         </LinearGradient>
 
@@ -105,9 +96,9 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
           </SafeAreaView>
           <ExchangeInput
             amount={receiveAmount}
-            setAmount={(value) => setReceiveAmount(value)}
+            setAmount={value => setReceiveAmount(value)}
             asset={receiveAsset}
-            openAssetSelectorModal={() => openAssetSelectorModal("receive")}
+            openAssetSelectorModal={() => openAssetSelectorModal('receive')}
           />
           <View style={styles.exchangeIconContainer}>
             <Pressable onPress={onSwapSides}>
@@ -125,9 +116,7 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
               >
                 Rate
               </ThemedText>
-              <ThemedText theme={TextTheme.LabelText}>
-                1 STX = 0.00002728
-              </ThemedText>
+              <ThemedText theme={TextTheme.LabelText}>1 STX = 0.00002728</ThemedText>
             </View>
 
             <View style={styles.stretchContainer}>
@@ -161,7 +150,7 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
                 theme={TextTheme.LabelText}
                 styleOverwrite={{ color: colors.primaryAppColorLighter }}
               >
-                {"<0.01%"}
+                {'<0.01%'}
               </ThemedText>
             </View>
           </View>
@@ -170,7 +159,7 @@ export function ExchangeScreen({ navigation }: RootTabScreenProps<"Home">) {
             text={en.Exchange_screen_button_text}
             theme={ButtonTheme.Primary}
             fullWidth
-            onPress={() => console.log("Swap pressed")}
+            onPress={() => console.log('Swap pressed')}
             marginBottom={30}
           />
         </View>
@@ -185,19 +174,19 @@ const styles = StyleSheet.create({
     width: layout.window.width,
     paddingVertical: 16,
     paddingHorizontal: 20,
-    position: "relative",
-    alignSelf: "center",
+    position: 'relative',
+    alignSelf: 'center',
   },
   stretchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 20,
   },
   exchangeIconContainer: {
-    position: "absolute",
+    position: 'absolute',
     width: layout.window.width,
-    alignItems: "center",
+    alignItems: 'center',
     top: -24,
   },
   technicalDetailsContainer: {

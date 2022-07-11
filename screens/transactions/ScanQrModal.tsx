@@ -1,43 +1,38 @@
-import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { QrStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "@shared/ModalScreenContainer";
-import { en } from "../../en";
-import { layout } from "@constants/Layout";
-import { BarCodeScanningResult, Camera } from "expo-camera";
-import { useEffect, useState } from "react";
-import { colors } from "@constants/Colors";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import { parseQr } from "@utils/helpers";
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { QrStackScreenProps } from '../../types';
+import { ModalScreenContainer } from '@shared/ModalScreenContainer';
+import { en } from '../../en';
+import { layout } from '@constants/Layout';
+import { BarCodeScanningResult, Camera } from 'expo-camera';
+import { useEffect, useState } from 'react';
+import { colors } from '@constants/Colors';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import { parseQr } from '@utils/helpers';
 
-export function ScanQrModal({ navigation }: QrStackScreenProps<"ScanQr">) {
+export function ScanQrModal({ navigation }: QrStackScreenProps<'ScanQr'>) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
 
-      console.log("STATUS", status);
-      setHasPermission(status === "granted");
+      console.log('STATUS', status);
+      setHasPermission(status === 'granted');
     })();
   }, []);
 
-  const handleBarCodeScanned = async (
-    scanningResult: BarCodeScanningResult
-  ) => {
-    navigation.navigate("ConfirmSend", parseQr(scanningResult.data));
+  const handleBarCodeScanned = async (scanningResult: BarCodeScanningResult) => {
+    navigation.navigate('ConfirmSend', parseQr(scanningResult.data));
   };
 
-  console.log("HasPermission", hasPermission);
+  console.log('HasPermission', hasPermission);
 
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
       <View style={styles.qrContainer}>
         {hasPermission === null ? (
-          <ActivityIndicator
-            size="large"
-            color={colors.primaryAppColorLighter}
-          />
+          <ActivityIndicator size="large" color={colors.primaryAppColorLighter} />
         ) : hasPermission ? (
           <Camera
             ratio="16:9"
@@ -48,9 +43,7 @@ export function ScanQrModal({ navigation }: QrStackScreenProps<"ScanQr">) {
             style={styles.camera}
           />
         ) : (
-          <ThemedText theme={TextTheme.LabelText}>
-            No access to camera
-          </ThemedText>
+          <ThemedText theme={TextTheme.LabelText}>No access to camera</ThemedText>
         )}
       </View>
     </ModalScreenContainer>
@@ -60,19 +53,19 @@ export function ScanQrModal({ navigation }: QrStackScreenProps<"ScanQr">) {
 const styles = StyleSheet.create({
   qrContainer: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: '#000000',
     width: layout.window.width,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     top: 0,
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingBottom: "10%",
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: '10%',
   },
   camera: {
     width: layout.window.width,
     height: (layout.window.width * 16) / 9,
-    maxHeight: "100%",
+    maxHeight: '100%',
     padding: 20,
   },
 });

@@ -1,10 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
-import { Pressable, StyleSheet } from "react-native";
-import { colors } from "@constants/Colors";
-import { styleVariables } from "@constants/StyleVariables";
-import { useAppSelector } from "@redux/hooks";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { CachedWallet } from "@utils/asyncStorageHelper";
+import { useNavigation } from '@react-navigation/native';
+import { Pressable, StyleSheet } from 'react-native';
+import { colors } from '@constants/Colors';
+import { styleVariables } from '@constants/StyleVariables';
+import { useAppSelector } from '@redux/hooks';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { CachedWallet } from '@utils/asyncStorageHelper';
 
 type WalletProps = {
   wallet: CachedWallet;
@@ -13,13 +13,8 @@ type WalletProps = {
   selected: boolean;
 };
 
-export const Wallet = ({
-  wallet,
-  walletID,
-  selectWallet,
-  selected,
-}: WalletProps) => {
-  const { wallets, currentWalletID } = useAppSelector((state) => state.wallet);
+export const Wallet = ({ wallet, walletID, selectWallet, selected }: WalletProps) => {
+  const { wallets, currentWalletID } = useAppSelector(state => state.wallet);
   const navigation = useNavigation();
 
   return (
@@ -38,18 +33,18 @@ export const Wallet = ({
       <Pressable
         style={styles.edit}
         onPress={() => {
-          navigation.navigate("WalletsStack", {
-            screen: "UnlockWallet",
+          navigation.navigate('WalletsStack', {
+            screen: 'UnlockWallet',
             params: {
               encryptedSeedPhrase: wallets[currentWalletID].seed,
               onValidationFinished: (success: boolean, password: string) => {
                 if (success) {
-                  navigation.navigate("WalletsStack", {
-                    screen: "EditWallet",
+                  navigation.navigate('WalletsStack', {
+                    screen: 'EditWallet',
                     params: { wallet, id: walletID },
                   });
                 } else {
-                  console.log("error");
+                  console.log('error');
                 }
               },
             },
@@ -67,15 +62,15 @@ const styles = StyleSheet.create({
     borderRadius: styleVariables.borderRadius,
     paddingLeft: 20,
     height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 8,
   },
   edit: {
     width: 60,
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

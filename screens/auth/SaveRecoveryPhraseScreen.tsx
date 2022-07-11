@@ -1,36 +1,29 @@
-import { View, StyleSheet } from "react-native";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { ScreenContainer } from "@shared/ScreenContainer";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { colors } from "@constants/Colors";
-import { en } from "../../en";
-import { CommonStackScreenProps } from "../../types";
-import { SvgIcons } from "@assets/images";
-import { HDSegwitP2SHWallet } from "@utils/wallets/hd-segwit-p2sh-wallet";
-import { useEffect, useState } from "react";
-import { layout } from "@constants/Layout";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import {
-  setCurrentWalletLabel,
-  setNewWalletLabel,
-  setWallets,
-} from "@redux/walletSlice";
-import { encrypt } from "@utils/helpers";
-import {
-  addWalletToAsyncStorage,
-  getWalletsFromAsyncStorage,
-} from "@utils/asyncStorageHelper";
-import { useNavigation } from "@react-navigation/native";
+import { View, StyleSheet } from 'react-native';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { ScreenContainer } from '@shared/ScreenContainer';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { colors } from '@constants/Colors';
+import { en } from '../../en';
+import { CommonStackScreenProps } from '../../types';
+import { SvgIcons } from '@assets/images';
+import { HDSegwitP2SHWallet } from '@utils/wallets/hd-segwit-p2sh-wallet';
+import { useEffect, useState } from 'react';
+import { layout } from '@constants/Layout';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { setCurrentWalletLabel, setNewWalletLabel, setWallets } from '@redux/walletSlice';
+import { encrypt } from '@utils/helpers';
+import { addWalletToAsyncStorage, getWalletsFromAsyncStorage } from '@utils/asyncStorageHelper';
+import { useNavigation } from '@react-navigation/native';
 
 export function SaveRecoveryPhraseScreen({
   //navigation,
   route,
-}: CommonStackScreenProps<"SaveRecoveryPhrase">) {
+}: CommonStackScreenProps<'SaveRecoveryPhrase'>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [seedPhrase, setSeedPhrase] = useState<string[] | undefined>(undefined);
   const [generatedWallet, setGeneratedWallet] = useState<any>(undefined);
-  const { wallets, newWalletLabel } = useAppSelector((state) => state.wallet);
+  const { wallets, newWalletLabel } = useAppSelector(state => state.wallet);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
@@ -42,10 +35,7 @@ export function SaveRecoveryPhraseScreen({
     return (
       <View style={{ padding: layout.isSmallDevice ? 4 : 8 }}>
         <View style={styles.tag}>
-          <ThemedText
-            theme={TextTheme.InputText}
-            styleOverwrite={{ marginRight: 14 }}
-          >
+          <ThemedText theme={TextTheme.InputText} styleOverwrite={{ marginRight: 14 }}>
             {i + 1}
           </ThemedText>
           <ThemedText theme={TextTheme.InputText}>{word}</ThemedText>
@@ -61,13 +51,13 @@ export function SaveRecoveryPhraseScreen({
         const wallet = new HDSegwitP2SHWallet();
         await wallet.generate();
 
-        setSeedPhrase(wallet.secret.split(" "));
+        setSeedPhrase(wallet.secret.split(' '));
         setGeneratedWallet(wallet);
         setLoading(false);
       } catch (e) {
         setLoading(false);
         setError(true);
-        console.log("generate wallet error", e);
+        console.log('generate wallet error', e);
       }
     }
   };
@@ -76,17 +66,14 @@ export function SaveRecoveryPhraseScreen({
     if (seedPhrase && seedPhrase.length) {
       // In case it's the user's first wallet password setting is needed
       if (!Object.keys(wallets).length) {
-        navigation.navigate("OnboardingStack", {
-          screen: "SetPassword",
-          params: { seedPhrase: seedPhrase.join(" ") },
+        navigation.navigate('OnboardingStack', {
+          screen: 'SetPassword',
+          params: { seedPhrase: seedPhrase.join(' ') },
         });
       } else if (route.params?.password) {
         try {
           const addWallet = await addWalletToAsyncStorage({
-            encryptedWalletSeed: encrypt(
-              seedPhrase.join(" "),
-              route.params.password
-            ),
+            encryptedWalletSeed: encrypt(seedPhrase.join(' '), route.params.password),
             walletID: generatedWallet.getID(),
             walletLabel: newWalletLabel,
           });
@@ -94,14 +81,14 @@ export function SaveRecoveryPhraseScreen({
           if (storedWallets) {
             dispatch(setWallets(storedWallets));
           }
-          dispatch(setNewWalletLabel(""));
+          dispatch(setNewWalletLabel(''));
 
-          navigation.navigate("NewWalletStack", {
-            screen: "CreateWalletSuccess",
+          navigation.navigate('NewWalletStack', {
+            screen: 'CreateWalletSuccess',
             params: { isFirstWallet: false },
           });
         } catch (err) {
-          console.log("wallet import error", err);
+          console.log('wallet import error', err);
         }
       }
     }
@@ -111,8 +98,8 @@ export function SaveRecoveryPhraseScreen({
     <ScreenContainer
       showStars
       styles={{
-        justifyContent: "space-between",
-        paddingBottom: layout.isSmallDevice ? 0 : "15%",
+        justifyContent: 'space-between',
+        paddingBottom: layout.isSmallDevice ? 0 : '15%',
       }}
     >
       <View>
@@ -132,9 +119,7 @@ export function SaveRecoveryPhraseScreen({
           {loading ? (
             <ThemedText theme={TextTheme.NavigationText}>Loading...</ThemedText>
           ) : error ? (
-            <ThemedText theme={TextTheme.NavigationText}>
-              Something went wrong
-            </ThemedText>
+            <ThemedText theme={TextTheme.NavigationText}>Something went wrong</ThemedText>
           ) : (
             <View style={styles.tagContainer}>
               {seedPhrase?.map((word, i) => (
@@ -144,7 +129,7 @@ export function SaveRecoveryPhraseScreen({
           )}
         </View>
         <AppButton
-          onPress={() => console.log("copied")}
+          onPress={() => console.log('copied')}
           text={en.Copy_to_clipboard}
           theme={ButtonTheme.NoBorder}
           fullWidth
@@ -164,19 +149,19 @@ export function SaveRecoveryPhraseScreen({
 
 const styles = StyleSheet.create({
   tag: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderRadius: 48,
     padding: 9,
     paddingLeft: 23,
     backgroundColor: colors.primaryBackgroundDarker,
-    alignItems: "center",
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.disabled,
     minWidth: 140,
   },
   tagContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 });

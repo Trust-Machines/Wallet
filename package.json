@@ -8,7 +8,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "postinstall": "rn-nodeify --install buffer,events,process,stream,util,inherits,fs,path,assert,crypto,tiny-secp256k1 --hack"
+    "postinstall": "rn-nodeify --install buffer,events,process,stream,util,inherits,fs,path,assert,crypto,tiny-secp256k1 --hack",
+    "fix:prettier": "prettier --write \"**/*.*\""
   },
   "jest": {
     "preset": "jest-expo"
@@ -24,7 +25,6 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "@reduxjs/toolkit": "^1.8.2",
-    "@stacks/prettier-config": "^0.0.10",
     "@tradle/react-native-http": "^2.0.0",
     "aezeed": "^0.0.5",
     "assert": "^2.0.0",
@@ -111,6 +111,7 @@
     "wif": "^2.0.6"
   },
   "devDependencies": {
+    "@stacks/prettier-config": "^0.0.10",
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.14.6",
     "@types/react": "~18.0.8",
@@ -146,5 +147,6 @@
     "_stream_passthrough": "readable-stream/passthrough",
     "stream": "stream-browserify",
     "vm": "vm-browserify"
-  }
+  },
+  "prettier": "@stacks/prettier-config"
 }

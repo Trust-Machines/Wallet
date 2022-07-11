@@ -1,36 +1,32 @@
-import { View, StyleSheet, TextInput, ActivityIndicator } from "react-native";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { ScreenContainer } from "@shared/ScreenContainer";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { colors } from "@constants/Colors";
-import { en } from "../../en";
-import { CommonStackScreenProps } from "../../types";
-import { styleVariables } from "@constants/StyleVariables";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { layout } from "@constants/Layout";
+import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { ScreenContainer } from '@shared/ScreenContainer';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { colors } from '@constants/Colors';
+import { en } from '../../en';
+import { CommonStackScreenProps } from '../../types';
+import { styleVariables } from '@constants/StyleVariables';
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { layout } from '@constants/Layout';
 import {
   importWallet,
   setCurrentWalletLabel,
   setNewWalletLabel,
   setWallets,
-} from "@redux/walletSlice";
-import { useNavigation } from "@react-navigation/native";
-import {
-  addWalletToAsyncStorage,
-  getWalletsFromAsyncStorage,
-} from "@utils/asyncStorageHelper";
-import { encrypt } from "@utils/helpers";
+} from '@redux/walletSlice';
+import { useNavigation } from '@react-navigation/native';
+import { addWalletToAsyncStorage, getWalletsFromAsyncStorage } from '@utils/asyncStorageHelper';
+import { encrypt } from '@utils/helpers';
 
-export function WalletLoginScreen({
-  route,
-}: CommonStackScreenProps<"WalletLogin">) {
+export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin'>) {
   const dispatch = useAppDispatch();
   const [seedPhrase, setSeedPhrase] = useState<string>(
-    "liar knee pioneer critic water gospel another butter like purity garment member"
+    'liar knee pioneer critic water gospel another butter like purity garment member'
   );
-  const { walletLoading, walletError, wallets, walletObject, newWalletLabel } =
-    useAppSelector((state) => state.wallet);
+  const { walletLoading, walletError, wallets, walletObject, newWalletLabel } = useAppSelector(
+    state => state.wallet
+  );
   const navigation = useNavigation();
 
   const handleNextPress = async () => {
@@ -39,8 +35,8 @@ export function WalletLoginScreen({
         await dispatch(importWallet(seedPhrase)).unwrap();
         // if the user doesn't have a wallet yet
         if (!Object.keys(wallets).length) {
-          navigation.navigate("OnboardingStack", {
-            screen: "SetPassword",
+          navigation.navigate('OnboardingStack', {
+            screen: 'SetPassword',
             params: { seedPhrase },
           });
         } else if (route.params?.password) {
@@ -55,13 +51,13 @@ export function WalletLoginScreen({
             dispatch(setWallets(storedWallets));
           }
 
-          navigation.navigate("NewWalletStack", {
-            screen: "CreateWalletSuccess",
+          navigation.navigate('NewWalletStack', {
+            screen: 'CreateWalletSuccess',
             params: { isFirstWallet: false },
           });
         }
       } catch (err) {
-        console.log("wallet import error", err);
+        console.log('wallet import error', err);
       }
     }
   };
@@ -74,28 +70,23 @@ export function WalletLoginScreen({
       >
         {en.Save_recovery_phrase_screen_title}
       </ThemedText>
-      <ThemedText
-        theme={TextTheme.BodyText}
-        styleOverwrite={{ marginBottom: 26 }}
-      >
+      <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 26 }}>
         {en.Wallet_login_screen_subtitle}
       </ThemedText>
       {walletLoading ? (
         <ActivityIndicator
-          size={"large"}
+          size={'large'}
           color={colors.primaryAppColorLighter}
-          style={{ marginTop: "25%" }}
+          style={{ marginTop: '25%' }}
         />
       ) : walletError ? (
-        <ThemedText theme={TextTheme.NavigationText}>
-          Something went wrong
-        </ThemedText>
+        <ThemedText theme={TextTheme.NavigationText}>Something went wrong</ThemedText>
       ) : (
         <View
           style={{
             flex: 1,
-            justifyContent: "space-between",
-            marginBottom: "10%",
+            justifyContent: 'space-between',
+            marginBottom: '10%',
           }}
         >
           <TextInput
@@ -104,7 +95,7 @@ export function WalletLoginScreen({
             style={styles.input}
             keyboardType="default"
             keyboardAppearance="dark"
-            placeholderTextColor={"rgba(248, 249, 250, 0.3)"}
+            placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
             multiline
             autoFocus
             textAlignVertical="top"
@@ -130,10 +121,10 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 16,
     height: layout.isSmallDevice ? 236 : 336,
-    fontFamily: "Inter_500Medium",
+    fontFamily: 'Inter_500Medium',
     fontSize: 18,
     lineHeight: 22,
     color: colors.primaryFont,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
 });

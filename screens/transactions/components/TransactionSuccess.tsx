@@ -1,14 +1,14 @@
-import { Image, ScrollView, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { ModalScreenContainer } from "@shared/ModalScreenContainer";
-import { en } from "../../../en";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { styleVariables } from "@constants/StyleVariables";
-import { colors } from "@constants/Colors";
-import { satoshiToBitcoinString } from "@utils/helpers";
-import { Assets } from "@constants/CommonEnums";
-import { TransactionDetails } from "@hooks/useTransactionSending";
-import { useNavigation } from "@react-navigation/native";
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { ModalScreenContainer } from '@shared/ModalScreenContainer';
+import { en } from '../../../en';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { styleVariables } from '@constants/StyleVariables';
+import { colors } from '@constants/Colors';
+import { satoshiToBitcoinString } from '@utils/helpers';
+import { Assets } from '@constants/CommonEnums';
+import { TransactionDetails } from '@hooks/useTransactionSending';
+import { useNavigation } from '@react-navigation/native';
 
 type TransactionSuccessProps = {
   transactionDetails: TransactionDetails;
@@ -22,15 +22,12 @@ export function TransactionSuccess(props: TransactionSuccessProps) {
   return (
     <ModalScreenContainer title={en.Qr_flow_modal_title}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ThemedText
-          theme={TextTheme.Headline2Text}
-          styleOverwrite={{ paddingHorizontal: 20 }}
-        >
+        <ThemedText theme={TextTheme.Headline2Text} styleOverwrite={{ paddingHorizontal: 20 }}>
           {props.title}
         </ThemedText>
         <Image
-          source={require("@assets/images/success-graphics.png")}
-          style={{ alignSelf: "center" }}
+          source={require('@assets/images/success-graphics.png')}
+          style={{ alignSelf: 'center' }}
         />
 
         <View style={styles.technicalDetailsContainer}>
@@ -47,10 +44,7 @@ export function TransactionSuccess(props: TransactionSuccessProps) {
           </View>
 
           <View style={styles.stretchContainer}>
-            <ThemedText
-              theme={TextTheme.DetailText}
-              styleOverwrite={styles.labelText}
-            >
+            <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
               Transaction Hash
             </ThemedText>
             <ThemedText
@@ -63,20 +57,14 @@ export function TransactionSuccess(props: TransactionSuccessProps) {
           </View>
 
           <View style={styles.stretchContainer}>
-            <ThemedText
-              theme={TextTheme.DetailText}
-              styleOverwrite={styles.labelText}
-            >
+            <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
               Block
             </ThemedText>
             <ThemedText theme={TextTheme.LabelText}>224884</ThemedText>
           </View>
 
           <View style={styles.stretchContainer}>
-            <ThemedText
-              theme={TextTheme.DetailText}
-              styleOverwrite={styles.labelText}
-            >
+            <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
               Network
             </ThemedText>
             <ThemedText theme={TextTheme.LabelText}>Bitcoin Mainnet</ThemedText>
@@ -96,9 +84,9 @@ export function TransactionSuccess(props: TransactionSuccessProps) {
 
 const styles = StyleSheet.create({
   stretchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 20,
   },
   technicalDetailsContainer: {

@@ -1,16 +1,10 @@
-import {
-  StyleSheet,
-  Pressable,
-  SafeAreaView,
-  TextInput,
-  View,
-} from "react-native";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { Assets } from "@constants/CommonEnums";
-import { SvgIcons } from "@assets/images";
-import { colors } from "@constants/Colors";
-import { assetIcons } from "@constants/AssetIcons";
-import { safeParseFloat } from "@utils/helpers";
+import { StyleSheet, Pressable, SafeAreaView, TextInput, View } from 'react-native';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { Assets } from '@constants/CommonEnums';
+import { SvgIcons } from '@assets/images';
+import { colors } from '@constants/Colors';
+import { assetIcons } from '@constants/AssetIcons';
+import { safeParseFloat } from '@utils/helpers';
 
 export type ExchangeInputProps = {
   amount: number;
@@ -25,16 +19,13 @@ export function ExchangeInput(props: ExchangeInputProps) {
       <TextInput
         style={styles.amountInput}
         value={props.amount.toString()}
-        onChangeText={(value) => props.setAmount(safeParseFloat(value))}
+        onChangeText={value => props.setAmount(safeParseFloat(value))}
         keyboardType="decimal-pad"
         keyboardAppearance="dark"
       />
-      <Pressable
-        style={styles.assetSelector}
-        onPress={props.openAssetSelectorModal}
-      >
+      <Pressable style={styles.assetSelector} onPress={props.openAssetSelectorModal}>
         {assetIcons[props.asset]}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <ThemedText theme={TextTheme.CaptionText}>{props.asset}</ThemedText>
           <SvgIcons.General.ChevronDown />
         </View>
@@ -45,13 +36,13 @@ export function ExchangeInput(props: ExchangeInputProps) {
 
 const styles = StyleSheet.create({
   stretchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 20,
   },
   amountInput: {
-    fontFamily: "Inter_500Medium",
+    fontFamily: 'Inter_500Medium',
     fontSize: 28,
     lineHeight: 34,
     color: colors.secondaryFont,
@@ -65,8 +56,8 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingTop: 4,
     paddingBottom: 4,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

@@ -4,7 +4,7 @@
  * @see https://github.com/Rapsssito/react-native-tcp-socket
  */
 
-import TcpSocket from "react-native-tcp-socket";
+import TcpSocket from 'react-native-tcp-socket';
 
 /**
  * Constructor function. Mimicking nodejs/tls api
@@ -32,11 +32,11 @@ function connect(config, callback) {
 
   // we will save `noDelay` and proxy it to socket object when its actually created and connected:
   const realSetNoDelay = client.setNoDelay; // reference to real setter
-  client.setNoDelay = (noDelay) => {
+  client.setNoDelay = noDelay => {
     this._noDelay = noDelay;
   };
 
-  client.on("connect", () => {
+  client.on('connect', () => {
     realSetNoDelay.apply(client, [this._noDelay]);
   });
 

@@ -5,17 +5,17 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-} from "react-native";
-import { TextTheme, ThemedText } from "./ThemedText";
-import { colors } from "@constants/Colors";
-import { LinearGradient } from "expo-linear-gradient";
-import { styleVariables } from "@constants/StyleVariables";
+} from 'react-native';
+import { TextTheme, ThemedText } from './ThemedText';
+import { colors } from '@constants/Colors';
+import { LinearGradient } from 'expo-linear-gradient';
+import { styleVariables } from '@constants/StyleVariables';
 
 export enum ButtonTheme {
-  Primary = "Primary",
-  NoBorder = "NoBorder",
-  Disabled = "Disabled",
-  Filled = "Filled",
+  Primary = 'Primary',
+  NoBorder = 'NoBorder',
+  Disabled = 'Disabled',
+  Filled = 'Filled',
 }
 
 type AppButtonProps = {
@@ -35,7 +35,7 @@ export function AppButton(props: AppButtonProps) {
     <TouchableOpacity
       disabled={props.theme === ButtonTheme.Disabled}
       onPress={props.onPress}
-      style={[props.style, { width: props.fullWidth ? "100%" : "auto" }]}
+      style={[props.style, { width: props.fullWidth ? '100%' : 'auto' }]}
     >
       <LinearGradient
         colors={[
@@ -53,10 +53,7 @@ export function AppButton(props: AppButtonProps) {
         >
           {props.icon || null}
           {props.loading ? (
-            <ActivityIndicator
-              size="small"
-              color={colors.primaryAppColorLighter}
-            />
+            <ActivityIndicator size="small" color={colors.primaryAppColorLighter} />
           ) : (
             <ThemedText
               theme={TextTheme.ButtonText}
@@ -81,9 +78,9 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     borderRadius: styleVariables.borderRadius,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
 
@@ -95,10 +92,10 @@ const buttonColors = {
     gradientEndColor: colors.primaryAppColorDarker,
   },
   [ButtonTheme.NoBorder]: {
-    bg: "transparent",
+    bg: 'transparent',
     text: colors.primaryFont,
-    gradientStartColor: "transparent",
-    gradientEndColor: "transparent",
+    gradientStartColor: 'transparent',
+    gradientEndColor: 'transparent',
   },
   [ButtonTheme.Disabled]: {
     bg: colors.primaryBackgroundLighter,

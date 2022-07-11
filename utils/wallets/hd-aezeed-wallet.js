@@ -1,10 +1,10 @@
-import { AbstractHDElectrumWallet } from "./abstract-hd-electrum-wallet";
-import b58 from "bs58check";
-import BIP32Factory from "bip32";
-import * as ecc from "tiny-secp256k1";
+import { AbstractHDElectrumWallet } from './abstract-hd-electrum-wallet';
+import b58 from 'bs58check';
+import BIP32Factory from 'bip32';
+import * as ecc from 'tiny-secp256k1';
 
-const bitcoin = require("bitcoinjs-lib");
-const { CipherSeed } = require("aezeed");
+const bitcoin = require('bitcoinjs-lib');
+const { CipherSeed } = require('aezeed');
 const bip32 = BIP32Factory(ecc);
 
 /**
@@ -18,25 +18,23 @@ const bip32 = BIP32Factory(ecc);
  * @see https://github.com/lightningnetwork/lnd/blob/master/keychain/derivation.go
  */
 export class HDAezeedWallet extends AbstractHDElectrumWallet {
-  static type = "HDAezeedWallet";
-  static typeReadable = "HD Aezeed";
-  static segwitType = "p2wpkh";
+  static type = 'HDAezeedWallet';
+  static typeReadable = 'HD Aezeed';
+  static segwitType = 'p2wpkh';
   static derivationPath = "m/84'/0'/0'";
 
   setSecret(newSecret) {
     this.secret = newSecret.trim();
-    this.secret = this.secret
-      .replace(/[^a-zA-Z0-9]/g, " ")
-      .replace(/\s+/g, " ");
+    this.secret = this.secret.replace(/[^a-zA-Z0-9]/g, ' ').replace(/\s+/g, ' ');
     return this;
   }
 
   _getEntropyCached() {
     if (this._entropyHex) {
       // cache hit
-      return Buffer.from(this._entropyHex, "hex");
+      return Buffer.from(this._entropyHex, 'hex');
     } else {
-      throw new Error("Entropy cache is not filled");
+      throw new Error('Entropy cache is not filled');
     }
   }
 
@@ -51,24 +49,21 @@ export class HDAezeedWallet extends AbstractHDElectrumWallet {
     // bitcoinjs does not support zpub yet, so we just convert it from xpub
     let data = b58.decode(xpub);
     data = data.slice(4);
-    data = Buffer.concat([Buffer.from("04b24746", "hex"), data]);
+    data = Buffer.concat([Buffer.from('04b24746', 'hex'), data]);
     this._xpub = b58.encode(data);
 
     return this._xpub;
   }
 
   validateMnemonic() {
-    throw new Error("Use validateMnemonicAsync()");
+    throw new Error('Use validateMnemonicAsync()');
   }
 
   async validateMnemonicAsync() {
-    const passphrase = this.getPassphrase() || "aezeed";
+    const passphrase = this.getPassphrase() || 'aezeed';
     try {
-      const cipherSeed1 = await CipherSeed.fromMnemonic(
-        this.secret,
-        passphrase
-      );
-      this._entropyHex = cipherSeed1.entropy.toString("hex"); // save cache
+      const cipherSeed1 = await CipherSeed.fromMnemonic(this.secret, passphrase);
+      this._entropyHex = cipherSeed1.entropy.toString('hex'); // save cache
       return !!cipherSeed1.entropy;
     } catch (_) {
       return false;
@@ -76,21 +71,18 @@ export class HDAezeedWallet extends AbstractHDElectrumWallet {
   }
 
   async mnemonicInvalidPassword() {
-    const passphrase = this.getPassphrase() || "aezeed";
+    const passphrase = this.getPassphrase() || 'aezeed';
     try {
-      const cipherSeed1 = await CipherSeed.fromMnemonic(
-        this.secret,
-        passphrase
-      );
-      this._entropyHex = cipherSeed1.entropy.toString("hex"); // save cache
+      const cipherSeed1 = await CipherSeed.fromMnemonic(this.secret, passphrase);
+      this._entropyHex = cipherSeed1.entropy.toString('hex'); // save cache
     } catch (error) {
-      return error.message === "Invalid Password";
+      return error.message === 'Invalid Password';
     }
     return false;
   }
 
   async generate() {
-    throw new Error("Not implemented");
+    throw new Error('Not implemented');
   }
 
   _getNode0() {
@@ -107,8 +99,7 @@ export class HDAezeedWallet extends AbstractHDElectrumWallet {
 
   _getInternalAddressByIndex(index) {
     index = index * 1; // cast to int
-    if (this.internal_addresses_cache[index])
-      return this.internal_addresses_cache[index]; // cache hit
+    if (this.internal_addresses_cache[index]) return this.internal_addresses_cache[index]; // cache hit
 
     this._node1 = this._node1 || this._getNode1(); // cache
 
@@ -121,8 +112,7 @@ export class HDAezeedWallet extends AbstractHDElectrumWallet {
 
   _getExternalAddressByIndex(index) {
     index = index * 1; // cast to int
-    if (this.external_addresses_cache[index])
-      return this.external_addresses_cache[index]; // cache hit
+    if (this.external_addresses_cache[index]) return this.external_addresses_cache[index]; // cache hit
 
     this._node0 = this._node0 || this._getNode0(); // cache
 
@@ -166,7 +156,7 @@ export class HDAezeedWallet extends AbstractHDElectrumWallet {
     const root = bip32.fromSeed(this._getEntropyCached());
     const node = root.derivePath("m/1017'/0'/6'/0/0");
 
-    return node.publicKey.toString("hex");
+    return node.publicKey.toString('hex');
   }
 
   // since its basically a bip84 wallet, we allow all other standard BIP84 features:

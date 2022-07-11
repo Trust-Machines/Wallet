@@ -1,18 +1,18 @@
-import { ActivityIndicator, StyleSheet, TextInput, View } from "react-native";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { QrStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "@shared/ModalScreenContainer";
-import { en } from "../../en";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { colors } from "@constants/Colors";
-import { layout } from "@constants/Layout";
-import { Assets } from "@constants/CommonEnums";
-import useTransactionSending from "@hooks/useTransactionSending";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { styleVariables } from "@constants/StyleVariables";
-import { safeParseFloat } from "@utils/helpers";
-import { getTransactions } from "@redux/transactionsSlice";
+import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { QrStackScreenProps } from '../../types';
+import { ModalScreenContainer } from '@shared/ModalScreenContainer';
+import { en } from '../../en';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { colors } from '@constants/Colors';
+import { layout } from '@constants/Layout';
+import { Assets } from '@constants/CommonEnums';
+import useTransactionSending from '@hooks/useTransactionSending';
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { styleVariables } from '@constants/StyleVariables';
+import { safeParseFloat } from '@utils/helpers';
+import { getTransactions } from '@redux/transactionsSlice';
 
 // enum Tokens {
 //   TKN1 = "TKN1",
@@ -23,10 +23,7 @@ import { getTransactions } from "@redux/transactionsSlice";
 //   token: Tokens | undefined;
 // };
 
-export function ConfirmSendModal({
-  navigation,
-  route,
-}: QrStackScreenProps<"ConfirmSend">) {
+export function ConfirmSendModal({ navigation, route }: QrStackScreenProps<'ConfirmSend'>) {
   const { address } = route.params;
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -34,23 +31,20 @@ export function ConfirmSendModal({
   //   undefined
   // );
   const [amount, setAmount] = useState<string>(
-    route.params.amount.length ? route.params.amount : "0"
+    route.params.amount.length ? route.params.amount : '0'
   );
-  const { walletObject } = useAppSelector((state) => state.wallet);
+  const { walletObject } = useAppSelector(state => state.wallet);
   const dispatch = useAppDispatch();
 
   const handleTransactionSending = async () => {
     setError(false);
     setLoading(true);
-    const result = await useTransactionSending(
-      { address, amount },
-      walletObject
-    );
+    const result = await useTransactionSending({ address, amount }, walletObject);
 
     if (result.success && result.data) {
       // TODO
       await dispatch(getTransactions(walletObject));
-      navigation.navigate("TransactionSuccess", result.data);
+      navigation.navigate('TransactionSuccess', result.data);
     } else {
       setError(true);
     }
@@ -100,8 +94,8 @@ export function ConfirmSendModal({
       <View
         style={{
           flex: 1,
-          justifyContent: "space-between",
-          marginBottom: layout.isSmallDevice ? 0 : "10%",
+          justifyContent: 'space-between',
+          marginBottom: layout.isSmallDevice ? 0 : '10%',
         }}
       >
         <View>
@@ -110,23 +104,20 @@ export function ConfirmSendModal({
             styleOverwrite={{
               marginTop: layout.isSmallDevice ? 4 : 31,
               marginBottom: 4,
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             {en.Common_send}
           </ThemedText>
           {route.params.amount.length ? (
-            <ThemedText
-              theme={TextTheme.Headline1Text}
-              styleOverwrite={{ marginBottom: 4 }}
-            >
-              {amount + " " + Assets.BTC}
+            <ThemedText theme={TextTheme.Headline1Text} styleOverwrite={{ marginBottom: 4 }}>
+              {amount + ' ' + Assets.BTC}
             </ThemedText>
           ) : (
             <TextInput
               style={[styles.inputContainer, styles.amountInput]}
               value={amount.toString()}
-              onChangeText={(value) => setAmount(value)}
+              onChangeText={value => setAmount(value)}
               keyboardType="decimal-pad"
               keyboardAppearance="dark"
             />
@@ -137,17 +128,17 @@ export function ConfirmSendModal({
             styleOverwrite={{
               marginBottom: 20,
               color: colors.primaryAppColorLighter,
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
-            {amount.length ? "~$31.5" : ""}
+            {amount.length ? '~$31.5' : ''}
           </ThemedText>
           <ThemedText
             theme={TextTheme.LabelText}
             styleOverwrite={{
               marginTop: 20,
               marginBottom: 4,
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             {en.Common_to}
@@ -156,24 +147,21 @@ export function ConfirmSendModal({
             theme={TextTheme.CaptionText}
             styleOverwrite={{
               color: colors.secondaryFont,
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             {address}
           </ThemedText>
           <View style={{ marginTop: 40 }}>
             {loading ? (
-              <ActivityIndicator
-                size={"large"}
-                color={colors.primaryAppColorLighter}
-              />
+              <ActivityIndicator size={'large'} color={colors.primaryAppColorLighter} />
             ) : error ? (
               <ThemedText
                 theme={TextTheme.LabelText}
                 styleOverwrite={{
                   marginTop: 20,
                   marginBottom: 4,
-                  textAlign: "center",
+                  textAlign: 'center',
                   color: colors.error,
                 }}
               >
@@ -195,12 +183,10 @@ export function ConfirmSendModal({
         </View>
         <AppButton
           text={`${en.Common_send}${
-            safeParseFloat(amount) > 0 ? " " + amount + " " + Assets.BTC : ""
+            safeParseFloat(amount) > 0 ? ' ' + amount + ' ' + Assets.BTC : ''
           }`}
           theme={
-            loading || safeParseFloat(amount) <= 0
-              ? ButtonTheme.Disabled
-              : ButtonTheme.Primary
+            loading || safeParseFloat(amount) <= 0 ? ButtonTheme.Disabled : ButtonTheme.Primary
           }
           onPress={handleTransactionSending}
           fullWidth
@@ -217,11 +203,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.disabled,
     paddingHorizontal: 10,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 4,
   },
   amountInput: {
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: 'Inter_600SemiBold',
     fontSize: 32,
     lineHeight: 39,
     color: colors.primaryFont,

@@ -1,12 +1,12 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { colors } from "@constants/Colors";
-import { styleVariables } from "@constants/StyleVariables";
-import { ExchangeStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "@shared/ModalScreenContainer";
-import { en } from "../../en";
-import { Assets } from "@constants/CommonEnums";
-import { assetIcons } from "@constants/AssetIcons";
+import { Pressable, StyleSheet, View } from 'react-native';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { colors } from '@constants/Colors';
+import { styleVariables } from '@constants/StyleVariables';
+import { ExchangeStackScreenProps } from '../../types';
+import { ModalScreenContainer } from '@shared/ModalScreenContainer';
+import { en } from '../../en';
+import { Assets } from '@constants/CommonEnums';
+import { assetIcons } from '@constants/AssetIcons';
 
 export type TokenProps = {
   amount: number;
@@ -17,7 +17,7 @@ export type TokenProps = {
 export function ExchangeSelectTokenModal({
   navigation,
   route,
-}: ExchangeStackScreenProps<"ExchangeSelectToken">) {
+}: ExchangeStackScreenProps<'ExchangeSelectToken'>) {
   function handleSelectToken(token: Assets): void {
     const { type, onGoBack } = route.params;
     navigation.goBack();
@@ -43,16 +43,8 @@ export function ExchangeSelectTokenModal({
 
   return (
     <ModalScreenContainer title={en.Exchange_screen_modal_title}>
-      <Token
-        token={Assets.STX}
-        amount={0}
-        onSelectToken={() => handleSelectToken(Assets.STX)}
-      />
-      <Token
-        token={Assets.BTC}
-        amount={0}
-        onSelectToken={() => handleSelectToken(Assets.BTC)}
-      />
+      <Token token={Assets.STX} amount={0} onSelectToken={() => handleSelectToken(Assets.STX)} />
+      <Token token={Assets.BTC} amount={0} onSelectToken={() => handleSelectToken(Assets.BTC)} />
     </ModalScreenContainer>
   );
 }
@@ -62,9 +54,9 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: styleVariables.borderRadius,
     backgroundColor: colors.primaryBackgroundLighter,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 16,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 20,
   },
 });

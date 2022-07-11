@@ -1,4 +1,4 @@
-import { layout } from "./Layout";
+import { layout } from './Layout';
 
 export const styleVariables = {
   borderRadius: 8,

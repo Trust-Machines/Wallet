@@ -1,9 +1,9 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { colors } from "@constants/Colors";
-import { SvgIcons } from "@assets/images";
-import { styleVariables } from "@constants/StyleVariables";
-import { formatAddress } from "@utils/helpers";
+import { Pressable, StyleSheet, View } from 'react-native';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { colors } from '@constants/Colors';
+import { SvgIcons } from '@assets/images';
+import { styleVariables } from '@constants/StyleVariables';
+import { formatAddress } from '@utils/helpers';
 
 export type ContactProps = {
   name: string;
@@ -33,9 +33,7 @@ export function Contact(props: ContactProps) {
       <SvgIcons.Assets.Btc /*placeholder*/ />
       <View style={{ marginLeft: 16 }}>
         <ThemedText theme={TextTheme.ButtonText}>{props.name}</ThemedText>
-        <ThemedText theme={TextTheme.ButtonText}>
-          {formatAddress(props.address)}
-        </ThemedText>
+        <ThemedText theme={TextTheme.ButtonText}>{formatAddress(props.address)}</ThemedText>
       </View>
     </Pressable>
   );
@@ -46,8 +44,8 @@ const styles = StyleSheet.create({
     height: 64,
     paddingHorizontal: 16,
     borderRadius: styleVariables.borderRadius,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
   },
 });
