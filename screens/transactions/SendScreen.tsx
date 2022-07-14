@@ -1,4 +1,11 @@
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { SendStackScreenProps } from '../../types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
@@ -13,6 +20,13 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import useTransactionSending from '@hooks/useTransactionSending';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { getTransactions } from '@redux/transactionsSlice';
+const ElectrumHelper = require('@utils/ElectrumHelper');
+
+interface Fee {
+  key: 'slow' | 'medium' | 'fast';
+  label: string;
+  value: number | undefined;
+}
 
 export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
   const [amount, setAmount] = useState('0');
@@ -22,8 +36,18 @@ export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
   const [addressInputValue, setAddressInputValue] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const [fees, setFees] = useState<Fee[]>([
+    { label: 'Low', key: 'slow', value: undefined },
+    { label: 'Med', key: 'medium', value: undefined },
+    { label: 'High', key: 'fast', value: undefined },
+  ]);
+  const [selectedFee, setSelectedFee] = useState<'slow' | 'medium' | 'fast'>('slow');
   const { walletObject } = useAppSelector(state => state.wallet);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    fetchFees();
+  }, []);
 
   useEffect(() => {
     if (addressInputValue) {
@@ -31,11 +55,25 @@ export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
     }
   }, [addressInputValue]);
 
+  const fetchFees = async () => {
+    try {
+      await ElectrumHelper.waitTillConnected();
+      const result = await ElectrumHelper.estimateFees();
+      setFees([
+        { label: 'Low', key: 'slow', value: result.slow },
+        { label: 'Med', key: 'medium', value: result.medium },
+        { label: 'High', key: 'fast', value: result.fast },
+      ]);
+    } catch (err) {
+      console.log('fee error', err);
+    }
+  };
+
   const handleTransactionSending = async () => {
     setError(false);
     setLoading(true);
     const address = selectedContactAddress ?? addressInputValue;
-    const result = await useTransactionSending({ address, amount }, walletObject);
+    const result = await useTransactionSending({ address, amount, selectedFee }, walletObject);
 
     if (result.success && result.data) {
       // TODO
@@ -84,7 +122,51 @@ export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
             alignSelf: 'flex-start',
           }}
         >
-          {en.Common_to}:
+          Fees:
+        </ThemedText>
+        <View style={{ flexDirection: 'row' }}>
+          {fees.map((fee, i) => {
+            return (
+              <Pressable
+                key={fee.key}
+                onPress={() => setSelectedFee(fee.key)}
+                style={{
+                  flex: 1,
+                  backgroundColor:
+                    fee.key === selectedFee
+                      ? colors.primaryAppColorDarker
+                      : colors.primaryBackgroundLighter,
+                  height: 33,
+                  marginHorizontal: i === 1 ? 12 : 0,
+                  borderRadius: styleVariables.borderRadius,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}
+              >
+                <ThemedText theme={TextTheme.CaptionText}>
+                  {fee.label} {fee.value ? `(${fee.value})` : ''}
+                </ThemedText>
+                {!fee.value && (
+                  <ActivityIndicator
+                    size="small"
+                    color={colors.primaryAppColorLighter}
+                    style={{ marginLeft: 4 }}
+                  />
+                )}
+              </Pressable>
+            );
+          })}
+        </View>
+        <ThemedText
+          theme={TextTheme.LabelText}
+          styleOverwrite={{
+            marginTop: 20,
+            marginBottom: 4,
+            alignSelf: 'flex-start',
+          }}
+        >
+          Recipient address:
         </ThemedText>
         <View style={{ position: 'relative', marginBottom: 24 }}>
           <TextInput
@@ -96,16 +178,19 @@ export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
             placeholder={en.Common_search_placeholder}
             placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
           />
-          {addressInputValue ? (
-            <Pressable
-              onPress={() => setAddressInputValue('')}
-              style={{ position: 'absolute', right: 0 }}
-            >
-              <SvgIcons.General.ClearSearch />
-            </Pressable>
-          ) : (
+          {
+            !!addressInputValue && (
+              <Pressable
+                onPress={() => setAddressInputValue('')}
+                style={{ position: 'absolute', right: 0 }}
+              >
+                <SvgIcons.General.ClearSearch />
+              </Pressable>
+            )
+            /*) : (
             <SvgIcons.General.Search style={{ position: 'absolute', right: 0 }} />
-          )}
+          )*/
+          }
         </View>
         <View style={styles.contactsHeader}>
           <ThemedText theme={TextTheme.LabelText}>{en.Send_screen_select_contact_label}</ThemedText>
