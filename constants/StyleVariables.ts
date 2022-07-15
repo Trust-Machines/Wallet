@@ -6,4 +6,5 @@ export const styleVariables = {
   headerHeight: layout.isSmallDevice ? 89 : 109,
   bottomTabHeight: 80,
   bottomTabBottomOffset: layout.isSmallDevice ? 4 : 34,
+  commonSpacing: 16
 };

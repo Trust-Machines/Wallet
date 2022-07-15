@@ -32,7 +32,7 @@ export function TransactionItem({ transaction }: any) {
         borderRadius: styleVariables.borderRadius,
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 8,
+        marginBottom: 16,
       }}
       key={hash}
     >

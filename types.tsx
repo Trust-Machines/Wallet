@@ -27,6 +27,7 @@ export type RootStackParamList = {
   WalletsStack: NavigatorScreenParams<WalletsStackParamList>;
   NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
   TransactionDetails: { transactionHash: string };
+  Settings: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -39,7 +40,8 @@ export type RootTabParamList = {
   Collectibles: undefined;
   ExchangeTab: undefined;
   DefiBrowser: undefined;
-  Settings: undefined;
+  //Settings: undefined;
+  Transactions: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
@@ -101,7 +103,6 @@ export type ReceiveStackScreenProps<Screen extends keyof ReceiveStackParamList> 
   NativeStackScreenProps<ReceiveStackParamList, Screen>;
 
 export type SendStackParamList = {
-  Send: undefined;
   SendSuccess: TransactionDetails;
 };
 

@@ -13,13 +13,20 @@ export function HomeHeader() {
 
   return (
     <View style={styles.container}>
-      <SvgIcons.TabBar.Wallet style={{ marginLeft: -20 }} />
-      <Pressable onPress={() => navigation.navigate('WalletsStack', { screen: 'WalletSelector' })}>
-        <Text style={styles.walletName}>{currentWalletLabel ?? formatAddress(address)}</Text>
-        <Text style={styles.address}>{address.length ? `${formatAddress(address)}` : ''}</Text>
+      <Pressable
+        style={[styles.innerContainer, { flex: 1, marginRight: 8, paddingHorizontal: 10 }]}
+        onPress={() => navigation.navigate('WalletsStack', { screen: 'WalletSelector' })}
+      >
+        <SvgIcons.TabBar.Wallet />
+        <Text style={styles.walletName}>{currentWalletLabel ?? formatAddress(address)} </Text>
+        <Text style={styles.address}>{address.length ? `(${formatAddress(address)})` : ''}</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('QrStack', { screen: 'PresentQr' })}>
-        <SvgIcons.General.Qr style={{ marginRight: -20 }} />
+
+      <Pressable
+        style={[styles.innerContainer, { width: 40 }]}
+        onPress={() => navigation.navigate('Settings')}
+      >
+        <SvgIcons.TabBar.Settings />
       </Pressable>
     </View>
   );
@@ -29,8 +36,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     height: styleVariables.headerHeight - styleVariables.statusBarHeight,
+  },
+  innerContainer: {
+    backgroundColor: colors.primaryBackgroundLighter,
+    height: 40,
+    borderRadius: styleVariables.borderRadius,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   walletName: {
     fontFamily: 'Inter_700Bold',
@@ -38,6 +51,7 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     color: colors.primaryFont,
     textAlign: 'center',
+    marginLeft: 10,
   },
   address: {
     fontFamily: 'Inter_400Regular',

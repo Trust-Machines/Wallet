@@ -22,6 +22,7 @@ import Close from './close.svg';
 import CopyToClipboard from './copy-to-clipboard.svg';
 import Copy from './copy.svg';
 import ExternalLink from './external-link.svg';
+import ExchangeArrows from './exchange-arrows.svg';
 import Exchange from './exchange.svg';
 import ExchangeColored from './exchange-colored.svg';
 import Globe60 from './globe-60.svg';
@@ -32,6 +33,7 @@ import Sent from './sent.svg';
 import Received from './received.svg';
 import Pending from './pending.svg';
 import Failed from './failed.svg';
+import Transaction from './transaction.svg';
 
 export const SvgIcons = {
   TabBar: {
@@ -47,6 +49,8 @@ export const SvgIcons = {
     ActiveSettings,
     Polygon,
     PolygonOutlined,
+    ExchangeArrows,
+    Transaction,
   },
   Transactions: { Sent, Received, Pending, Failed },
   Assets: { Btc, Stx },

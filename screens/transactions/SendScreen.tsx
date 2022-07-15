@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { SendStackScreenProps } from '../../types';
+import { RootTabScreenProps, SendStackScreenProps } from '../../types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { styleVariables } from '@constants/StyleVariables';
@@ -20,6 +20,8 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import useTransactionSending from '@hooks/useTransactionSending';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { getTransactions } from '@redux/transactionsSlice';
+import { ScreenContainer } from '@shared/ScreenContainer';
+import { HomeHeader } from '@screens/home/components/HomeHeader';
 const ElectrumHelper = require('@utils/ElectrumHelper');
 
 interface Fee {
@@ -28,7 +30,7 @@ interface Fee {
   value: number | undefined;
 }
 
-export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
+export function SendScreen({ navigation }: RootTabScreenProps<'Transactions'>) {
   const [amount, setAmount] = useState<string>('0');
   const [selectedContactAddress, setSelectedContantAddress] = useState<string | undefined>(
     undefined
@@ -78,7 +80,7 @@ export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
     if (result.success && result.data) {
       // TODO
       await dispatch(getTransactions(walletObject));
-      navigation.navigate('SendSuccess', result.data);
+      navigation.navigate('SendStack', { screen: 'SendSuccess', params: result.data });
     } else {
       setError(true);
     }
@@ -87,7 +89,8 @@ export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
   };
 
   return (
-    <ModalScreenContainer title={en.Common_send}>
+    <ScreenContainer withTab>
+      <HomeHeader />
       <ScrollView showsVerticalScrollIndicator={false}>
         {(error || loading) && (
           <ThemedText theme={TextTheme.LabelText}>
@@ -242,7 +245,7 @@ export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
         style={{ paddingBottom: 20 }}
         onPress={handleTransactionSending}
       />
-    </ModalScreenContainer>
+    </ScreenContainer>
   );
 }
 

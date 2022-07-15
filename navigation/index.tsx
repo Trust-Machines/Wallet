@@ -132,11 +132,7 @@ function RootNavigator() {
         component={OnboardingStackView}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="NewWalletStack"
-        component={NewWalletStackView}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="NewWalletStack" component={NewWalletStackView} />
       <Stack.Screen
         name="ExchangeStack"
         component={ExchangeStackView}
@@ -190,6 +186,16 @@ function RootNavigator() {
         component={TransactionDetails}
         options={{
           title: en.Header_title_transaction_details,
+          headerStyle: styles.header,
+          headerTintColor: colors.primaryFont,
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          title: en.Header_title_settings,
           headerStyle: styles.header,
           headerTintColor: colors.primaryFont,
           headerTitleAlign: 'center',
@@ -295,13 +301,13 @@ const SendStackView = () => (
       headerShown: false,
     }}
   >
-    <SendStack.Screen
+    {/* <SendStack.Screen
       name="Send"
       component={SendScreen}
       options={{
         presentation: 'card',
       }}
-    />
+    /> */}
     <SendStack.Screen
       name="SendSuccess"
       component={SendSuccessModal}
@@ -437,16 +443,71 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
+        name="DefiBrowser"
+        component={DefiBrowserScreen}
+        options={({ navigation }: RootTabScreenProps<'DefiBrowser'>) => ({
+          title: 'Defi Browser',
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, focused }) =>
+            focused ? <SvgIcons.TabBar.ActiveDefi style={styles.glow} /> : <SvgIcons.TabBar.Defi />,
+          headerShown: false,
+        })}
+      />
+      <BottomTab.Screen
+        name="ExchangeTab"
+        component={ExchangeScreen}
+        options={({ navigation }: RootTabScreenProps<'ExchangeTab'>) => ({
+          title: en.Header_title_exchange,
+          headerStyle: styles.header,
+          headerTintColor: colors.primaryFont,
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <SvgIcons.TabBar.ExchangeArrows style={styles.glow} />
+            ) : (
+              <SvgIcons.TabBar.ExchangeArrows />
+            ),
+        })}
+      />
+
+      <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
           headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View
+              style={{
+                position: 'relative',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                marginTop: -40,
+              }}
+            >
+              {focused ? (
+                <SvgIcons.TabBar.Polygon style={styles.glow} />
+              ) : (
+                <SvgIcons.TabBar.PolygonOutlined style={styles.glow} />
+              )}
+              <SvgIcons.TabBar.Stacks style={{ position: 'absolute' }} />
+            </View>
+          ),
+        })}
+      />
+
+      <BottomTab.Screen
+        name="Transactions"
+        component={SendScreen}
+        options={({ navigation }: RootTabScreenProps<'Transactions'>) => ({
+          title: en.Header_title_settings,
+          headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
-              <SvgIcons.TabBar.ActiveWallet style={styles.glow} />
+              <SvgIcons.TabBar.Transaction style={styles.glow} />
             ) : (
-              <SvgIcons.TabBar.Wallet />
+              <SvgIcons.TabBar.Transaction />
             ),
         })}
       />
@@ -461,73 +522,6 @@ function BottomTabNavigator() {
               <SvgIcons.TabBar.ActiveCollectibles style={styles.glow} />
             ) : (
               <SvgIcons.TabBar.Collectibles />
-            ),
-          headerStyle: styles.header,
-          headerTintColor: colors.primaryFont,
-        })}
-      />
-
-      <BottomTab.Screen
-        name="ExchangeTab"
-        component={ExchangeScreen}
-        listeners={({ navigation, route }) => ({
-          tabPress: e => {
-            e.preventDefault();
-            navigation.navigate(navigation.isFocused() ? 'Home' : 'ExchangeTab');
-          },
-        })}
-        options={({ navigation }: RootTabScreenProps<'ExchangeTab'>) => ({
-          title: en.Header_title_exchange,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, focused }) => (
-            <View
-              style={{
-                position: 'relative',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flex: 1,
-                marginTop: -40,
-              }}
-            >
-              {focused ? (
-                <>
-                  <SvgIcons.TabBar.PolygonOutlined style={styles.glow} />
-                  <SvgIcons.TabBar.Close style={{ position: 'absolute' }} />
-                </>
-              ) : (
-                <>
-                  <SvgIcons.TabBar.Polygon style={styles.glow} />
-                  <SvgIcons.TabBar.Stacks style={{ position: 'absolute' }} />
-                </>
-              )}
-            </View>
-          ),
-          headerStyle: styles.header,
-          headerTintColor: colors.primaryFont,
-        })}
-      />
-      <BottomTab.Screen
-        name="DefiBrowser"
-        component={DefiBrowserScreen}
-        options={({ navigation }: RootTabScreenProps<'DefiBrowser'>) => ({
-          title: 'Defi Browser',
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, focused }) =>
-            focused ? <SvgIcons.TabBar.ActiveDefi style={styles.glow} /> : <SvgIcons.TabBar.Defi />,
-          headerShown: false,
-        })}
-      />
-      <BottomTab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
-          title: en.Header_title_settings,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <SvgIcons.TabBar.ActiveSettings style={styles.glow} />
-            ) : (
-              <SvgIcons.TabBar.Settings />
             ),
           headerStyle: styles.header,
           headerTintColor: colors.primaryFont,
