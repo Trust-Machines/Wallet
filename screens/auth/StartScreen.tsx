@@ -110,14 +110,14 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
         <View style={{ marginTop: 'auto' }}>
           <AppButton
             onPress={() => navigation.navigate('AcceptTOS', { flow: 'generate' })}
-            text={en.Create_new_wallet_button_text}
+            text={en.Generate_new_wallet_button_text}
             theme={ButtonTheme.Primary}
             fullWidth
             marginBottom={9}
           />
           <AppButton
             onPress={() => navigation.navigate('AcceptTOS', { flow: 'import' })}
-            text={en.User_has_wallet_button_text}
+            text={en.Import_wallet_button_text}
             theme={ButtonTheme.NoBorder}
             fullWidth
           />

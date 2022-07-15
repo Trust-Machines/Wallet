@@ -14,10 +14,11 @@ export const en = {
   Common_next: 'Next',
   Common_success: 'Success!',
   Common_balance: 'Balance',
+  Common_unlock: 'Unlock',
   Wallet_name: 'TrustMachines',
   Start_screen_title: 'Wallet Value Proposition Sentence',
-  Create_new_wallet_button_text: 'Create new wallet',
-  User_has_wallet_button_text: 'I already have a wallet',
+  Generate_new_wallet_button_text: 'Generate new wallet',
+  Import_wallet_button_text: 'Import wallet',
   Biometrics_screen_title: 'Protect Your Wallet',
   Biometrics_screen_subtitle:
     'Adding a biometric security will ensure that you are the only one that can access your wallet.',
