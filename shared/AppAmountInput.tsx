@@ -1,4 +1,6 @@
 import { colors } from '@constants/Colors';
+import { safeParseFloat } from '@utils/helpers';
+import { useState } from 'react';
 import { TextInput, View, StyleSheet, ViewStyle } from 'react-native';
 import { TextTheme, ThemedText } from './ThemedText';
 
@@ -7,16 +9,22 @@ export const AppAmountInput = ({
   setAmount,
   labelText,
   style,
+  error,
+  errorMessage,
 }: {
   amount: string;
   setAmount(value: string): void;
   labelText: string;
   style?: ViewStyle;
+  error?: boolean;
+  errorMessage?: string;
 }) => {
+  const [focused, setFocused] = useState<boolean>(false);
+
   return (
     <View style={style}>
       <ThemedText
-        theme={TextTheme.LabelText}
+        theme={TextTheme.CaptionText}
         styleOverwrite={{
           marginBottom: 10,
           color: colors.primaryAppColorLighter,
@@ -24,9 +32,19 @@ export const AppAmountInput = ({
       >
         {labelText}
       </ThemedText>
-      <View style={{ flexDirection: 'row', position: 'relative' }}>
+      <View style={{ position: 'relative' }}>
         <TextInput
-          style={[styles.inputContainer, styles.amountInput]}
+          style={[
+            styles.inputContainer,
+            styles.amountInput,
+            {
+              borderBottomColor: error
+                ? colors.error
+                : focused || safeParseFloat(amount) > 0
+                ? colors.primaryAppColorDarker
+                : colors.disabled,
+            },
+          ]}
           value={amount}
           onChangeText={value => setAmount(value)}
           keyboardType="decimal-pad"
@@ -34,7 +52,22 @@ export const AppAmountInput = ({
           maxLength={12}
           placeholder={'0'}
           placeholderTextColor={colors.secondaryFont}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          selectionColor={colors.primaryAppColorDarker}
         />
+        {error && errorMessage && (
+          <ThemedText
+            theme={TextTheme.CaptionText}
+            styleOverwrite={{
+              color: colors.error,
+              position: 'absolute',
+              bottom: -18,
+            }}
+          >
+            {errorMessage}
+          </ThemedText>
+        )}
         <ThemedText
           theme={TextTheme.NavigationText}
           styleOverwrite={{
@@ -54,14 +87,11 @@ export const AppAmountInput = ({
 const styles = StyleSheet.create({
   inputContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.disabled,
-    flex: 1,
   },
   amountInput: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 32,
     color: colors.primaryFont,
-    lineHeight: 39,
     paddingBottom: 10,
   },
 });

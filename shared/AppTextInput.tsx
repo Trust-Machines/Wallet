@@ -1,6 +1,7 @@
+import { SvgIcons } from '@assets/images';
 import { colors } from '@constants/Colors';
 import { useState } from 'react';
-import { TextInput, View, StyleSheet, ViewStyle } from 'react-native';
+import { TextInput, View, StyleSheet, ViewStyle, Pressable } from 'react-native';
 import { TextTheme, ThemedText } from './ThemedText';
 
 export const AppTextInput = ({
@@ -13,6 +14,7 @@ export const AppTextInput = ({
   multiline,
   error,
   errorMessage,
+  clearable,
 }: {
   labelText: string;
   value: string;
@@ -23,6 +25,7 @@ export const AppTextInput = ({
   multiline?: boolean;
   error?: boolean;
   errorMessage?: string;
+  clearable?: boolean;
 }) => {
   const [focused, setFocused] = useState<boolean>(false);
 
@@ -37,7 +40,7 @@ export const AppTextInput = ({
       >
         {labelText}
       </ThemedText>
-      <View style={{ flexDirection: 'row', position: 'relative' }}>
+      <View style={{ position: 'relative' }}>
         <TextInput
           style={[
             styles.inputContainer,
@@ -68,14 +71,27 @@ export const AppTextInput = ({
             theme={TextTheme.CaptionText}
             styleOverwrite={{
               color: colors.error,
-              position: 'absolute',
-              bottom: -18,
             }}
           >
             {errorMessage}
           </ThemedText>
         )}
-
+        {clearable && value.length > 0 && (
+          <Pressable
+            onPress={() => setValue('')}
+            style={{ position: 'absolute', right: 0, bottom: 4 }}
+          >
+            <SvgIcons.General.ClearInput />
+          </Pressable>
+        )}
+        {/* {clearable && value.length && (
+          <Pressable
+            onPress={() => setValue('')}
+            style={{ position: 'absolute', right: 0, bottom: 4 }}
+          >
+            <SvgIcons.General.ClearInput />
+          </Pressable>
+        )} */}
         {/* <ThemedText
           theme={TextTheme.NavigationText}
           styleOverwrite={{
@@ -95,13 +111,11 @@ export const AppTextInput = ({
 const styles = StyleSheet.create({
   inputContainer: {
     borderBottomWidth: 1,
-    flex: 1,
   },
   input: {
     fontFamily: 'Inter_500Medium',
     fontSize: 18,
     color: colors.primaryFont,
-    lineHeight: 22,
-    paddingBottom: 10,
+    paddingBottom: 8,
   },
 });

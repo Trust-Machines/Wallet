@@ -1,4 +1,4 @@
-import { Button, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { RootTabScreenProps } from '../../types';
 import { en } from '../../en';
@@ -12,6 +12,7 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { HomeHeader } from '@screens/home/components/HomeHeader';
 import { AppAmountInput } from '@shared/AppAmountInput';
+import { AppTextInput } from '@shared/AppTextInput';
 
 export function SendScreen({ navigation }: RootTabScreenProps<'Transactions'>) {
   const [amount, setAmount] = useState<string>('0');
@@ -43,37 +44,17 @@ export function SendScreen({ navigation }: RootTabScreenProps<'Transactions'>) {
           labelText={`${en.Common_amount}:`}
           style={{ marginTop: 10 }}
         />
-        <ThemedText
-          theme={TextTheme.LabelText}
-          styleOverwrite={{
-            marginTop: 20,
-            marginBottom: 4,
-            alignSelf: 'flex-start',
-          }}
-        >
-          Recipient address:
-        </ThemedText>
-        <View style={{ position: 'relative', marginBottom: 24 }}>
-          <TextInput
-            style={[styles.inputContainer, styles.searchInput]}
-            value={addressInputValue.toString()}
-            onChangeText={value => setAddressInputValue(value)}
-            keyboardType="default"
-            keyboardAppearance="dark"
-            placeholder={en.Common_search_placeholder}
-            placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
-          />
-          {!!addressInputValue && (
-            <Pressable
-              onPress={() => setAddressInputValue('')}
-              style={{ position: 'absolute', right: 0 }}
-            >
-              <SvgIcons.General.ClearSearch />
-            </Pressable>
-          )}
-        </View>
+        <AppTextInput
+          value={addressInputValue.toString()}
+          setValue={value => setAddressInputValue(value)}
+          labelText={'Recipient address:'}
+          style={{ marginVertical: 16 }}
+          clearable={true}
+        />
         <View style={styles.contactsHeader}>
-          <ThemedText theme={TextTheme.LabelText}>{en.Send_screen_select_contact_label}</ThemedText>
+          <ThemedText theme={TextTheme.CaptionText}>
+            {en.Send_screen_select_contact_label}
+          </ThemedText>
           <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: colors.primaryAppColorDarker }}
@@ -138,33 +119,10 @@ export function SendScreen({ navigation }: RootTabScreenProps<'Transactions'>) {
 }
 
 const styles = StyleSheet.create({
-  amountInput: {
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 32,
-    lineHeight: 39,
-    color: colors.primaryFont,
-    height: 60,
-  },
-  searchInput: {
-    fontFamily: 'Inter_500Medium',
-    fontSize: 18,
-    lineHeight: 22,
-    color: colors.primaryFont,
-    height: 40,
-    paddingRight: 40,
-  },
-  inputContainer: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: styleVariables.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-  },
   contactsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginBottom: 16,
+    marginVertical: 16,
   },
 });

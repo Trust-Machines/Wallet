@@ -16,7 +16,7 @@ import Binance from './binance.svg';
 import RampNetwork from './ramp-network.svg';
 import ChevronDown from './chevron-down.svg';
 import ChevronRight from './chevron-right.svg';
-import ClearSearch from './clear-search.svg';
+import ClearInput from './clear-input.svg';
 import CloseModal from './close-modal.svg';
 import Close from './close.svg';
 import CopyToClipboard from './copy-to-clipboard.svg';
@@ -59,7 +59,7 @@ export const SvgIcons = {
   General: {
     ChevronDown,
     ChevronRight,
-    ClearSearch,
+    ClearInput,
     CloseModal,
 
     CopyToClipboard,
