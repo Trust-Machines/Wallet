@@ -7,6 +7,7 @@ import { AppSwitch } from '@shared/AppSwitch';
 import { useState } from 'react';
 import { Image, View } from 'react-native';
 import { layout } from '@constants/Layout';
+import { colors } from '@constants/Colors';
 
 export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProps<'AcceptTOS'>) {
   const [isAccepted, setIsAccepted] = useState(false);
@@ -21,7 +22,7 @@ export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProp
       showStars
       styles={{
         justifyContent: 'space-between',
-        paddingBottom: layout.isSmallDevice ? 0 : '15%',
+        paddingBottom: layout.isSmallDevice ? '10%' : '15%',
       }}
     >
       <View>
@@ -30,7 +31,7 @@ export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProp
             marginTop: layout.isSmallDevice ? 0 : '10%',
             alignSelf: 'center',
           }}
-          source={require('@assets/images/biometrics-screen-graphics.png')}
+          source={require('@assets/images/terms-of-service-graphics.png')}
         />
         <ThemedText theme={TextTheme.Headline2Text}>{en.Accept_TOS_title}</ThemedText>
         <ThemedText
@@ -44,6 +45,7 @@ export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProp
           value={isAccepted}
           firstLineText={en.Accept_TOS_switch_text_first_line}
           secondLineText={en.Accept_TOS_switch_text_second_line}
+          secondLineTextColor={colors.primaryAppColorLighter}
         />
       </View>
       <AppButton

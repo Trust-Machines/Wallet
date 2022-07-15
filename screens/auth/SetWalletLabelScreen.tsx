@@ -1,16 +1,15 @@
-import { View, StyleSheet, TextInput } from 'react-native';
+import { View, Image } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { colors } from '@constants/Colors';
 import { en } from '../../en';
 import { CommonStackScreenProps } from '../../types';
-import { styleVariables } from '@constants/StyleVariables';
 import { useState } from 'react';
 import { layout } from '@constants/Layout';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { setNewWalletLabel } from '@redux/walletSlice';
 import { useNavigation } from '@react-navigation/native';
+import { AppTextInput } from '@shared/AppTextInput';
 
 export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLabel'>) {
   const [label, setLabel] = useState<string>('');
@@ -54,6 +53,13 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
 
   return (
     <ScreenContainer showStars>
+      <Image
+        style={{
+          marginTop: layout.isSmallDevice ? 0 : '10%',
+          alignSelf: 'center',
+        }}
+        source={require('@assets/images/wallet-name-graphics.png')}
+      />
       <ThemedText
         theme={TextTheme.Headline2Text}
         styleOverwrite={{ marginTop: layout.isSmallDevice ? 10 : 60 }}
@@ -71,15 +77,11 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
           marginBottom: '10%',
         }}
       >
-        <TextInput
+        <AppTextInput
           value={label}
-          onChangeText={(lbl: string) => setLabel(lbl)}
-          style={styles.input}
-          keyboardType="default"
-          keyboardAppearance="dark"
-          placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
-          placeholder={en.Set_label_placeholder}
-          autoFocus
+          setValue={setLabel}
+          labelText={'Wallet name'}
+          placeholder={'My Bitcoin Wallet'}
         />
         <AppButton
           onPress={saveLabel}
@@ -91,22 +93,3 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
     </ScreenContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: styleVariables.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    padding: 16,
-    paddingTop: 16,
-    fontFamily: 'Inter_500Medium',
-    fontSize: 18,
-    lineHeight: 22,
-    color: colors.primaryFont,
-  },
-  inputLabel: {
-    marginBottom: 8,
-    marginTop: 24,
-  },
-});
