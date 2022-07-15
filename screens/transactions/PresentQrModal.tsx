@@ -1,13 +1,6 @@
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { QrStackScreenProps } from '../../types';
+import { TransactionStackScreenProps } from '../../types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
@@ -20,8 +13,9 @@ import { getAddress } from '@redux/addressSlice';
 import { colors } from '@constants/Colors';
 import { createQr, formatAddress, safeParseFloat } from '@utils/helpers';
 import { SvgIcons } from '@assets/images';
+import { AppAmountInput } from '@shared/AppAmountInput';
 
-export function PresentQrModal({ navigation }: QrStackScreenProps<'PresentQr'>) {
+export function PresentQrModal({ navigation }: TransactionStackScreenProps<'PresentQr'>) {
   const [amount, setAmount] = useState<string>('0');
   const dispatch = useAppDispatch();
   const { walletObject } = useAppSelector(state => state.wallet);
@@ -39,7 +33,7 @@ export function PresentQrModal({ navigation }: QrStackScreenProps<'PresentQr'>) 
         <View
           style={{
             flex: 1,
-            marginBottom: layout.isSmallDevice ? 0 : '10%',
+            marginBottom: '10%',
           }}
         >
           <View style={{ position: 'relative' }}>
@@ -85,39 +79,13 @@ export function PresentQrModal({ navigation }: QrStackScreenProps<'PresentQr'>) 
               </ThemedText>
             </View>
           </View>
-          <ThemedText
-            theme={TextTheme.LabelText}
-            styleOverwrite={{
-              marginBottom: 10,
-              marginTop: 24,
-              color: colors.primaryAppColorLighter,
-            }}
-          >
-            Assign amount to QR code:
-          </ThemedText>
-          <View style={{ flexDirection: 'row', position: 'relative' }}>
-            <TextInput
-              style={[styles.inputContainer, styles.amountInput]}
-              value={amount.toString()}
-              onChangeText={value => setAmount(value)}
-              keyboardType="decimal-pad"
-              keyboardAppearance="dark"
-              maxLength={12}
-              placeholder={'0'}
-              placeholderTextColor={colors.secondaryFont}
-            />
-            <ThemedText
-              theme={TextTheme.NavigationText}
-              styleOverwrite={{
-                color: colors.secondaryFont,
-                position: 'absolute',
-                right: 0,
-                bottom: 14,
-              }}
-            >
-              BTC
-            </ThemedText>
-          </View>
+
+          <AppAmountInput
+            amount={amount}
+            setAmount={value => setAmount(value)}
+            labelText={'Assign amount to QR code:'}
+            style={{ marginTop: 24 }}
+          />
 
           <AppButton
             text={en.Copy_to_clipboard}

@@ -1,8 +1,10 @@
-import { QrStackScreenProps } from '../../types';
+import { TransactionStackScreenProps } from '../../types';
 import { en } from '../../en';
 import { TransactionSuccess } from './components/TransactionSuccess';
 
-export function TransactionSuccessModal({ route }: QrStackScreenProps<'TransactionSuccess'>) {
+export function TransactionSuccessModal({
+  route,
+}: TransactionStackScreenProps<'TransactionSuccess'>) {
   return (
     <TransactionSuccess
       transactionDetails={route.params}

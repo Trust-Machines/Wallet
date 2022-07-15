@@ -20,64 +20,65 @@ export function TransactionSuccess(props: TransactionSuccessProps) {
   const navigation = useNavigation();
 
   return (
-    <ModalScreenContainer title={en.Qr_flow_modal_title}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ThemedText theme={TextTheme.Headline2Text} styleOverwrite={{ paddingHorizontal: 20 }}>
-          {props.title}
-        </ThemedText>
+    <ModalScreenContainer title={'Transaction Sent'}>
+      <ThemedText theme={TextTheme.Headline2Text} styleOverwrite={{ paddingHorizontal: 20 }}>
+        {props.title}
+      </ThemedText>
+      <View style={{ flex: 1, marginBottom: '10%', justifyContent: 'space-between' }}>
         <Image
           source={require('@assets/images/success-graphics.png')}
           style={{ alignSelf: 'center' }}
         />
 
-        <View style={styles.technicalDetailsContainer}>
-          <View style={styles.stretchContainer}>
-            <ThemedText
-              theme={TextTheme.DetailText}
-              styleOverwrite={{ color: colors.secondaryFont }}
-            >
-              Fee
-            </ThemedText>
-            <ThemedText theme={TextTheme.LabelText}>
-              {satoshiToBitcoinString(fee)} {Assets.BTC}
-            </ThemedText>
-          </View>
+        <View>
+          <View style={styles.technicalDetailsContainer}>
+            <View style={styles.stretchContainer}>
+              <ThemedText
+                theme={TextTheme.DetailText}
+                styleOverwrite={{ color: colors.secondaryFont }}
+              >
+                Fee
+              </ThemedText>
+              <ThemedText theme={TextTheme.LabelText}>
+                {satoshiToBitcoinString(fee)} {Assets.BTC}
+              </ThemedText>
+            </View>
 
-          <View style={styles.stretchContainer}>
-            <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
-              Transaction Hash
-            </ThemedText>
-            <ThemedText
-              theme={TextTheme.LabelText}
-              numberOfLines={1}
-              styleOverwrite={{ flexShrink: 1 }}
-            >
-              {transactionId}
-            </ThemedText>
-          </View>
+            <View style={styles.stretchContainer}>
+              <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
+                Transaction Hash
+              </ThemedText>
+              <ThemedText
+                theme={TextTheme.LabelText}
+                numberOfLines={1}
+                styleOverwrite={{ flexShrink: 1 }}
+              >
+                {transactionId}
+              </ThemedText>
+            </View>
 
-          <View style={styles.stretchContainer}>
-            <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
-              Block
-            </ThemedText>
-            <ThemedText theme={TextTheme.LabelText}>224884</ThemedText>
-          </View>
+            <View style={styles.stretchContainer}>
+              <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
+                Block
+              </ThemedText>
+              <ThemedText theme={TextTheme.LabelText}>224884</ThemedText>
+            </View>
 
-          <View style={styles.stretchContainer}>
-            <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
-              Network
-            </ThemedText>
-            <ThemedText theme={TextTheme.LabelText}>Bitcoin Mainnet</ThemedText>
+            <View style={styles.stretchContainer}>
+              <ThemedText theme={TextTheme.DetailText} styleOverwrite={styles.labelText}>
+                Network
+              </ThemedText>
+              <ThemedText theme={TextTheme.LabelText}>Bitcoin Mainnet</ThemedText>
+            </View>
           </View>
+          <AppButton
+            text={en.Common_done}
+            theme={ButtonTheme.Primary}
+            onPress={() => navigation.navigate('Root')}
+            fullWidth
+          />
         </View>
-        <AppButton
-          text={en.Common_done}
-          theme={ButtonTheme.Primary}
-          onPress={() => navigation.getParent()?.goBack()}
-          fullWidth
-          style={{ marginBottom: 20 }}
-        />
-      </ScrollView>
+      </View>
     </ModalScreenContainer>
   );
 }

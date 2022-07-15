@@ -17,12 +17,10 @@ import {
   ExchangeStackParamList,
   NewWalletStackParamList,
   OnboardingStackParamList,
-  QrStackParamList,
-  ReceiveStackParamList,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
-  SendStackParamList,
+  TransactionStackParamList,
   WalletsStackParamList,
 } from '../types';
 import { en } from '../en';
@@ -38,11 +36,9 @@ import { styleVariables } from '@constants/StyleVariables';
 import { ExchangeSelectTokenModal } from '@screens/exchange/ExchangeSelectTokenModal';
 import { PresentQrModal } from '@screens/transactions/PresentQrModal';
 import { ScanQrModal } from '@screens/transactions/ScanQrModal';
-import { ConfirmSendModal } from '@screens/transactions/ConfirmSendModal';
+import { ConfirmTransactionModal } from '@screens/transactions/ConfirmTransactionModal';
 import { TransactionSuccessModal } from '@screens/transactions/TransactionSuccessModal';
-import { ReceivePresentQrModal } from '@screens/transactions/ReceivePresentQrModal';
 import { SendScreen } from '@screens/transactions/SendScreen';
-import { SendSuccessModal } from '@screens/transactions/SendSuccessModal';
 import { CollectiblesScreen } from '@screens/collectibles/CollectiblesScreen';
 import { DefiBrowserScreen } from '@screens/defi/DefiBrowserScreen';
 import { SettingsScreen } from '@screens/settings/SettingsScreen';
@@ -84,10 +80,8 @@ const OnboardingStack = createNativeStackNavigator<
   OnboardingStackParamList & CommonStackParamList
 >();
 const ExchangeStack = createNativeStackNavigator<ExchangeStackParamList>();
-const ReceiveStack = createNativeStackNavigator<ReceiveStackParamList>();
-const SendStack = createNativeStackNavigator<SendStackParamList>();
 const BuyCryptoStack = createNativeStackNavigator<BuyCryptoStackParamList>();
-const QrStack = createNativeStackNavigator<QrStackParamList>();
+const TransactionStack = createNativeStackNavigator<TransactionStackParamList>();
 const WalletsStack = createNativeStackNavigator<WalletsStackParamList>();
 const NewWalletStack = createNativeStackNavigator<NewWalletStackParamList>();
 
@@ -142,22 +136,6 @@ function RootNavigator() {
         }}
       />
       <Stack.Screen
-        name="ReceiveStack"
-        component={ReceiveStackView}
-        options={{
-          presentation: 'containedTransparentModal',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SendStack"
-        component={SendStackView}
-        options={{
-          presentation: 'containedTransparentModal',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="BuyCryptoStack"
         component={BuyCryptoStackView}
         options={{
@@ -166,8 +144,8 @@ function RootNavigator() {
         }}
       />
       <Stack.Screen
-        name="QrStack"
-        component={QrStackView}
+        name="TransactionStack"
+        component={TransactionStackView}
         options={{
           presentation: 'containedTransparentModal',
           headerShown: false,
@@ -279,45 +257,6 @@ const ExchangeStackView = () => (
   </ExchangeStack.Navigator>
 );
 
-const ReceiveStackView = () => (
-  <ReceiveStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
-    <ReceiveStack.Screen
-      name="ReceivePresentQr"
-      component={ReceivePresentQrModal}
-      options={{
-        presentation: 'card',
-      }}
-    />
-  </ReceiveStack.Navigator>
-);
-
-const SendStackView = () => (
-  <SendStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
-    {/* <SendStack.Screen
-      name="Send"
-      component={SendScreen}
-      options={{
-        presentation: 'card',
-      }}
-    /> */}
-    <SendStack.Screen
-      name="SendSuccess"
-      component={SendSuccessModal}
-      options={{
-        presentation: 'card',
-      }}
-    />
-  </SendStack.Navigator>
-);
-
 const BuyCryptoStackView = () => (
   <BuyCryptoStack.Navigator
     screenOptions={{
@@ -334,41 +273,41 @@ const BuyCryptoStackView = () => (
   </BuyCryptoStack.Navigator>
 );
 
-const QrStackView = () => (
-  <QrStack.Navigator
+const TransactionStackView = () => (
+  <TransactionStack.Navigator
     screenOptions={{
       headerShown: false,
     }}
   >
-    <QrStack.Screen
+    <TransactionStack.Screen
       name="PresentQr"
       component={PresentQrModal}
       options={{
         presentation: 'card',
       }}
     />
-    <QrStack.Screen
+    <TransactionStack.Screen
       name="ScanQr"
       component={ScanQrModal}
       options={{
         presentation: 'card',
       }}
     />
-    <QrStack.Screen
-      name="ConfirmSend"
-      component={ConfirmSendModal}
+    <TransactionStack.Screen
+      name="ConfirmTransaction"
+      component={ConfirmTransactionModal}
       options={{
         presentation: 'card',
       }}
     />
-    <QrStack.Screen
+    <TransactionStack.Screen
       name="TransactionSuccess"
       component={TransactionSuccessModal}
       options={{
         presentation: 'card',
       }}
     />
-  </QrStack.Navigator>
+  </TransactionStack.Navigator>
 );
 
 const WalletsStackView = () => (

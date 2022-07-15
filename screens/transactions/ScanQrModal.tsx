@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { QrStackScreenProps } from '../../types';
+import { TransactionStackScreenProps } from '../../types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { layout } from '@constants/Layout';
@@ -9,8 +9,9 @@ import { colors } from '@constants/Colors';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { parseQr } from '@utils/helpers';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
 
-export function ScanQrModal({ navigation }: QrStackScreenProps<'ScanQr'>) {
+export function ScanQrModal({ navigation }: TransactionStackScreenProps<'ScanQr'>) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -23,13 +24,13 @@ export function ScanQrModal({ navigation }: QrStackScreenProps<'ScanQr'>) {
   }, []);
 
   const handleBarCodeScanned = async (scanningResult: BarCodeScanningResult) => {
-    navigation.navigate('ConfirmSend', parseQr(scanningResult.data));
+    navigation.navigate('ConfirmTransaction', parseQr(scanningResult.data));
   };
 
   console.log('HasPermission', hasPermission);
 
   return (
-    <ModalScreenContainer title={en.Qr_flow_modal_title}>
+    <ModalScreenContainer title={'Scan QR code'}>
       <View style={styles.qrContainer}>
         {hasPermission === null ? (
           <ActivityIndicator size="large" color={colors.primaryAppColorLighter} />
@@ -46,6 +47,13 @@ export function ScanQrModal({ navigation }: QrStackScreenProps<'ScanQr'>) {
           <ThemedText theme={TextTheme.LabelText}>No access to camera</ThemedText>
         )}
       </View>
+      <AppButton
+        theme={ButtonTheme.Primary}
+        text={'Display my QR'}
+        fullWidth
+        onPress={() => navigation.navigate('PresentQr')}
+        style={{ marginTop: 'auto', marginBottom: 80 }}
+      />
     </ModalScreenContainer>
   );
 }
