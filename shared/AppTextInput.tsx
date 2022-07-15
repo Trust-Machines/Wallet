@@ -9,6 +9,7 @@ export const AppTextInput = ({
   value,
   setValue,
   placeholder,
+  multiline,
 }: {
   labelText: string;
   value: string;
@@ -16,6 +17,7 @@ export const AppTextInput = ({
   isPassword?: boolean;
   style?: ViewStyle;
   placeholder?: string;
+  multiline?: boolean;
 }) => {
   return (
     <View style={style}>
@@ -38,6 +40,8 @@ export const AppTextInput = ({
           keyboardAppearance="dark"
           placeholder={placeholder}
           placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
+          textAlignVertical="top"
+          multiline={multiline}
         />
         {/* <ThemedText
           theme={TextTheme.NavigationText}
@@ -60,6 +64,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.disabled,
     flex: 1,
+    maxHeight: 200,
   },
   input: {
     fontFamily: 'Inter_500Medium',

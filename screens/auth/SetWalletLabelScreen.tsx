@@ -60,12 +60,7 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
         }}
         source={require('@assets/images/wallet-name-graphics.png')}
       />
-      <ThemedText
-        theme={TextTheme.Headline2Text}
-        styleOverwrite={{ marginTop: layout.isSmallDevice ? 10 : 60 }}
-      >
-        {en.Set_label_title}
-      </ThemedText>
+      <ThemedText theme={TextTheme.Headline2Text}>{en.Set_label_title}</ThemedText>
       <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 26 }}>
         {en.Set_label_subtitle}
       </ThemedText>

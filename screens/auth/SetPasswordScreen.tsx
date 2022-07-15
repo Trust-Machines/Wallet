@@ -1,11 +1,10 @@
-import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Image } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
 import { OnboardingStackScreenProps } from '../../types';
-import { styleVariables } from '@constants/StyleVariables';
 import { useState } from 'react';
 import { layout } from '@constants/Layout';
 import { decrypt, encrypt } from '@utils/helpers';
@@ -21,6 +20,7 @@ import {
   getWalletsFromAsyncStorage,
   storeCurrentWalletIdToAsyncStorage,
 } from '@utils/asyncStorageHelper';
+import { AppTextInput } from '@shared/AppTextInput';
 
 export function SetPasswordScreen({
   navigation,
@@ -55,6 +55,9 @@ export function SetPasswordScreen({
           encryptedWalletSeed: encrypt(decryptedWalletSeed, password),
           walletID: currentWalletID,
           walletLabel: newWalletLabel,
+          balance: 0,
+          transactions: [],
+          address: '',
         });
         await storeCurrentWalletIdToAsyncStorage(currentWalletID);
         const storedWallets = await getWalletsFromAsyncStorage();
@@ -71,12 +74,14 @@ export function SetPasswordScreen({
 
   return (
     <ScreenContainer showStars>
-      <ThemedText
-        theme={TextTheme.Headline2Text}
-        styleOverwrite={{ marginTop: layout.isSmallDevice ? 10 : 60 }}
-      >
-        {en.Set_password_title}
-      </ThemedText>
+      <Image
+        style={{
+          marginTop: layout.isSmallDevice ? 0 : '10%',
+          alignSelf: 'center',
+        }}
+        source={require('@assets/images/enter-password-graphics.png')}
+      />
+      <ThemedText theme={TextTheme.Headline2Text}>{en.Set_password_title}</ThemedText>
       <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 26 }}>
         {en.Set_password_subtitle}
       </ThemedText>
@@ -97,31 +102,18 @@ export function SetPasswordScreen({
           }}
         >
           <View>
-            <ThemedText theme={TextTheme.LabelText} styleOverwrite={styles.inputLabel}>
-              {en.Common_password}
-            </ThemedText>
-            <TextInput
-              secureTextEntry
+            <AppTextInput
               value={password}
-              onChangeText={(pw: string) => setPassword(pw)}
-              style={styles.input}
-              keyboardType="default"
-              keyboardAppearance="dark"
-              placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
-              autoFocus
+              setValue={setPassword}
+              isPassword
+              labelText={en.Common_password}
+              style={{ marginBottom: 16 }}
             />
-
-            <ThemedText theme={TextTheme.LabelText} styleOverwrite={styles.inputLabel}>
-              {en.Set_password_confirm_password}
-            </ThemedText>
-            <TextInput
-              secureTextEntry
+            <AppTextInput
               value={confirmPassword}
-              onChangeText={(pw: string) => setConfirmPassword(pw)}
-              style={styles.input}
-              keyboardType="default"
-              keyboardAppearance="dark"
-              placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
+              setValue={setConfirmPassword}
+              isPassword
+              labelText={en.Set_password_confirm_password}
             />
           </View>
 
@@ -140,22 +132,3 @@ export function SetPasswordScreen({
     </ScreenContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: styleVariables.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    padding: 16,
-    paddingTop: 16,
-    fontFamily: 'Inter_500Medium',
-    fontSize: 18,
-    lineHeight: 22,
-    color: colors.primaryFont,
-  },
-  inputLabel: {
-    marginBottom: 8,
-    marginTop: 24,
-  },
-});

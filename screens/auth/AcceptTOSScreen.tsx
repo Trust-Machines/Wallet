@@ -22,7 +22,7 @@ export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProp
       showStars
       styles={{
         justifyContent: 'space-between',
-        paddingBottom: layout.isSmallDevice ? '10%' : '15%',
+        paddingBottom: '10%',
       }}
     >
       <View>

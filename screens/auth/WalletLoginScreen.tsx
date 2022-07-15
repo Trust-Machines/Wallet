@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TextInput, ActivityIndicator, Image } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
@@ -18,6 +18,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { addWalletToAsyncStorage, getWalletsFromAsyncStorage } from '@utils/asyncStorageHelper';
 import { encrypt } from '@utils/helpers';
+import { AppTextInput } from '@shared/AppTextInput';
 
 export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin'>) {
   const dispatch = useAppDispatch();
@@ -44,6 +45,9 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
             encryptedWalletSeed: encrypt(seedPhrase, route.params.password),
             walletID: walletObject.getID(),
             walletLabel: newWalletLabel,
+            balance: 0,
+            transactions: [],
+            address: '',
           });
 
           const storedWallets = await getWalletsFromAsyncStorage();
@@ -64,10 +68,14 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
 
   return (
     <ScreenContainer showStars>
-      <ThemedText
-        theme={TextTheme.Headline2Text}
-        styleOverwrite={{ marginTop: layout.isSmallDevice ? 10 : 60 }}
-      >
+      <Image
+        style={{
+          marginTop: layout.isSmallDevice ? 0 : '10%',
+          alignSelf: 'center',
+        }}
+        source={require('@assets/images/recovery-phrase-graphics.png')}
+      />
+      <ThemedText theme={TextTheme.Headline2Text}>
         {en.Save_recovery_phrase_screen_title}
       </ThemedText>
       <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 26 }}>
@@ -89,7 +97,13 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
             marginBottom: '10%',
           }}
         >
-          <TextInput
+          <AppTextInput
+            labelText={'Secret Recovery Phrase'}
+            value={seedPhrase}
+            setValue={value => setSeedPhrase(value)}
+            multiline
+          />
+          {/* <TextInput
             value={seedPhrase}
             onChangeText={(phrase: string) => setSeedPhrase(phrase)}
             style={styles.input}
@@ -99,7 +113,7 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
             multiline
             autoFocus
             textAlignVertical="top"
-          />
+          /> */}
           <AppButton
             onPress={handleNextPress}
             text={en.Common_next}
