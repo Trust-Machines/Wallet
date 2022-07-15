@@ -1,4 +1,5 @@
 import { colors } from '@constants/Colors';
+import { useState } from 'react';
 import { TextInput, View, StyleSheet, ViewStyle } from 'react-native';
 import { TextTheme, ThemedText } from './ThemedText';
 
@@ -10,6 +11,8 @@ export const AppTextInput = ({
   setValue,
   placeholder,
   multiline,
+  error,
+  errorMessage,
 }: {
   labelText: string;
   value: string;
@@ -18,7 +21,11 @@ export const AppTextInput = ({
   style?: ViewStyle;
   placeholder?: string;
   multiline?: boolean;
+  error?: boolean;
+  errorMessage?: string;
 }) => {
+  const [focused, setFocused] = useState<boolean>(false);
+
   return (
     <View style={style}>
       <ThemedText
@@ -32,7 +39,17 @@ export const AppTextInput = ({
       </ThemedText>
       <View style={{ flexDirection: 'row', position: 'relative' }}>
         <TextInput
-          style={[styles.inputContainer, styles.input]}
+          style={[
+            styles.inputContainer,
+            styles.input,
+            {
+              borderBottomColor: error
+                ? colors.error
+                : focused || value.length
+                ? colors.primaryAppColorDarker
+                : colors.disabled,
+            },
+          ]}
           secureTextEntry={!!isPassword}
           value={value}
           onChangeText={(val: string) => setValue(val)}
@@ -42,7 +59,23 @@ export const AppTextInput = ({
           placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
           textAlignVertical="top"
           multiline={multiline}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          selectionColor={colors.primaryAppColorDarker}
         />
+        {error && errorMessage && (
+          <ThemedText
+            theme={TextTheme.CaptionText}
+            styleOverwrite={{
+              color: colors.error,
+              position: 'absolute',
+              bottom: -18,
+            }}
+          >
+            {errorMessage}
+          </ThemedText>
+        )}
+
         {/* <ThemedText
           theme={TextTheme.NavigationText}
           styleOverwrite={{
@@ -62,9 +95,7 @@ export const AppTextInput = ({
 const styles = StyleSheet.create({
   inputContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.disabled,
     flex: 1,
-    maxHeight: 200,
   },
   input: {
     fontFamily: 'Inter_500Medium',
