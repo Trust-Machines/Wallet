@@ -21,7 +21,7 @@ export const getTransactions = createAsyncThunk(
       await wallet.fetchTransactions();
       console.log('TRANSACTIONS wallet')
       const transactions = wallet.getTransactions();
-      console.log("past transactions", transactions);
+      //console.log("past transactions", transactions);
       return transactions;
     } catch (err) {
       console.log("get transactions error: ", err);

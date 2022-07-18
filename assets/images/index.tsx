@@ -28,6 +28,10 @@ import Globe60 from "./globe-60.svg";
 import Qr from "./qr.svg";
 import Search from "./search.svg";
 import Share from "./share.svg";
+import Sent from "./sent.svg";
+import Received from "./received.svg";
+import Pending from "./pending.svg";
+import Failed from "./failed.svg";
 
 export const SvgIcons = {
   TabBar: {
@@ -44,6 +48,7 @@ export const SvgIcons = {
     Polygon,
     PolygonOutlined,
   },
+  Transactions: { Sent, Received, Pending, Failed },
   Assets: { Btc, Stx },
   Logos: { MoonPay, Binance, RampNetwork },
   General: {

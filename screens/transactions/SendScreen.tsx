@@ -17,7 +17,8 @@ import { SvgIcons } from "../../assets/images";
 import { Contact } from "./components/Contact";
 import { AppButton, ButtonTheme } from "../../shared/AppButton";
 import useTransactionSending from "../../hooks/useTransactionSending";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getTransactions } from "../../redux/transactionsSlice";
 
 export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
   const [amount, setAmount] = useState("0");
@@ -28,6 +29,7 @@ export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const { walletObject } = useAppSelector((state) => state.wallet);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (addressInputValue) {
@@ -45,6 +47,8 @@ export function SendScreen({ navigation }: SendStackScreenProps<"Send">) {
     );
 
     if (result.success && result.data) {
+      // TODO
+      await dispatch(getTransactions(walletObject));
       navigation.navigate("SendSuccess", result.data);
     } else {
       setError(true);

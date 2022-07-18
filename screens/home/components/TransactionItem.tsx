@@ -4,20 +4,21 @@ import { colors } from "../../../constants/Colors";
 import { styleVariables } from "../../../constants/StyleVariables";
 import { Assets } from "../../../constants/CommonEnums";
 import { SvgIcons } from "../../../assets/images";
-import { presentInteger, satoshiToBitcoinString } from "../../../utils/helpers";
+import { formatAddress, satoshiToBitcoinString } from "../../../utils/helpers";
 
-type TransactionItemProps = {
-  transaction: any;
-};
+export function TransactionItem({ transaction }: any) {
+  const { value, hash } = transaction;
+  console.log("TRANSACTION", transaction);
 
-export function TransactionItem(props: TransactionItemProps) {
-  const { value, hash } = props.transaction;
+  const address = transaction.inputs[0].addresses[0];
+  const pending = transaction.confirmations < 2;
+  // TODO handle failed
 
   return (
     <Pressable
       style={{
         height: 64,
-        padding: 10,
+        padding: 8,
         backgroundColor: colors.primaryBackgroundLighter,
         borderRadius: styleVariables.borderRadius,
         flexDirection: "row",
@@ -26,7 +27,13 @@ export function TransactionItem(props: TransactionItemProps) {
       }}
       key={hash}
     >
-      <SvgIcons.Exchange.Exchange style={{ marginRight: 8 }} />
+      {pending ? (
+        <SvgIcons.Transactions.Pending style={{ marginRight: 8 }} />
+      ) : value > 0 ? (
+        <SvgIcons.Transactions.Received style={{ marginRight: 8 }} />
+      ) : (
+        <SvgIcons.Transactions.Sent style={{ marginRight: 8 }} />
+      )}
       <View style={{ flex: 1 }}>
         <View
           style={{
@@ -35,8 +42,8 @@ export function TransactionItem(props: TransactionItemProps) {
             marginBottom: 4,
           }}
         >
-          <ThemedText theme={TextTheme.LabelText}>
-            {value > 0 ? "Received" : "Sent"}
+          <ThemedText theme={TextTheme.CaptionText}>
+            {pending ? "Pending" : value > 0 ? "Received" : "Sent"}
           </ThemedText>
           <View
             style={{
@@ -45,44 +52,38 @@ export function TransactionItem(props: TransactionItemProps) {
             }}
           >
             <ThemedText
-              theme={TextTheme.LabelText}
+              theme={TextTheme.CaptionText}
               styleOverwrite={{
-                color: value > 0 ? colors.primaryAppColorLighter : colors.error,
+                color:
+                  value > 0
+                    ? colors.primaryAppColorLighter
+                    : colors.primaryFont,
                 marginRight: 4,
               }}
             >
-              {presentInteger(satoshiToBitcoinString(value))}
-            </ThemedText>
-            <ThemedText
-              theme={TextTheme.CaptionText}
-              styleOverwrite={{ color: colors.secondaryFont, paddingBottom: 1 }}
-            >
-              {Assets.BTC}
+              {satoshiToBitcoinString(value)} {Assets.BTC}
             </ThemedText>
           </View>
         </View>
-        {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: colors.secondaryFont }}
           >
-            Bitcoin
+            {value > 0 ? "From:" : "To: "} {formatAddress(address)}
           </ThemedText>
-          <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+          <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
             <ThemedText
               theme={TextTheme.CaptionText}
-              styleOverwrite={{ color: colors.error, marginRight: 4 }}
+              styleOverwrite={{
+                color: colors.primaryAppColorDarker,
+                marginRight: 4,
+              }}
             >
-              -0.000001
-            </ThemedText>
-            <ThemedText
-              theme={TextTheme.CaptionText}
-              styleOverwrite={{ color: colors.secondaryFont }}
-            >
-              {Assets.BTC}
+              3.5 {Assets.USD}
             </ThemedText>
           </View>
-        </View> */}
+        </View>
       </View>
     </Pressable>
   );

@@ -1,5 +1,11 @@
-import { useEffect } from "react";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import { useCallback } from "react";
+import {
+  FlatList,
+  Image,
+  RefreshControl,
+  ScrollView,
+  View,
+} from "react-native";
 import { HomeHeader } from "./components/HomeHeader";
 import { ScreenContainer } from "../../shared/ScreenContainer";
 import { RootTabScreenProps } from "../../types";
@@ -14,6 +20,7 @@ import { layout } from "../../constants/Layout";
 import { getBalance } from "../../redux/balanceSlice";
 import { getTransactions } from "../../redux/transactionsSlice";
 import { getAddress } from "../../redux/addressSlice";
+import { useFocusEffect } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const dispatch = useAppDispatch();
@@ -23,14 +30,25 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const { transactions, transactionsLoading, transactionsError } =
     useAppSelector((state) => state.transactions);
 
-  useEffect(() => {
-    if (!!walletObject) {
-      console.log("HOME WALLET", walletObject);
-      dispatch(getAddress(walletObject));
-      dispatch(getBalance(walletObject));
-      dispatch(getTransactions(walletObject));
+  useFocusEffect(
+    useCallback(() => {
+      getHomeData();
+    }, [currentWalletID])
+  );
+
+  const getHomeData = () => {
+    dispatch(getAddress(walletObject));
+    dispatch(getBalance(walletObject));
+    dispatch(getTransactions(walletObject));
+  };
+
+  const renderItem = ({ item }: any) => {
+    if (transactions.length) {
+      return <TransactionItem transaction={item} />;
+    } else {
+      return <View></View>;
     }
-  }, [currentWalletID]);
+  };
 
   return (
     <ScreenContainer withTab>
@@ -43,6 +61,13 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         }}
         contentContainerStyle={{ paddingHorizontal: 20, position: "relative" }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            enabled={true}
+            refreshing={transactionsLoading}
+            onRefresh={getHomeData}
+          />
+        }
       >
         <Image
           source={require("../../assets/images/home-chart.png")}
@@ -96,14 +121,14 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           <ThemedText theme={TextTheme.LabelText}>
             {en.Home_your_transactions}
           </ThemedText>
-          <ThemedText
+          {/* <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: colors.primaryAppColorDarker }}
           >
             {en.Home_view_all}
-          </ThemedText>
+          </ThemedText> */}
         </View>
-        <Text
+        {/* <Text
           style={{
             fontFamily: "Inter_600SemiBold",
             fontSize: 12,
@@ -113,25 +138,16 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           }}
         >
           29 April 2022
-        </Text>
+        </Text> */}
         <View style={{ paddingBottom: 30 }}>
-          {transactionsLoading && (
-            <ActivityIndicator
-              size={"large"}
-              color={colors.primaryAppColorLighter}
-              style={{ marginTop: 40 }}
+          {!transactionsError && (
+            <FlatList
+              nestedScrollEnabled
+              data={transactions}
+              renderItem={(item: any) => renderItem(item)}
+              keyExtractor={(item) => item.hash}
             />
           )}
-          {!transactionsLoading &&
-            !transactionsError &&
-            transactions.map((transaction: any) => {
-              return (
-                <TransactionItem
-                  key={transaction.hash}
-                  transaction={transaction}
-                />
-              );
-            })}
         </View>
       </ScrollView>
     </ScreenContainer>
