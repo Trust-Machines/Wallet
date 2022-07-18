@@ -53,6 +53,7 @@ export function ReceivePresentQrModal({ navigation }: ReceiveStackScreenProps<'R
             <ActivityIndicator size={'large'} color={colors.primaryAppColorLighter} />
           ) : (
             <View style={styles.qrContainer}>
+              {/* @ts-ignore */}
               <QRCode value={createQr(address)} size={layout.window.width - 120} />
             </View>
           )}

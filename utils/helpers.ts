@@ -34,8 +34,9 @@ export const parseQr = (qr: string): { address: string; amount: string } => {
   return { address, amount };
 };
 
-export const createQr = (address: string, amount?: number | string): string => {
-  return 'bitcoin:' + address + '?amount=' + amount ?? '';
+export const createQr = (address: string, amount?: string): string => {
+  let value = !!amount && (safeParseFloat(amount) > 0) ? amount : ''
+  return 'bitcoin:' + address + '?amount=' + value;
 };
 
 export const encrypt = (text: string, password: string): EncryptedSeed => {

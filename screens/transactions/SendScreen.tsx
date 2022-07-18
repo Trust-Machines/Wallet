@@ -29,7 +29,7 @@ interface Fee {
 }
 
 export function SendScreen({ navigation }: SendStackScreenProps<'Send'>) {
-  const [amount, setAmount] = useState('0');
+  const [amount, setAmount] = useState<string>('0');
   const [selectedContactAddress, setSelectedContantAddress] = useState<string | undefined>(
     undefined
   );
