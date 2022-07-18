@@ -1,13 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 var index_1 = {};
 var Bech32Version;
 (function (Bech32Version) {
-  Bech32Version[(Bech32Version["Origin"] = 1)] = "Origin";
-  Bech32Version[(Bech32Version["bis"] = 2)] = "bis";
+  Bech32Version[(Bech32Version['Origin'] = 1)] = 'Origin';
+  Bech32Version[(Bech32Version['bis'] = 2)] = 'bis';
 })((Bech32Version = Bech32Version || (Bech32Version = {})));
 index_1.Bech32Version = Bech32Version;
-var CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
+var CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
 var GENERATOR = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
 function polymod(values) {
   var chk = 1;
@@ -63,9 +63,9 @@ var encode = function (hrp, data, version) {
   var combined = data.concat(createChecksum(hrp, data, version));
   var ret;
   if (hrp) {
-    ret = hrp + "1";
+    ret = hrp + '1';
   } else {
-    ret = "";
+    ret = '';
   }
   for (var p = 0; p < combined.length; ++p) {
     ret += CHARSET.charAt(combined[p]);
@@ -105,7 +105,7 @@ var decode = function (bechString) {
     return null;
   }
   bechString = bechString.toLowerCase();
-  var pos = bechString.lastIndexOf("1");
+  var pos = bechString.lastIndexOf('1');
   if (pos === -1) {
     return decodeBc32(bechString);
   }

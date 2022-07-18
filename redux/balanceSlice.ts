@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-const ElectrumHelper = require("@utils/ElectrumHelper");
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+const ElectrumHelper = require('@utils/ElectrumHelper');
 
 interface BalanceState {
   balance: number;
@@ -10,30 +10,30 @@ interface BalanceState {
 const initialState: BalanceState = {
   balance: 0,
   balanceLoading: false,
-  balanceError: false
+  balanceError: false,
 };
 
 export const getBalance = createAsyncThunk(
-  "balance/getBalance",
+  'balance/getBalance',
   async (wallet: any, { rejectWithValue }) => {
     try {
       await ElectrumHelper.waitTillConnected();
       await wallet.fetchBalance();
       const walletBalance = wallet.getBalance();
-      console.log('BALANCE', walletBalance)
+      console.log('BALANCE', walletBalance);
       return walletBalance;
     } catch (err) {
-      console.log("get balance error: ", err);
+      console.log('get balance error: ', err);
       return rejectWithValue(err);
     }
   }
 );
 
 export const balanceSlice = createSlice({
-  name: "balance",
+  name: 'balance',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(getBalance.pending, (state, action) => {
         state.balanceError = false;
@@ -47,8 +47,7 @@ export const balanceSlice = createSlice({
       .addCase(getBalance.rejected, (state, action) => {
         state.balanceLoading = false;
         state.balanceError = true;
-      })
-     
+      });
   },
 });
 

@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const ElectrumHelper = require("@utils/ElectrumHelper");
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+const ElectrumHelper = require('@utils/ElectrumHelper');
 
 interface AddressState {
   address: string;
@@ -14,26 +14,24 @@ const initialState: AddressState = {
 };
 
 export const getAddress = createAsyncThunk(
-  "wallet/getAddress",
+  'wallet/getAddress',
   async (wallet: any, { rejectWithValue }) => {
     try {
       await ElectrumHelper.waitTillConnected();
-      const walletAddress = wallet._getExternalAddressByIndex(
-        wallet.getNextFreeAddressIndex()
-      );
+      const walletAddress = wallet._getExternalAddressByIndex(wallet.getNextFreeAddressIndex());
       return walletAddress;
     } catch (err) {
-      console.log("get address error: ", err);
+      console.log('get address error: ', err);
       return rejectWithValue(err);
     }
   }
 );
 
 export const addressSlice = createSlice({
-  name: "address",
+  name: 'address',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(getAddress.pending, (state, action) => {
         state.addressError = false;
@@ -46,7 +44,7 @@ export const addressSlice = createSlice({
       .addCase(getAddress.rejected, (state, action) => {
         state.addressLoading = false;
         state.addressError = true;
-      })
+      });
   },
 });
 

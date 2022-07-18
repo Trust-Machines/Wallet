@@ -1,9 +1,9 @@
-import { HDLegacyP2PKHWallet } from "./hd-legacy-p2pkh-wallet";
-import BIP32Factory from "bip32";
-import * as ecc from "tiny-secp256k1";
+import { HDLegacyP2PKHWallet } from './hd-legacy-p2pkh-wallet';
+import BIP32Factory from 'bip32';
+import * as ecc from 'tiny-secp256k1';
 
-const bitcoin = require("bitcoinjs-lib");
-const mn = require("electrum-mnemonic");
+const bitcoin = require('bitcoinjs-lib');
+const mn = require('electrum-mnemonic');
 const bip32 = BIP32Factory(ecc);
 
 const PREFIX = mn.PREFIXES.standard;
@@ -15,16 +15,16 @@ const PREFIX = mn.PREFIXES.standard;
  * @see https://electrum.readthedocs.io/en/latest/seedphrase.html
  */
 export class HDLegacyElectrumSeedP2PKHWallet extends HDLegacyP2PKHWallet {
-  static type = "HDlegacyElectrumSeedP2PKH";
-  static typeReadable = "HD Legacy Electrum (BIP32 P2PKH)";
-  static derivationPath = "m";
+  static type = 'HDlegacyElectrumSeedP2PKH';
+  static typeReadable = 'HD Legacy Electrum (BIP32 P2PKH)';
+  static derivationPath = 'm';
 
   validateMnemonic() {
     return mn.validateMnemonic(this.secret, PREFIX);
   }
 
   async generate() {
-    throw new Error("Not implemented");
+    throw new Error('Not implemented');
   }
 
   getXpub() {
@@ -40,8 +40,7 @@ export class HDLegacyElectrumSeedP2PKHWallet extends HDLegacyP2PKHWallet {
 
   _getInternalAddressByIndex(index) {
     index = index * 1; // cast to int
-    if (this.internal_addresses_cache[index])
-      return this.internal_addresses_cache[index]; // cache hit
+    if (this.internal_addresses_cache[index]) return this.internal_addresses_cache[index]; // cache hit
 
     const node = bip32.fromBase58(this.getXpub());
     const address = bitcoin.payments.p2pkh({
@@ -53,8 +52,7 @@ export class HDLegacyElectrumSeedP2PKHWallet extends HDLegacyP2PKHWallet {
 
   _getExternalAddressByIndex(index) {
     index = index * 1; // cast to int
-    if (this.external_addresses_cache[index])
-      return this.external_addresses_cache[index]; // cache hit
+    if (this.external_addresses_cache[index]) return this.external_addresses_cache[index]; // cache hit
 
     const node = bip32.fromBase58(this.getXpub());
     const address = bitcoin.payments.p2pkh({

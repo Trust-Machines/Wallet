@@ -1,26 +1,22 @@
-import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { QrStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "@shared/ModalScreenContainer";
-import { en } from "../../en";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { styleVariables } from "@constants/StyleVariables";
-import { layout } from "@constants/Layout";
-import QRCode from "react-native-qrcode-svg";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { getAddress } from "@redux/addressSlice";
-import { colors } from "@constants/Colors";
-import { createQr } from "@utils/helpers";
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { QrStackScreenProps } from '../../types';
+import { ModalScreenContainer } from '@shared/ModalScreenContainer';
+import { en } from '../../en';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { styleVariables } from '@constants/StyleVariables';
+import { layout } from '@constants/Layout';
+import QRCode from 'react-native-qrcode-svg';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { getAddress } from '@redux/addressSlice';
+import { colors } from '@constants/Colors';
+import { createQr } from '@utils/helpers';
 
-export function PresentQrModal({
-  navigation,
-}: QrStackScreenProps<"PresentQr">) {
+export function PresentQrModal({ navigation }: QrStackScreenProps<'PresentQr'>) {
   const dispatch = useAppDispatch();
-  const { walletObject } = useAppSelector((state) => state.wallet);
-  const { address, addressLoading, addressError } = useAppSelector(
-    (state) => state.address
-  );
+  const { walletObject } = useAppSelector(state => state.wallet);
+  const { address, addressLoading, addressError } = useAppSelector(state => state.address);
 
   useEffect(() => {
     dispatch(getAddress(walletObject));
@@ -31,8 +27,8 @@ export function PresentQrModal({
       <View
         style={{
           flex: 1,
-          justifyContent: "space-between",
-          marginBottom: layout.isSmallDevice ? 0 : "10%",
+          justifyContent: 'space-between',
+          marginBottom: layout.isSmallDevice ? 0 : '10%',
         }}
       >
         <View>
@@ -46,23 +42,17 @@ export function PresentQrModal({
             {en.Qr_flow_present_qr_title}
           </ThemedText>
           {addressLoading ? (
-            <ActivityIndicator
-              size={"large"}
-              color={colors.primaryAppColorLighter}
-            />
+            <ActivityIndicator size={'large'} color={colors.primaryAppColorLighter} />
           ) : (
             <>
               <View style={styles.qrContainer}>
-                <QRCode
-                  value={createQr(address)}
-                  size={layout.window.width - 120}
-                />
+                <QRCode value={createQr(address)} size={layout.window.width - 120} />
               </View>
               <ThemedText
                 theme={TextTheme.CaptionText}
                 styleOverwrite={{
                   color: colors.secondaryFont,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 {address}
@@ -73,9 +63,9 @@ export function PresentQrModal({
         <AppButton
           text={en.Qr_flow_present_qr_button_text}
           theme={ButtonTheme.Primary}
-          onPress={() => navigation.navigate("ScanQr")}
+          onPress={() => navigation.navigate('ScanQr')}
           fullWidth
-          style={{ marginTop: "auto" }}
+          style={{ marginTop: 'auto' }}
           marginBottom={80}
         />
       </View>
@@ -85,9 +75,9 @@ export function PresentQrModal({
 
 const styles = StyleSheet.create({
   qrContainer: {
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderRadius: styleVariables.borderRadius,
-    alignItems: "center",
+    alignItems: 'center',
     padding: 40,
     marginBottom: 12,
   },

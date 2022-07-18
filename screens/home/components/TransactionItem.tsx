@@ -1,15 +1,15 @@
-import { Pressable, View } from "react-native";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { colors } from "@constants/Colors";
-import { styleVariables } from "@constants/StyleVariables";
-import { Assets } from "@constants/CommonEnums";
-import { SvgIcons } from "@assets/images";
-import { formatAddress, satoshiToBitcoinString } from "@utils/helpers";
-import { useNavigation } from "@react-navigation/native";
+import { Pressable, View } from 'react-native';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { colors } from '@constants/Colors';
+import { styleVariables } from '@constants/StyleVariables';
+import { Assets } from '@constants/CommonEnums';
+import { SvgIcons } from '@assets/images';
+import { formatAddress, satoshiToBitcoinString } from '@utils/helpers';
+import { useNavigation } from '@react-navigation/native';
 
 export function TransactionItem({ transaction }: any) {
   const { value, hash } = transaction;
-  console.log("TRANSACTION", transaction);
+  console.log('TRANSACTION', transaction);
   const navigation = useNavigation();
 
   const address = transaction.inputs[0].addresses[0];
@@ -17,7 +17,7 @@ export function TransactionItem({ transaction }: any) {
   // TODO handle failed
 
   const handleTransactionPress = () => {
-    navigation.navigate("TransactionDetails", {
+    navigation.navigate('TransactionDetails', {
       transactionHash: transaction.hash,
     });
   };
@@ -30,8 +30,8 @@ export function TransactionItem({ transaction }: any) {
         padding: 8,
         backgroundColor: colors.primaryBackgroundLighter,
         borderRadius: styleVariables.borderRadius,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 8,
       }}
       key={hash}
@@ -46,27 +46,24 @@ export function TransactionItem({ transaction }: any) {
       <View style={{ flex: 1 }}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             marginBottom: 4,
           }}
         >
           <ThemedText theme={TextTheme.CaptionText}>
-            {pending ? "Pending" : value > 0 ? "Received" : "Sent"}
+            {pending ? 'Pending' : value > 0 ? 'Received' : 'Sent'}
           </ThemedText>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "flex-end",
+              flexDirection: 'row',
+              alignItems: 'flex-end',
             }}
           >
             <ThemedText
               theme={TextTheme.CaptionText}
               styleOverwrite={{
-                color:
-                  value > 0
-                    ? colors.primaryAppColorLighter
-                    : colors.primaryFont,
+                color: value > 0 ? colors.primaryAppColorLighter : colors.primaryFont,
                 marginRight: 4,
               }}
             >
@@ -74,14 +71,14 @@ export function TransactionItem({ transaction }: any) {
             </ThemedText>
           </View>
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: colors.secondaryFont }}
           >
-            {value > 0 ? "From:" : "To: "} {formatAddress(address)}
+            {value > 0 ? 'From:' : 'To: '} {formatAddress(address)}
           </ThemedText>
-          <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
             <ThemedText
               theme={TextTheme.CaptionText}
               styleOverwrite={{

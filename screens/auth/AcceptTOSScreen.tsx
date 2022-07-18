@@ -1,17 +1,14 @@
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { ScreenContainer } from "@shared/ScreenContainer";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { en } from "../../en";
-import { OnboardingStackScreenProps } from "../../types";
-import { AppSwitch } from "@shared/AppSwitch";
-import { useState } from "react";
-import { Image, View } from "react-native";
-import { layout } from "@constants/Layout";
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { ScreenContainer } from '@shared/ScreenContainer';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { en } from '../../en';
+import { OnboardingStackScreenProps } from '../../types';
+import { AppSwitch } from '@shared/AppSwitch';
+import { useState } from 'react';
+import { Image, View } from 'react-native';
+import { layout } from '@constants/Layout';
 
-export function AcceptTOSScreen({
-  navigation,
-  route,
-}: OnboardingStackScreenProps<"AcceptTOS">) {
+export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProps<'AcceptTOS'>) {
   const [isAccepted, setIsAccepted] = useState(false);
   const { flow } = route.params;
 
@@ -23,24 +20,22 @@ export function AcceptTOSScreen({
     <ScreenContainer
       showStars
       styles={{
-        justifyContent: "space-between",
-        paddingBottom: layout.isSmallDevice ? 0 : "15%",
+        justifyContent: 'space-between',
+        paddingBottom: layout.isSmallDevice ? 0 : '15%',
       }}
     >
       <View>
         <Image
           style={{
-            marginTop: layout.isSmallDevice ? 0 : "10%",
-            alignSelf: "center",
+            marginTop: layout.isSmallDevice ? 0 : '10%',
+            alignSelf: 'center',
           }}
-          source={require("@assets/images/biometrics-screen-graphics.png")}
+          source={require('@assets/images/biometrics-screen-graphics.png')}
         />
-        <ThemedText theme={TextTheme.Headline2Text}>
-          {en.Accept_TOS_title}
-        </ThemedText>
+        <ThemedText theme={TextTheme.Headline2Text}>{en.Accept_TOS_title}</ThemedText>
         <ThemedText
           theme={TextTheme.BodyText}
-          styleOverwrite={{ marginBottom: layout.isSmallDevice ? "5%" : "20%" }}
+          styleOverwrite={{ marginBottom: layout.isSmallDevice ? '5%' : '20%' }}
         >
           {en.Accept_TOS_subtitle}
         </ThemedText>
@@ -52,7 +47,7 @@ export function AcceptTOSScreen({
         />
       </View>
       <AppButton
-        onPress={() => navigation.navigate("WalletLabel", { flow })}
+        onPress={() => navigation.navigate('WalletLabel', { flow })}
         text={en.Common_next}
         theme={isAccepted ? ButtonTheme.Primary : ButtonTheme.Disabled}
         fullWidth

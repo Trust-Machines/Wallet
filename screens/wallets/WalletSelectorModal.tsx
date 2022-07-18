@@ -1,31 +1,29 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import { WalletsStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "@shared/ModalScreenContainer";
-import { en } from "../../en";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { styleVariables } from "@constants/StyleVariables";
-import { layout } from "@constants/Layout";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { Wallet } from "./components/Wallet";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { setCurrentWalletID, setCurrentWalletLabel } from "@redux/walletSlice";
-import { storeCurrentWalletIdToAsyncStorage } from "@utils/asyncStorageHelper";
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { WalletsStackScreenProps } from '../../types';
+import { ModalScreenContainer } from '@shared/ModalScreenContainer';
+import { en } from '../../en';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { styleVariables } from '@constants/StyleVariables';
+import { layout } from '@constants/Layout';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { Wallet } from './components/Wallet';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { setCurrentWalletID, setCurrentWalletLabel } from '@redux/walletSlice';
+import { storeCurrentWalletIdToAsyncStorage } from '@utils/asyncStorageHelper';
 
 export function WalletSelectorModal({}: //navigation,
-WalletsStackScreenProps<"WalletSelector">) {
+WalletsStackScreenProps<'WalletSelector'>) {
   const [selectedWallet, setSelectedWallet] = useState<any>(undefined);
-  const [selectedWalletID, setSelectedWalletID] = useState<string | undefined>(
-    undefined
-  );
-  const { wallets } = useAppSelector((state) => state.wallet);
+  const [selectedWalletID, setSelectedWalletID] = useState<string | undefined>(undefined);
+  const { wallets } = useAppSelector(state => state.wallet);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
   const switchWallet = () => {
     if (selectedWallet && selectedWalletID) {
-      navigation.navigate("WalletsStack", {
-        screen: "UnlockWallet",
+      navigation.navigate('WalletsStack', {
+        screen: 'UnlockWallet',
         params: {
           encryptedSeedPhrase: selectedWallet.seed,
           onValidationFinished: async (success: boolean) => {
@@ -34,9 +32,9 @@ WalletsStackScreenProps<"WalletSelector">) {
               dispatch(setCurrentWalletID(selectedWalletID));
               dispatch(setCurrentWalletLabel(selectedWallet.label));
 
-              navigation.navigate("Root", { screen: "Home" });
+              navigation.navigate('Root', { screen: 'Home' });
             } else {
-              console.log("error");
+              console.log('error');
             }
           },
         },
@@ -54,8 +52,8 @@ WalletsStackScreenProps<"WalletSelector">) {
       <View
         style={{
           flex: 1,
-          justifyContent: "space-between",
-          marginBottom: layout.isSmallDevice ? 0 : "10%",
+          justifyContent: 'space-between',
+          marginBottom: layout.isSmallDevice ? 0 : '10%',
         }}
       >
         <ScrollView>
@@ -71,21 +69,17 @@ WalletsStackScreenProps<"WalletSelector">) {
             );
           })}
         </ScrollView>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           <AppButton
             text={en.Wallet_selector_add_new_button_text}
             theme={ButtonTheme.Primary}
-            onPress={() =>
-              navigation.navigate("NewWalletStack", { screen: "AddNewWallet" })
-            }
+            onPress={() => navigation.navigate('NewWalletStack', { screen: 'AddNewWallet' })}
             fullWidth
             style={{ flex: 1, marginRight: 10 }}
           />
           <AppButton
             text={en.Wallet_selector_use_selected_button_text}
-            theme={
-              !!selectedWalletID ? ButtonTheme.Primary : ButtonTheme.Disabled
-            }
+            theme={!!selectedWalletID ? ButtonTheme.Primary : ButtonTheme.Disabled}
             onPress={() => switchWallet()}
             fullWidth
             style={{ flex: 1, marginLeft: 10 }}
@@ -98,9 +92,9 @@ WalletsStackScreenProps<"WalletSelector">) {
 
 const styles = StyleSheet.create({
   qrContainer: {
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderRadius: styleVariables.borderRadius,
-    alignItems: "center",
+    alignItems: 'center',
     padding: 40,
     marginBottom: 12,
   },

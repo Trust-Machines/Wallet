@@ -1,28 +1,25 @@
-import { Alert, StyleSheet, TextInput, View } from "react-native";
-import { WalletsStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "@shared/ModalScreenContainer";
-import { en } from "../../en";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { styleVariables } from "@constants/StyleVariables";
-import { layout } from "@constants/Layout";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { useState } from "react";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { colors } from "@constants/Colors";
+import { Alert, StyleSheet, TextInput, View } from 'react-native';
+import { WalletsStackScreenProps } from '../../types';
+import { ModalScreenContainer } from '@shared/ModalScreenContainer';
+import { en } from '../../en';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { styleVariables } from '@constants/StyleVariables';
+import { layout } from '@constants/Layout';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { useState } from 'react';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { colors } from '@constants/Colors';
 import {
   addWalletToAsyncStorage,
   getWalletsFromAsyncStorage,
   removeWalletFromAsyncStorage,
-} from "@utils/asyncStorageHelper";
-import { setCurrentWalletLabel, setWallets } from "@redux/walletSlice";
+} from '@utils/asyncStorageHelper';
+import { setCurrentWalletLabel, setWallets } from '@redux/walletSlice';
 
-export function EditWalletModal({
-  route,
-  navigation,
-}: WalletsStackScreenProps<"EditWallet">) {
+export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'EditWallet'>) {
   const { wallet, id } = route.params;
   const [label, setLabel] = useState<string>(wallet.label);
-  const { currentWalletID } = useAppSelector((state) => state.wallet);
+  const { currentWalletID } = useAppSelector(state => state.wallet);
   const dispatch = useAppDispatch();
 
   const saveEditedWallet = async () => {
@@ -39,7 +36,7 @@ export function EditWalletModal({
     if (currentWalletID === id) {
       dispatch(setCurrentWalletLabel(label));
     }
-    navigation.navigate("WalletSelector");
+    navigation.navigate('WalletSelector');
   };
 
   const deleteWallet = async () => {
@@ -49,21 +46,21 @@ export function EditWalletModal({
       dispatch(setWallets(wallets));
     }
 
-    navigation.navigate("WalletSelector");
+    navigation.navigate('WalletSelector');
   };
 
   const handleDeletePress = async () => {
     Alert.alert(
-      "",
+      '',
       `Are you sure you want to delete this wallet? This won't remove it from the Bitcoin network, only this app`,
       [
         {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
         },
         {
-          text: "Yes, Delete",
+          text: 'Yes, Delete',
           onPress: async () => await deleteWallet(),
         },
       ]
@@ -75,8 +72,8 @@ export function EditWalletModal({
       <View
         style={{
           flex: 1,
-          justifyContent: "space-between",
-          marginBottom: layout.isSmallDevice ? 0 : "10%",
+          justifyContent: 'space-between',
+          marginBottom: layout.isSmallDevice ? 0 : '10%',
         }}
       >
         <View>
@@ -95,19 +92,15 @@ export function EditWalletModal({
               style={styles.input}
               keyboardType="default"
               keyboardAppearance="dark"
-              placeholderTextColor={"rgba(248, 249, 250, 0.3)"}
+              placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
             />
           </View>
         </View>
 
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           <AppButton
-            text={"Delete"}
-            theme={
-              currentWalletID === id
-                ? ButtonTheme.Disabled
-                : ButtonTheme.NoBorder
-            }
+            text={'Delete'}
+            theme={currentWalletID === id ? ButtonTheme.Disabled : ButtonTheme.NoBorder}
             onPress={handleDeletePress}
             fullWidth={false}
           />
@@ -126,9 +119,9 @@ export function EditWalletModal({
 
 const styles = StyleSheet.create({
   qrContainer: {
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderRadius: styleVariables.borderRadius,
-    alignItems: "center",
+    alignItems: 'center',
     padding: 40,
     marginBottom: 12,
   },
@@ -139,7 +132,7 @@ const styles = StyleSheet.create({
     borderColor: colors.disabled,
     padding: 16,
     paddingTop: 16,
-    fontFamily: "Inter_500Medium",
+    fontFamily: 'Inter_500Medium',
     fontSize: 18,
     lineHeight: 22,
     color: colors.primaryFont,

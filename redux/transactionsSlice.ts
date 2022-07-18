@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const ElectrumHelper = require("@utils/ElectrumHelper");
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+const ElectrumHelper = require('@utils/ElectrumHelper');
 
 interface TransactionsState {
   transactions: any;
@@ -14,27 +14,27 @@ const initialState: TransactionsState = {
 };
 
 export const getTransactions = createAsyncThunk(
-  "wallet/getTransactions",
+  'wallet/getTransactions',
   async (wallet: any, { rejectWithValue }) => {
     try {
       await ElectrumHelper.waitTillConnected();
       await wallet.fetchTransactions();
-      console.log('TRANSACTIONS wallet')
+      console.log('TRANSACTIONS wallet');
       const transactions = wallet.getTransactions();
       //console.log("past transactions", transactions);
       return transactions;
     } catch (err) {
-      console.log("get transactions error: ", err);
+      console.log('get transactions error: ', err);
       return rejectWithValue(err);
     }
   }
 );
 
 export const transactionsSlice = createSlice({
-  name: "transactions",
+  name: 'transactions',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(getTransactions.pending, (state, action) => {
         state.transactionsError = false;

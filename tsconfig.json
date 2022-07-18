@@ -11,7 +11,7 @@
       "@redux/*": ["redux/*"],
       "@screens/*": ["screens/*"],
       "@shared/*": ["shared/*"],
-      "@utils/*": ["utils/*"],
+      "@utils/*": ["utils/*"]
     }
-  },
+  }
 }

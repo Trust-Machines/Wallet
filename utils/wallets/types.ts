@@ -1,4 +1,4 @@
-import bitcoin from "bitcoinjs-lib";
+import bitcoin from 'bitcoinjs-lib';
 
 export type Utxo = {
   // Returned by ElectrumHelper
@@ -24,9 +24,7 @@ export type CreateTransactionUtxo = {
   value: number;
 };
 
-export type CreateTransactionResult<
-  U extends CreateTransactionUtxo = CreateTransactionUtxo
-> = {
+export type CreateTransactionResult<U extends CreateTransactionUtxo = CreateTransactionUtxo> = {
   tx?: bitcoin.Transaction;
   inputs: U[];
   outputs: {

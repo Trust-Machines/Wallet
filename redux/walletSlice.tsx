@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CachedWallets } from "@utils/asyncStorageHelper";
-import { startImport } from "@utils/wallets/wallet-import";
-import type { RootState } from "./store";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CachedWallets } from '@utils/asyncStorageHelper';
+import { startImport } from '@utils/wallets/wallet-import';
+import type { RootState } from './store';
 
 interface WalletState {
   currentWalletID: string;
@@ -14,13 +14,13 @@ interface WalletState {
 }
 
 const initialState: WalletState = {
-  currentWalletID: "",
-  currentWalletLabel: "",
+  currentWalletID: '',
+  currentWalletLabel: '',
   walletObject: undefined,
   walletLoading: false,
   walletError: false,
   wallets: {},
-  newWalletLabel: "",
+  newWalletLabel: '',
 };
 
 // TODO add type parameter
@@ -30,24 +30,24 @@ const importWalletHelper = async (
   walletObject: any;
   walletID: string;
 }> => {
-  return new Promise((resolve) => {
-    let walletType: string = "";
+  return new Promise(resolve => {
+    let walletType: string = '';
 
     const onProgress = (data: any) => {
       walletType = data;
-      console.log("onProgress", data);
+      console.log('onProgress', data);
     };
 
     const onPassword = () => {
-      const pass = "123456"; // Should prompt the user to set a password or sth
+      const pass = '123456'; // Should prompt the user to set a password or sth
       return pass;
     };
 
     const onWallet = async (wallet: any) => {
       const walletID = wallet.getID();
-      console.log("WALLETID: ", walletID);
+      console.log('WALLETID: ', walletID);
       const subtitle = wallet.getDerivationPath?.();
-      console.log("WALLET", wallet);
+      console.log('WALLET', wallet);
 
       resolve({ walletObject: wallet, walletID });
     };
@@ -57,19 +57,19 @@ const importWalletHelper = async (
 };
 
 export const importWallet = createAsyncThunk(
-  "wallet/importWallet",
+  'wallet/importWallet',
   async (seedPhrase: string, { rejectWithValue }) => {
     try {
       return await importWalletHelper(seedPhrase);
     } catch (err) {
-      console.log("wallet import error", err);
+      console.log('wallet import error', err);
       return rejectWithValue(err);
     }
   }
 );
 
 export const walletSlice = createSlice({
-  name: "wallet",
+  name: 'wallet',
   initialState,
   reducers: {
     setWallet: (
@@ -93,7 +93,7 @@ export const walletSlice = createSlice({
       state.newWalletLabel = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(importWallet.pending, (state, action) => {
         state.walletError = false;

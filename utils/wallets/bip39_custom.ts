@@ -1,4 +1,4 @@
-import * as bip39 from "bip39";
+import * as bip39 from 'bip39';
 
 const WORDLISTS = [
   bip39.wordlists.english,

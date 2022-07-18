@@ -3,14 +3,14 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
-import { View, StyleSheet } from "react-native";
-import { colors } from "@constants/Colors";
-import { StartScreen } from "@screens/auth/StartScreen";
-import { BiometricsScreen } from "@screens/auth/BiometricsScreen";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { colors } from '@constants/Colors';
+import { StartScreen } from '@screens/auth/StartScreen';
+import { BiometricsScreen } from '@screens/auth/BiometricsScreen';
 import {
   BuyCryptoStackParamList,
   CommonStackParamList,
@@ -24,45 +24,45 @@ import {
   RootTabScreenProps,
   SendStackParamList,
   WalletsStackParamList,
-} from "../types";
-import { en } from "../en";
-import LinkingConfiguration from "./LinkingConfiguration";
-import { SaveRecoveryPhraseScreen } from "@screens/auth/SaveRecoveryPhraseScreen";
-import { CreateWalletSuccessScreen } from "@screens/auth/CreateWalletSuccessScreen";
-import BottomTabBorder from "@assets/images/bottom-tab-border.svg";
-import { LinearGradient } from "expo-linear-gradient";
-import { layout } from "@constants/Layout";
-import { HomeScreen } from "@screens/home/HomeScreen";
-import { ExchangeScreen } from "@screens/exchange/ExchangeScreen";
-import { styleVariables } from "@constants/StyleVariables";
-import { ExchangeSelectTokenModal } from "@screens/exchange/ExchangeSelectTokenModal";
-import { PresentQrModal } from "@screens/transactions/PresentQrModal";
-import { ScanQrModal } from "@screens/transactions/ScanQrModal";
-import { ConfirmSendModal } from "@screens/transactions/ConfirmSendModal";
-import { TransactionSuccessModal } from "@screens/transactions/TransactionSuccessModal";
-import { ReceivePresentQrModal } from "@screens/transactions/ReceivePresentQrModal";
-import { SendScreen } from "@screens/transactions/SendScreen";
-import { SendSuccessModal } from "@screens/transactions/SendSuccessModal";
-import { CollectiblesScreen } from "@screens/collectibles/CollectiblesScreen";
-import { DefiBrowserScreen } from "@screens/defi/DefiBrowserScreen";
-import { SettingsScreen } from "@screens/settings/SettingsScreen";
-import { BuyCryptoModal } from "@screens/transactions/BuyCryptoModal";
-import { WalletLoginScreen } from "@screens/auth/WalletLoginScreen";
-import { SvgIcons } from "@assets/images";
-import { AcceptTOSScreen } from "@screens/auth/AcceptTOSScreen";
-import { SetPasswordScreen } from "@screens/auth/SetPasswordScreen";
-import { UnlockWalletScreen } from "@screens/auth/UnlockWalletScreen";
-import { SetWalletLabelScreen } from "@screens/auth/SetWalletLabelScreen";
-import { WalletSelectorModal } from "@screens/wallets/WalletSelectorModal";
-import { AddNewWalletScreen } from "@screens/wallets/AddNewWallet";
-import { EditWalletModal } from "@screens/wallets/EditWalletModal";
-import { TransactionDetails } from "@screens/transaction-details/TransactionDetailsScreen";
+} from '../types';
+import { en } from '../en';
+import LinkingConfiguration from './LinkingConfiguration';
+import { SaveRecoveryPhraseScreen } from '@screens/auth/SaveRecoveryPhraseScreen';
+import { CreateWalletSuccessScreen } from '@screens/auth/CreateWalletSuccessScreen';
+import BottomTabBorder from '@assets/images/bottom-tab-border.svg';
+import { LinearGradient } from 'expo-linear-gradient';
+import { layout } from '@constants/Layout';
+import { HomeScreen } from '@screens/home/HomeScreen';
+import { ExchangeScreen } from '@screens/exchange/ExchangeScreen';
+import { styleVariables } from '@constants/StyleVariables';
+import { ExchangeSelectTokenModal } from '@screens/exchange/ExchangeSelectTokenModal';
+import { PresentQrModal } from '@screens/transactions/PresentQrModal';
+import { ScanQrModal } from '@screens/transactions/ScanQrModal';
+import { ConfirmSendModal } from '@screens/transactions/ConfirmSendModal';
+import { TransactionSuccessModal } from '@screens/transactions/TransactionSuccessModal';
+import { ReceivePresentQrModal } from '@screens/transactions/ReceivePresentQrModal';
+import { SendScreen } from '@screens/transactions/SendScreen';
+import { SendSuccessModal } from '@screens/transactions/SendSuccessModal';
+import { CollectiblesScreen } from '@screens/collectibles/CollectiblesScreen';
+import { DefiBrowserScreen } from '@screens/defi/DefiBrowserScreen';
+import { SettingsScreen } from '@screens/settings/SettingsScreen';
+import { BuyCryptoModal } from '@screens/transactions/BuyCryptoModal';
+import { WalletLoginScreen } from '@screens/auth/WalletLoginScreen';
+import { SvgIcons } from '@assets/images';
+import { AcceptTOSScreen } from '@screens/auth/AcceptTOSScreen';
+import { SetPasswordScreen } from '@screens/auth/SetPasswordScreen';
+import { UnlockWalletScreen } from '@screens/auth/UnlockWalletScreen';
+import { SetWalletLabelScreen } from '@screens/auth/SetWalletLabelScreen';
+import { WalletSelectorModal } from '@screens/wallets/WalletSelectorModal';
+import { AddNewWalletScreen } from '@screens/wallets/AddNewWallet';
+import { EditWalletModal } from '@screens/wallets/EditWalletModal';
+import { TransactionDetails } from '@screens/transaction-details/TransactionDetailsScreen';
 
 const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: "transparent",
+    background: 'transparent',
   },
 };
 
@@ -91,9 +91,7 @@ const QrStack = createNativeStackNavigator<QrStackParamList>();
 const WalletsStack = createNativeStackNavigator<WalletsStackParamList>();
 const NewWalletStack = createNativeStackNavigator<NewWalletStackParamList>();
 
-const getCommonScreens = (
-  Stack: ReturnType<typeof createNativeStackNavigator>
-) => {
+const getCommonScreens = (Stack: ReturnType<typeof createNativeStackNavigator>) => {
   return (
     <>
       <Stack.Screen
@@ -128,11 +126,7 @@ const getCommonScreens = (
 function RootNavigator() {
   return (
     <Stack.Navigator initialRouteName="OnboardingStack">
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen
         name="OnboardingStack"
         component={OnboardingStackView}
@@ -147,7 +141,7 @@ function RootNavigator() {
         name="ExchangeStack"
         component={ExchangeStackView}
         options={{
-          presentation: "containedTransparentModal",
+          presentation: 'containedTransparentModal',
           headerShown: false,
         }}
       />
@@ -155,7 +149,7 @@ function RootNavigator() {
         name="ReceiveStack"
         component={ReceiveStackView}
         options={{
-          presentation: "containedTransparentModal",
+          presentation: 'containedTransparentModal',
           headerShown: false,
         }}
       />
@@ -163,7 +157,7 @@ function RootNavigator() {
         name="SendStack"
         component={SendStackView}
         options={{
-          presentation: "containedTransparentModal",
+          presentation: 'containedTransparentModal',
           headerShown: false,
         }}
       />
@@ -171,7 +165,7 @@ function RootNavigator() {
         name="BuyCryptoStack"
         component={BuyCryptoStackView}
         options={{
-          presentation: "containedTransparentModal",
+          presentation: 'containedTransparentModal',
           headerShown: false,
         }}
       />
@@ -179,7 +173,7 @@ function RootNavigator() {
         name="QrStack"
         component={QrStackView}
         options={{
-          presentation: "containedTransparentModal",
+          presentation: 'containedTransparentModal',
           headerShown: false,
         }}
       />
@@ -187,7 +181,7 @@ function RootNavigator() {
         name="WalletsStack"
         component={WalletsStackView}
         options={{
-          presentation: "containedTransparentModal",
+          presentation: 'containedTransparentModal',
           headerShown: false,
         }}
       />
@@ -198,7 +192,7 @@ function RootNavigator() {
           title: en.Header_title_transaction_details,
           headerStyle: styles.header,
           headerTintColor: colors.primaryFont,
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>
@@ -255,7 +249,7 @@ const NewWalletStackView = () => {
         name="AddNewWallet"
         component={AddNewWalletScreen}
         options={{
-          presentation: "card",
+          presentation: 'card',
         }}
       />
       {commonScreens}
@@ -273,7 +267,7 @@ const ExchangeStackView = () => (
       name="ExchangeSelectToken"
       component={ExchangeSelectTokenModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
   </ExchangeStack.Navigator>
@@ -289,7 +283,7 @@ const ReceiveStackView = () => (
       name="ReceivePresentQr"
       component={ReceivePresentQrModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
   </ReceiveStack.Navigator>
@@ -305,14 +299,14 @@ const SendStackView = () => (
       name="Send"
       component={SendScreen}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
     <SendStack.Screen
       name="SendSuccess"
       component={SendSuccessModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
   </SendStack.Navigator>
@@ -328,7 +322,7 @@ const BuyCryptoStackView = () => (
       name="BuyCrypto"
       component={BuyCryptoModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
   </BuyCryptoStack.Navigator>
@@ -344,28 +338,28 @@ const QrStackView = () => (
       name="PresentQr"
       component={PresentQrModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
     <QrStack.Screen
       name="ScanQr"
       component={ScanQrModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
     <QrStack.Screen
       name="ConfirmSend"
       component={ConfirmSendModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
     <QrStack.Screen
       name="TransactionSuccess"
       component={TransactionSuccessModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
   </QrStack.Navigator>
@@ -382,7 +376,7 @@ const WalletsStackView = () => (
       name="WalletSelector"
       component={WalletSelectorModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
     <WalletsStack.Screen
@@ -394,7 +388,7 @@ const WalletsStackView = () => (
       name="EditWallet"
       component={EditWalletModal}
       options={{
-        presentation: "card",
+        presentation: 'card',
       }}
     />
   </WalletsStack.Navigator>
@@ -415,10 +409,10 @@ function BottomTabNavigator() {
         tabBarStyle: {
           height: styleVariables.bottomTabHeight,
           marginBottom: styleVariables.bottomTabBottomOffset,
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
           paddingBottom: 0,
-          position: "absolute",
+          position: 'absolute',
           borderTopWidth: 0,
           width: layout.window.width - 20,
           marginLeft: 10,
@@ -428,17 +422,13 @@ function BottomTabNavigator() {
         tabBarBackground: () => (
           <LinearGradient
             style={{
-              alignItems: "center",
-              width: layout.isSmallDevice
-                ? layout.window.width - 20
-                : layout.window.width,
+              alignItems: 'center',
+              width: layout.isSmallDevice ? layout.window.width - 20 : layout.window.width,
             }}
-            colors={[colors.primaryBackgroundLighter, "#243251"]}
+            colors={[colors.primaryBackgroundLighter, '#243251']}
           >
             <BottomTabBorder
-              preserveAspectRatio={
-                layout.isSmallDevice ? "xMinYMin" : "xMinYMin slice"
-              }
+              preserveAspectRatio={layout.isSmallDevice ? 'xMinYMin' : 'xMinYMin slice'}
               width={layout.window.width - 20}
               style={{ marginLeft: layout.isSmallDevice ? 0 : -20 }}
             />
@@ -449,8 +439,8 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }: RootTabScreenProps<"Home">) => ({
-          title: "Home",
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+          title: 'Home',
           headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
@@ -463,9 +453,9 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Collectibles"
         component={CollectiblesScreen}
-        options={({ navigation }: RootTabScreenProps<"Collectibles">) => ({
+        options={({ navigation }: RootTabScreenProps<'Collectibles'>) => ({
           title: en.Header_title_collectibles,
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveCollectibles style={styles.glow} />
@@ -481,22 +471,20 @@ function BottomTabNavigator() {
         name="ExchangeTab"
         component={ExchangeScreen}
         listeners={({ navigation, route }) => ({
-          tabPress: (e) => {
+          tabPress: e => {
             e.preventDefault();
-            navigation.navigate(
-              navigation.isFocused() ? "Home" : "ExchangeTab"
-            );
+            navigation.navigate(navigation.isFocused() ? 'Home' : 'ExchangeTab');
           },
         })}
-        options={({ navigation }: RootTabScreenProps<"ExchangeTab">) => ({
+        options={({ navigation }: RootTabScreenProps<'ExchangeTab'>) => ({
           title: en.Header_title_exchange,
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) => (
             <View
               style={{
-                position: "relative",
-                alignItems: "center",
-                justifyContent: "center",
+                position: 'relative',
+                alignItems: 'center',
+                justifyContent: 'center',
                 flex: 1,
                 marginTop: -40,
               }}
@@ -504,12 +492,12 @@ function BottomTabNavigator() {
               {focused ? (
                 <>
                   <SvgIcons.TabBar.PolygonOutlined style={styles.glow} />
-                  <SvgIcons.TabBar.Close style={{ position: "absolute" }} />
+                  <SvgIcons.TabBar.Close style={{ position: 'absolute' }} />
                 </>
               ) : (
                 <>
                   <SvgIcons.TabBar.Polygon style={styles.glow} />
-                  <SvgIcons.TabBar.Stacks style={{ position: "absolute" }} />
+                  <SvgIcons.TabBar.Stacks style={{ position: 'absolute' }} />
                 </>
               )}
             </View>
@@ -521,24 +509,20 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="DefiBrowser"
         component={DefiBrowserScreen}
-        options={({ navigation }: RootTabScreenProps<"DefiBrowser">) => ({
-          title: "Defi Browser",
-          headerTitleAlign: "center",
+        options={({ navigation }: RootTabScreenProps<'DefiBrowser'>) => ({
+          title: 'Defi Browser',
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <SvgIcons.TabBar.ActiveDefi style={styles.glow} />
-            ) : (
-              <SvgIcons.TabBar.Defi />
-            ),
+            focused ? <SvgIcons.TabBar.ActiveDefi style={styles.glow} /> : <SvgIcons.TabBar.Defi />,
           headerShown: false,
         })}
       />
       <BottomTab.Screen
         name="Settings"
         component={SettingsScreen}
-        options={({ navigation }: RootTabScreenProps<"Settings">) => ({
+        options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
           title: en.Header_title_settings,
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, focused }) =>
             focused ? (
               <SvgIcons.TabBar.ActiveSettings style={styles.glow} />

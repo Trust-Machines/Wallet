@@ -1,11 +1,11 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import { ScreenContainer } from "./ScreenContainer";
-import { TextTheme, ThemedText } from "./ThemedText";
-import { colors } from "@constants/Colors";
-import { layout } from "@constants/Layout";
-import { styleVariables } from "@constants/StyleVariables";
-import { SvgIcons } from "@assets/images";
-import { useNavigation } from "@react-navigation/native";
+import { Pressable, StyleSheet, View } from 'react-native';
+import { ScreenContainer } from './ScreenContainer';
+import { TextTheme, ThemedText } from './ThemedText';
+import { colors } from '@constants/Colors';
+import { layout } from '@constants/Layout';
+import { styleVariables } from '@constants/StyleVariables';
+import { SvgIcons } from '@assets/images';
+import { useNavigation } from '@react-navigation/native';
 
 type ModalScreenProps = {
   title: string;
@@ -20,10 +20,7 @@ export function ModalScreenContainer({ title, children }: ModalScreenProps) {
       <View style={styles.modalContainer}>
         <View style={styles.header}>
           <ThemedText theme={TextTheme.LabelText}>{title}</ThemedText>
-          <Pressable
-            style={styles.close}
-            onPress={() => navigation.getParent()?.goBack()}
-          >
+          <Pressable style={styles.close} onPress={() => navigation.getParent()?.goBack()}>
             <SvgIcons.General.CloseModal />
           </Pressable>
         </View>
@@ -36,24 +33,24 @@ export function ModalScreenContainer({ title, children }: ModalScreenProps) {
 const styles = StyleSheet.create({
   fullContainer: {
     flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
     height: layout.window.height - styleVariables.headerHeight,
-    width: "100%",
+    width: '100%',
   },
   header: {
     backgroundColor: colors.primaryBackgroundDarker,
     height: layout.isSmallDevice ? 45 : 65,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    position: "relative",
+    position: 'relative',
   },
   close: {
-    position: "absolute",
+    position: 'absolute',
     left: 20,
   },
 });

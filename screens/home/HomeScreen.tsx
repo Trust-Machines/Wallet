@@ -1,34 +1,27 @@
-import { useCallback } from "react";
-import {
-  FlatList,
-  Image,
-  RefreshControl,
-  ScrollView,
-  View,
-} from "react-native";
-import { HomeHeader } from "./components/HomeHeader";
-import { ScreenContainer } from "@shared/ScreenContainer";
-import { RootTabScreenProps } from "../../types";
-import { HomeBalance } from "./components/HomeBalance";
-import { AppButton, ButtonTheme } from "@shared/AppButton";
-import { en } from "../../en";
-import { TextTheme, ThemedText } from "@shared/ThemedText";
-import { colors } from "@constants/Colors";
-import { TransactionItem } from "./components/TransactionItem";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { layout } from "@constants/Layout";
-import { getBalance } from "@redux/balanceSlice";
-import { getTransactions } from "@redux/transactionsSlice";
-import { getAddress } from "@redux/addressSlice";
-import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from 'react';
+import { FlatList, Image, RefreshControl, ScrollView, View } from 'react-native';
+import { HomeHeader } from './components/HomeHeader';
+import { ScreenContainer } from '@shared/ScreenContainer';
+import { RootTabScreenProps } from '../../types';
+import { HomeBalance } from './components/HomeBalance';
+import { AppButton, ButtonTheme } from '@shared/AppButton';
+import { en } from '../../en';
+import { TextTheme, ThemedText } from '@shared/ThemedText';
+import { colors } from '@constants/Colors';
+import { TransactionItem } from './components/TransactionItem';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { layout } from '@constants/Layout';
+import { getBalance } from '@redux/balanceSlice';
+import { getTransactions } from '@redux/transactionsSlice';
+import { getAddress } from '@redux/addressSlice';
+import { useFocusEffect } from '@react-navigation/native';
 
-export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+export function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const dispatch = useAppDispatch();
-  const { walletObject, currentWalletID } = useAppSelector(
-    (state) => state.wallet
+  const { walletObject, currentWalletID } = useAppSelector(state => state.wallet);
+  const { transactions, transactionsLoading, transactionsError } = useAppSelector(
+    state => state.transactions
   );
-  const { transactions, transactionsLoading, transactionsError } =
-    useAppSelector((state) => state.transactions);
 
   useFocusEffect(
     useCallback(() => {
@@ -59,30 +52,26 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           width: layout.window.width,
           marginLeft: -20,
         }}
-        contentContainerStyle={{ paddingHorizontal: 20, position: "relative" }}
+        contentContainerStyle={{ paddingHorizontal: 20, position: 'relative' }}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl
-            enabled={true}
-            refreshing={transactionsLoading}
-            onRefresh={getHomeData}
-          />
+          <RefreshControl enabled={true} refreshing={transactionsLoading} onRefresh={getHomeData} />
         }
       >
         <Image
-          source={require("@assets/images/home-chart.png")}
-          style={{ position: "absolute", right: -20 }}
+          source={require('@assets/images/home-chart.png')}
+          style={{ position: 'absolute', right: -20 }}
         />
         <HomeBalance />
-        <View style={{ flexDirection: "row", marginTop: 18, marginBottom: 21 }}>
+        <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 21 }}>
           <AppButton
             theme={ButtonTheme.Primary}
             text={en.Common_receive}
             style={{ flex: 1 }}
             paddingHorizontal={0}
             onPress={() =>
-              navigation.navigate("ReceiveStack", {
-                screen: "ReceivePresentQr",
+              navigation.navigate('ReceiveStack', {
+                screen: 'ReceivePresentQr',
               })
             }
             fullWidth
@@ -92,8 +81,8 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
             text={en.Common_send}
             style={{ flex: 1, marginHorizontal: 16 }}
             onPress={() =>
-              navigation.navigate("SendStack", {
-                screen: "Send",
+              navigation.navigate('SendStack', {
+                screen: 'Send',
               })
             }
             fullWidth
@@ -103,8 +92,8 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
             text={en.Common_buy}
             style={{ flex: 1 }}
             onPress={() =>
-              navigation.navigate("BuyCryptoStack", {
-                screen: "BuyCrypto",
+              navigation.navigate('BuyCryptoStack', {
+                screen: 'BuyCrypto',
               })
             }
             fullWidth
@@ -112,15 +101,13 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         </View>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
             marginBottom: 16,
           }}
         >
-          <ThemedText theme={TextTheme.LabelText}>
-            {en.Home_your_transactions}
-          </ThemedText>
+          <ThemedText theme={TextTheme.LabelText}>{en.Home_your_transactions}</ThemedText>
           {/* <ThemedText
             theme={TextTheme.CaptionText}
             styleOverwrite={{ color: colors.primaryAppColorDarker }}
@@ -145,7 +132,7 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
               nestedScrollEnabled
               data={transactions}
               renderItem={(item: any) => renderItem(item)}
-              keyExtractor={(item) => item.hash}
+              keyExtractor={item => item.hash}
             />
           )}
         </View>

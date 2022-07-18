@@ -1,4 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   StyleSheet,
   View,
@@ -7,9 +7,9 @@ import {
   Keyboard,
   Image,
   ViewStyle,
-} from "react-native";
-import { colors } from "@constants/Colors";
-import { styleVariables } from "@constants/StyleVariables";
+} from 'react-native';
+import { colors } from '@constants/Colors';
+import { styleVariables } from '@constants/StyleVariables';
 
 type ScreenContainerProps = {
   children: React.ReactNode;
@@ -22,27 +22,17 @@ type ScreenContainerProps = {
 
 export function ScreenContainer(props: ScreenContainerProps) {
   return (
-    <TouchableWithoutFeedback
-      onPress={() => Keyboard.dismiss()}
-      accessible={false}
-    >
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
       <View style={styles.container}>
-        <StatusBar
-          barStyle={"light-content"}
-          translucent
-          backgroundColor={"transparent"}
-        />
+        <StatusBar barStyle={'light-content'} translucent backgroundColor={'transparent'} />
         <LinearGradient
-          colors={[
-            colors.primaryBackgroundDarker,
-            colors.primaryBackgroundLighter,
-          ]}
+          colors={[colors.primaryBackgroundDarker, colors.primaryBackgroundLighter]}
           style={styles.container}
         >
           {props.showStars && (
             <Image
               style={styles.image}
-              source={require("@assets/images/constellations-background.png")}
+              source={require('@assets/images/constellations-background.png')}
             />
           )}
           <View
@@ -52,8 +42,7 @@ export function ScreenContainer(props: ScreenContainerProps) {
                 paddingTop: props.paddingTop ?? styleVariables.statusBarHeight,
                 paddingHorizontal: props.paddingHorizontal ?? 20,
                 paddingBottom: props.withTab
-                  ? styleVariables.bottomTabHeight +
-                    styleVariables.bottomTabBottomOffset
+                  ? styleVariables.bottomTabHeight + styleVariables.bottomTabBottomOffset
                   : 0,
                 ...props.styles,
               },
@@ -76,8 +65,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
-    width: "100%",
-    position: "absolute",
+    width: '100%',
+    position: 'absolute',
     top: 0,
     left: 0,
   },

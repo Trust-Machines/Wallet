@@ -1,10 +1,10 @@
-import slip39 from "slip39";
-import { WORD_LIST } from "slip39/dist/slip39_helper";
-import createHash from "create-hash";
+import slip39 from 'slip39';
+import { WORD_LIST } from 'slip39/dist/slip39_helper';
+import createHash from 'create-hash';
 
-import { HDLegacyP2PKHWallet } from "./hd-legacy-p2pkh-wallet";
-import { HDSegwitP2SHWallet } from "./hd-segwit-p2sh-wallet";
-import { HDSegwitBech32Wallet } from "./hd-segwit-bech32-wallet";
+import { HDLegacyP2PKHWallet } from './hd-legacy-p2pkh-wallet';
+import { HDSegwitP2SHWallet } from './hd-segwit-p2sh-wallet';
+import { HDSegwitBech32Wallet } from './hd-segwit-bech32-wallet';
 
 // collection of SLIP39 functions
 const SLIP39Mixin = {
@@ -14,7 +14,7 @@ const SLIP39Mixin = {
   },
 
   validateMnemonic() {
-    if (!this.secret.every((m) => slip39.validateMnemonic(m))) return false;
+    if (!this.secret.every(m => slip39.validateMnemonic(m))) return false;
 
     try {
       slip39.recoverSecret(this.secret);
@@ -38,19 +38,19 @@ const SLIP39Mixin = {
 
     this.secret = newSecret
       .trim()
-      .split("\n")
-      .filter((s) => s)
-      .map((s) => {
+      .split('\n')
+      .filter(s => s)
+      .map(s => {
         let secret = s
           .trim()
           .toLowerCase()
-          .replace(/[^a-zA-Z0-9]/g, " ")
-          .replace(/\s+/g, " ");
+          .replace(/[^a-zA-Z0-9]/g, ' ')
+          .replace(/\s+/g, ' ');
 
         secret = secret
-          .split(" ")
-          .map((word) => lookupMap.get(word) || word)
-          .join(" ");
+          .split(' ')
+          .map(word => lookupMap.get(word) || word)
+          .join(' ');
 
         return secret;
       });
@@ -58,15 +58,14 @@ const SLIP39Mixin = {
   },
 
   getID() {
-    const string2hash =
-      this.secret.sort().join(",") + (this.getPassphrase() || "");
-    return createHash("sha256").update(string2hash).digest().toString("hex");
+    const string2hash = this.secret.sort().join(',') + (this.getPassphrase() || '');
+    return createHash('sha256').update(string2hash).digest().toString('hex');
   },
 };
 
 export class SLIP39LegacyP2PKHWallet extends HDLegacyP2PKHWallet {
-  static type = "SLIP39legacyP2PKH";
-  static typeReadable = "SLIP39 Legacy (P2PKH)";
+  static type = 'SLIP39legacyP2PKH';
+  static typeReadable = 'SLIP39 Legacy (P2PKH)';
 
   _getSeed = SLIP39Mixin._getSeed;
   validateMnemonic = SLIP39Mixin.validateMnemonic;
@@ -75,8 +74,8 @@ export class SLIP39LegacyP2PKHWallet extends HDLegacyP2PKHWallet {
 }
 
 export class SLIP39SegwitP2SHWallet extends HDSegwitP2SHWallet {
-  static type = "SLIP39segwitP2SH";
-  static typeReadable = "SLIP39 SegWit (P2SH)";
+  static type = 'SLIP39segwitP2SH';
+  static typeReadable = 'SLIP39 SegWit (P2SH)';
 
   _getSeed = SLIP39Mixin._getSeed;
   validateMnemonic = SLIP39Mixin.validateMnemonic;
@@ -85,8 +84,8 @@ export class SLIP39SegwitP2SHWallet extends HDSegwitP2SHWallet {
 }
 
 export class SLIP39SegwitBech32Wallet extends HDSegwitBech32Wallet {
-  static type = "SLIP39segwitBech32";
-  static typeReadable = "SLIP39 SegWit (Bech32)";
+  static type = 'SLIP39segwitBech32';
+  static typeReadable = 'SLIP39 SegWit (Bech32)';
 
   _getSeed = SLIP39Mixin._getSeed;
   validateMnemonic = SLIP39Mixin.validateMnemonic;
