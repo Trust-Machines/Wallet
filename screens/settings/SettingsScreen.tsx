@@ -6,18 +6,19 @@ import { styleVariables } from "../../constants/StyleVariables";
 import { en } from "../../en";
 import { SvgIcons } from "../../assets/images";
 import { clearAsyncStorage } from "../../utils/asyncStorageHelper";
+import { useAppDispatch } from "../../redux/hooks";
+import { setWallets } from "../../redux/walletSlice";
 
 export function SettingsScreen({ navigation }: RootTabScreenProps<"Settings">) {
-  type LabelProps = {
-    label: string;
-  };
+  const dispatch = useAppDispatch();
 
   const handleLogout = async (): Promise<void> => {
+    dispatch(setWallets({}));
     const cleared = await clearAsyncStorage();
-    navigation.navigate("Start");
+    navigation.navigate("OnboardingStack", { screen: "Start" });
   };
 
-  const Label = ({ label }: LabelProps) => {
+  const Label = ({ label }: { label: string }) => {
     return <Text style={styles.labelText}>{label}</Text>;
   };
 

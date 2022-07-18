@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { TextTheme, ThemedText } from "../../../shared/ThemedText";
 import { en } from "../../../en";
 import { Assets } from "../../../constants/CommonEnums";
@@ -7,9 +7,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { satoshiToBitcoinString } from "../../../utils/helpers";
 
 export function HomeBalance() {
-  const { balance, balanceLoading, balanceError } = useAppSelector(
-    (state) => state.balance
-  );
+  const { balance } = useAppSelector((state) => state.balance);
 
   return (
     <View style={{ height: 166, justifyContent: "space-between" }}>
@@ -29,15 +27,7 @@ export function HomeBalance() {
               marginBottom: 0,
             }}
           >
-            {balanceLoading ? (
-              <ActivityIndicator
-                size="small"
-                color={colors.primaryAppColorLighter}
-              />
-            ) : (
-              satoshiToBitcoinString(balance)
-            )}{" "}
-            {Assets.BTC}
+            {satoshiToBitcoinString(balance ?? 0)} {Assets.BTC}
           </ThemedText>
           <ThemedText
             theme={TextTheme.CaptionText}

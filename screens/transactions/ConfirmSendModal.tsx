@@ -9,9 +9,10 @@ import { layout } from "../../constants/Layout";
 import { Assets } from "../../constants/CommonEnums";
 import useTransactionSending from "../../hooks/useTransactionSending";
 import { useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { styleVariables } from "../../constants/StyleVariables";
 import { safeParseFloat } from "../../utils/helpers";
+import { getTransactions } from "../../redux/transactionsSlice";
 
 // enum Tokens {
 //   TKN1 = "TKN1",
@@ -35,14 +36,20 @@ export function ConfirmSendModal({
   const [amount, setAmount] = useState<string>(
     route.params.amount.length ? route.params.amount : "0"
   );
-  const { wallet } = useAppSelector((state) => state.wallet);
+  const { walletObject } = useAppSelector((state) => state.wallet);
+  const dispatch = useAppDispatch();
 
   const handleTransactionSending = async () => {
     setError(false);
     setLoading(true);
-    const result = await useTransactionSending({ address, amount }, wallet);
+    const result = await useTransactionSending(
+      { address, amount },
+      walletObject
+    );
 
     if (result.success && result.data) {
+      // TODO
+      await dispatch(getTransactions(walletObject));
       navigation.navigate("TransactionSuccess", result.data);
     } else {
       setError(true);

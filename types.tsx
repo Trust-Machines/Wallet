@@ -50,7 +50,7 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
 
 export type CommonStackParamList = {
   SaveRecoveryPhrase: { password?: string };
-  CreateWalletSuccess: undefined;
+  CreateWalletSuccess: { isFirstWallet?: boolean };
   WalletLogin: { password?: string };
   UnlockWallet: {
     encryptedSeedPhrase: EncryptedSeed;

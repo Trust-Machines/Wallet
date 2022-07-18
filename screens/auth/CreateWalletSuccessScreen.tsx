@@ -6,12 +6,10 @@ import { AppSuccess } from "../../shared/AppSuccess";
 import { View } from "react-native";
 import { layout } from "../../constants/Layout";
 import { useNavigation } from "@react-navigation/native";
-import { useAppSelector } from "../../redux/hooks";
 
 export function CreateWalletSuccessScreen({
   route,
 }: CommonStackScreenProps<"CreateWalletSuccess">) {
-  const { wallets } = useAppSelector((state) => state.wallet);
   const navigation = useNavigation();
   return (
     <ScreenContainer
@@ -30,7 +28,7 @@ export function CreateWalletSuccessScreen({
       <AppButton
         onPress={() =>
           navigation.navigate(
-            Object.keys(wallets).length ? "WalletsStack" : "Root"
+            route.params.isFirstWallet ? "Root" : "WalletsStack"
           )
         }
         text={en.Create_wallet_success_button_text}
