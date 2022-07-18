@@ -7,19 +7,19 @@ import {
   View,
 } from "react-native";
 import { HomeHeader } from "./components/HomeHeader";
-import { ScreenContainer } from "../../shared/ScreenContainer";
+import { ScreenContainer } from "@shared/ScreenContainer";
 import { RootTabScreenProps } from "../../types";
 import { HomeBalance } from "./components/HomeBalance";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
 import { en } from "../../en";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import { TransactionItem } from "./components/TransactionItem";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { layout } from "../../constants/Layout";
-import { getBalance } from "../../redux/balanceSlice";
-import { getTransactions } from "../../redux/transactionsSlice";
-import { getAddress } from "../../redux/addressSlice";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import { layout } from "@constants/Layout";
+import { getBalance } from "@redux/balanceSlice";
+import { getTransactions } from "@redux/transactionsSlice";
+import { getAddress } from "@redux/addressSlice";
 import { useFocusEffect } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
@@ -70,7 +70,7 @@ export function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
         }
       >
         <Image
-          source={require("../../assets/images/home-chart.png")}
+          source={require("@assets/images/home-chart.png")}
           style={{ position: "absolute", right: -20 }}
         />
         <HomeBalance />

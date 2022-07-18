@@ -1,13 +1,13 @@
 import { Image, ScrollView, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import { ModalScreenContainer } from "../../../shared/ModalScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../../en";
-import { AppButton, ButtonTheme } from "../../../shared/AppButton";
-import { styleVariables } from "../../../constants/StyleVariables";
-import { colors } from "../../../constants/Colors";
-import { satoshiToBitcoinString } from "../../../utils/helpers";
-import { Assets } from "../../../constants/CommonEnums";
-import { TransactionDetails } from "../../../hooks/useTransactionSending";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { styleVariables } from "@constants/StyleVariables";
+import { colors } from "@constants/Colors";
+import { satoshiToBitcoinString } from "@utils/helpers";
+import { Assets } from "@constants/CommonEnums";
+import { TransactionDetails } from "@hooks/useTransactionSending";
 import { useNavigation } from "@react-navigation/native";
 
 type TransactionSuccessProps = {
@@ -29,7 +29,7 @@ export function TransactionSuccess(props: TransactionSuccessProps) {
           {props.title}
         </ThemedText>
         <Image
-          source={require("../../../assets/images/success-graphics.png")}
+          source={require("@assets/images/success-graphics.png")}
           style={{ alignSelf: "center" }}
         />
 

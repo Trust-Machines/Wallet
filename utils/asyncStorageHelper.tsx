@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAppDispatch } from "../redux/hooks";
-import { setWallets } from "../redux/walletSlice";
+import { useAppDispatch } from "@redux/hooks";
+import { setWallets } from "@redux/walletSlice";
 
 export enum StorageKeys {
   Wallets = "Wallets",

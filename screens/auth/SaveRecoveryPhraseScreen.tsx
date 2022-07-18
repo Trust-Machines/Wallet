@@ -1,25 +1,25 @@
 import { View, StyleSheet } from "react-native";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import { en } from "../../en";
 import { CommonStackScreenProps } from "../../types";
-import { SvgIcons } from "../../assets/images";
-import { HDSegwitP2SHWallet } from "../../utils/wallets/hd-segwit-p2sh-wallet";
+import { SvgIcons } from "@assets/images";
+import { HDSegwitP2SHWallet } from "@utils/wallets/hd-segwit-p2sh-wallet";
 import { useEffect, useState } from "react";
-import { layout } from "../../constants/Layout";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { layout } from "@constants/Layout";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import {
   setCurrentWalletLabel,
   setNewWalletLabel,
   setWallets,
-} from "../../redux/walletSlice";
-import { encrypt } from "../../utils/helpers";
+} from "@redux/walletSlice";
+import { encrypt } from "@utils/helpers";
 import {
   addWalletToAsyncStorage,
   getWalletsFromAsyncStorage,
-} from "../../utils/asyncStorageHelper";
+} from "@utils/asyncStorageHelper";
 import { useNavigation } from "@react-navigation/native";
 
 export function SaveRecoveryPhraseScreen({

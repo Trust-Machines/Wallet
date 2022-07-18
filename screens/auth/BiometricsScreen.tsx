@@ -1,12 +1,12 @@
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { en } from "../../en";
 import { OnboardingStackScreenProps } from "../../types";
-import { AppSwitch } from "../../shared/AppSwitch";
+import { AppSwitch } from "@shared/AppSwitch";
 import { useState } from "react";
 import { Image, View } from "react-native";
-import { layout } from "../../constants/Layout";
+import { layout } from "@constants/Layout";
 import { useNavigation } from "@react-navigation/native";
 
 export function BiometricsScreen({
@@ -33,7 +33,7 @@ export function BiometricsScreen({
             marginTop: layout.isSmallDevice ? 0 : "10%",
             alignSelf: "center",
           }}
-          source={require("../../assets/images/biometrics-screen-graphics.png")}
+          source={require("@assets/images/biometrics-screen-graphics.png")}
         />
         <ThemedText theme={TextTheme.Headline2Text}>
           {en.Biometrics_screen_title}

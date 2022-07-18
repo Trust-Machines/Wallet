@@ -1,18 +1,18 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 import { ReceiveStackScreenProps } from "../../types";
-import { ModalScreenContainer } from "../../shared/ModalScreenContainer";
+import { ModalScreenContainer } from "@shared/ModalScreenContainer";
 import { en } from "../../en";
 import QRCode from "react-native-qrcode-svg";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { styleVariables } from "../../constants/StyleVariables";
-import { SvgIcons } from "../../assets/images";
-import { colors } from "../../constants/Colors";
-import { layout } from "../../constants/Layout";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { styleVariables } from "@constants/StyleVariables";
+import { SvgIcons } from "@assets/images";
+import { colors } from "@constants/Colors";
+import { layout } from "@constants/Layout";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { useEffect } from "react";
-import { getAddress } from "../../redux/addressSlice";
-import { createQr } from "../../utils/helpers";
+import { getAddress } from "@redux/addressSlice";
+import { createQr } from "@utils/helpers";
 
 export function ReceivePresentQrModal({
   navigation,

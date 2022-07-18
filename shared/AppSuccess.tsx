@@ -10,7 +10,7 @@ type SuccessProps = {
 export function AppSuccess(props: SuccessProps) {
   return (
     <View style={{ alignItems: "center", marginBottom: 16, ...props.style }}>
-      <Image source={require("../assets/images/success-graphics.png")} />
+      <Image source={require("@assets/images/success-graphics.png")} />
       <ThemedText theme={TextTheme.Headline2Text}>
         {en.Common_success}
       </ThemedText>

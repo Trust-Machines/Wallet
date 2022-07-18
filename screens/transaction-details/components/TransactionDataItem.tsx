@@ -1,6 +1,6 @@
 import { Pressable, View } from "react-native";
-import { colors } from "../../../constants/Colors";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
+import { colors } from "@constants/Colors";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
 
 export const TransactionDataItem = ({
   label,

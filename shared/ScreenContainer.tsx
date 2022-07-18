@@ -8,8 +8,8 @@ import {
   Image,
   ViewStyle,
 } from "react-native";
-import { colors } from "../constants/Colors";
-import { styleVariables } from "../constants/StyleVariables";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
 
 type ScreenContainerProps = {
   children: React.ReactNode;
@@ -42,7 +42,7 @@ export function ScreenContainer(props: ScreenContainerProps) {
           {props.showStars && (
             <Image
               style={styles.image}
-              source={require("../assets/images/constellations-background.png")}
+              source={require("@assets/images/constellations-background.png")}
             />
           )}
           <View

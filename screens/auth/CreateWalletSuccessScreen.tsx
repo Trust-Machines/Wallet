@@ -1,10 +1,10 @@
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
 import { en } from "../../en";
 import { CommonStackScreenProps } from "../../types";
-import { AppSuccess } from "../../shared/AppSuccess";
+import { AppSuccess } from "@shared/AppSuccess";
 import { View } from "react-native";
-import { layout } from "../../constants/Layout";
+import { layout } from "@constants/Layout";
 import { useNavigation } from "@react-navigation/native";
 
 export function CreateWalletSuccessScreen({

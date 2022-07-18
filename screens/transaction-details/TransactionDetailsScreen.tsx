@@ -5,17 +5,17 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { ScreenContainer } from "../../shared/ScreenContainer";
+import { ScreenContainer } from "@shared/ScreenContainer";
 import { RootStackScreenProps } from "../../types";
-import { colors } from "../../constants/Colors";
-import { styleVariables } from "../../constants/StyleVariables";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
 import { en } from "../../en";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { useEffect, useState } from "react";
-import { satoshiToBitcoinString, timestampToDate } from "../../utils/helpers";
-import { getTransactions } from "../../redux/transactionsSlice";
+import { satoshiToBitcoinString, timestampToDate } from "@utils/helpers";
+import { getTransactions } from "@redux/transactionsSlice";
 import { TransactionDataItem } from "./components/TransactionDataItem";
 
 interface TransactionDataItem<T> {

@@ -1,10 +1,10 @@
 import { Pressable, View } from "react-native";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import { colors } from "../../../constants/Colors";
-import { styleVariables } from "../../../constants/StyleVariables";
-import { Assets } from "../../../constants/CommonEnums";
-import { SvgIcons } from "../../../assets/images";
-import { formatAddress, satoshiToBitcoinString } from "../../../utils/helpers";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
+import { styleVariables } from "@constants/StyleVariables";
+import { Assets } from "@constants/CommonEnums";
+import { SvgIcons } from "@assets/images";
+import { formatAddress, satoshiToBitcoinString } from "@utils/helpers";
 import { useNavigation } from "@react-navigation/native";
 
 export function TransactionItem({ transaction }: any) {

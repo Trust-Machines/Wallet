@@ -8,9 +8,9 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import { colors } from "../constants/Colors";
-import { StartScreen } from "../screens/auth/StartScreen";
-import { BiometricsScreen } from "../screens/auth/BiometricsScreen";
+import { colors } from "@constants/Colors";
+import { StartScreen } from "@screens/auth/StartScreen";
+import { BiometricsScreen } from "@screens/auth/BiometricsScreen";
 import {
   BuyCryptoStackParamList,
   CommonStackParamList,
@@ -27,36 +27,36 @@ import {
 } from "../types";
 import { en } from "../en";
 import LinkingConfiguration from "./LinkingConfiguration";
-import { SaveRecoveryPhraseScreen } from "../screens/auth/SaveRecoveryPhraseScreen";
-import { CreateWalletSuccessScreen } from "../screens/auth/CreateWalletSuccessScreen";
-import BottomTabBorder from "../assets/images/bottom-tab-border.svg";
+import { SaveRecoveryPhraseScreen } from "@screens/auth/SaveRecoveryPhraseScreen";
+import { CreateWalletSuccessScreen } from "@screens/auth/CreateWalletSuccessScreen";
+import BottomTabBorder from "@assets/images/bottom-tab-border.svg";
 import { LinearGradient } from "expo-linear-gradient";
-import { layout } from "../constants/Layout";
-import { HomeScreen } from "../screens/home/HomeScreen";
-import { ExchangeScreen } from "../screens/exchange/ExchangeScreen";
-import { styleVariables } from "../constants/StyleVariables";
-import { ExchangeSelectTokenModal } from "../screens/exchange/ExchangeSelectTokenModal";
-import { PresentQrModal } from "../screens/transactions/PresentQrModal";
-import { ScanQrModal } from "../screens/transactions/ScanQrModal";
-import { ConfirmSendModal } from "../screens/transactions/ConfirmSendModal";
-import { TransactionSuccessModal } from "../screens/transactions/TransactionSuccessModal";
-import { ReceivePresentQrModal } from "../screens/transactions/ReceivePresentQrModal";
-import { SendScreen } from "../screens/transactions/SendScreen";
-import { SendSuccessModal } from "../screens/transactions/SendSuccessModal";
-import { CollectiblesScreen } from "../screens/collectibles/CollectiblesScreen";
-import { DefiBrowserScreen } from "../screens/defi/DefiBrowserScreen";
-import { SettingsScreen } from "../screens/settings/SettingsScreen";
-import { BuyCryptoModal } from "../screens/transactions/BuyCryptoModal";
-import { WalletLoginScreen } from "../screens/auth/WalletLoginScreen";
-import { SvgIcons } from "../assets/images";
-import { AcceptTOSScreen } from "../screens/auth/AcceptTOSScreen";
-import { SetPasswordScreen } from "../screens/auth/SetPasswordScreen";
-import { UnlockWalletScreen } from "../screens/auth/UnlockWalletScreen";
-import { SetWalletLabelScreen } from "../screens/auth/SetWalletLabelScreen";
-import { WalletSelectorModal } from "../screens/wallets/WalletSelectorModal";
-import { AddNewWalletScreen } from "../screens/wallets/AddNewWallet";
-import { EditWalletModal } from "../screens/wallets/EditWalletModal";
-import { TransactionDetails } from "../screens/transaction-details/TransactionDetailsScreen";
+import { layout } from "@constants/Layout";
+import { HomeScreen } from "@screens/home/HomeScreen";
+import { ExchangeScreen } from "@screens/exchange/ExchangeScreen";
+import { styleVariables } from "@constants/StyleVariables";
+import { ExchangeSelectTokenModal } from "@screens/exchange/ExchangeSelectTokenModal";
+import { PresentQrModal } from "@screens/transactions/PresentQrModal";
+import { ScanQrModal } from "@screens/transactions/ScanQrModal";
+import { ConfirmSendModal } from "@screens/transactions/ConfirmSendModal";
+import { TransactionSuccessModal } from "@screens/transactions/TransactionSuccessModal";
+import { ReceivePresentQrModal } from "@screens/transactions/ReceivePresentQrModal";
+import { SendScreen } from "@screens/transactions/SendScreen";
+import { SendSuccessModal } from "@screens/transactions/SendSuccessModal";
+import { CollectiblesScreen } from "@screens/collectibles/CollectiblesScreen";
+import { DefiBrowserScreen } from "@screens/defi/DefiBrowserScreen";
+import { SettingsScreen } from "@screens/settings/SettingsScreen";
+import { BuyCryptoModal } from "@screens/transactions/BuyCryptoModal";
+import { WalletLoginScreen } from "@screens/auth/WalletLoginScreen";
+import { SvgIcons } from "@assets/images";
+import { AcceptTOSScreen } from "@screens/auth/AcceptTOSScreen";
+import { SetPasswordScreen } from "@screens/auth/SetPasswordScreen";
+import { UnlockWalletScreen } from "@screens/auth/UnlockWalletScreen";
+import { SetWalletLabelScreen } from "@screens/auth/SetWalletLabelScreen";
+import { WalletSelectorModal } from "@screens/wallets/WalletSelectorModal";
+import { AddNewWalletScreen } from "@screens/wallets/AddNewWallet";
+import { EditWalletModal } from "@screens/wallets/EditWalletModal";
+import { TransactionDetails } from "@screens/transaction-details/TransactionDetailsScreen";
 
 const MyTheme = {
   ...DefaultTheme,

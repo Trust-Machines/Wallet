@@ -1,15 +1,15 @@
 import { View, StyleSheet, TextInput } from "react-native";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import { en } from "../../en";
 import { CommonStackScreenProps } from "../../types";
-import { styleVariables } from "../../constants/StyleVariables";
+import { styleVariables } from "@constants/StyleVariables";
 import { useState } from "react";
-import { layout } from "../../constants/Layout";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setNewWalletLabel } from "../../redux/walletSlice";
+import { layout } from "@constants/Layout";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import { setNewWalletLabel } from "@redux/walletSlice";
 import { useNavigation } from "@react-navigation/native";
 
 export function SetWalletLabelScreen({

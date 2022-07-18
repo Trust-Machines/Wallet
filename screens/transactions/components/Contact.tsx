@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import { TextTheme, ThemedText } from "../../../shared/ThemedText";
-import { colors } from "../../../constants/Colors";
-import { SvgIcons } from "../../../assets/images";
-import { styleVariables } from "../../../constants/StyleVariables";
-import { formatAddress } from "../../../utils/helpers";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
+import { SvgIcons } from "@assets/images";
+import { styleVariables } from "@constants/StyleVariables";
+import { formatAddress } from "@utils/helpers";
 
 export type ContactProps = {
   name: string;

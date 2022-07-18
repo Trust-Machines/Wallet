@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const ElectrumHelper = require("../utils/ElectrumHelper");
+const ElectrumHelper = require("@utils/ElectrumHelper");
 
 interface AddressState {
   address: string;

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TextStyle } from "react-native";
-import { colors } from "../constants/Colors";
+import { colors } from "@constants/Colors";
 
 export enum TextTheme {
   ButtonText = "ButtonText",

@@ -7,9 +7,9 @@ import {
   ViewStyle,
 } from "react-native";
 import { TextTheme, ThemedText } from "./ThemedText";
-import { colors } from "../constants/Colors";
+import { colors } from "@constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
-import { styleVariables } from "../constants/StyleVariables";
+import { styleVariables } from "@constants/StyleVariables";
 
 export enum ButtonTheme {
   Primary = "Primary",

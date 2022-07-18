@@ -1,26 +1,26 @@
 import { View, StyleSheet, TextInput, ActivityIndicator } from "react-native";
-import { AppButton, ButtonTheme } from "../../shared/AppButton";
-import { ScreenContainer } from "../../shared/ScreenContainer";
-import { TextTheme, ThemedText } from "../../shared/ThemedText";
-import { colors } from "../../constants/Colors";
+import { AppButton, ButtonTheme } from "@shared/AppButton";
+import { ScreenContainer } from "@shared/ScreenContainer";
+import { TextTheme, ThemedText } from "@shared/ThemedText";
+import { colors } from "@constants/Colors";
 import { en } from "../../en";
 import { CommonStackScreenProps } from "../../types";
-import { styleVariables } from "../../constants/StyleVariables";
+import { styleVariables } from "@constants/StyleVariables";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { layout } from "../../constants/Layout";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import { layout } from "@constants/Layout";
 import {
   importWallet,
   setCurrentWalletLabel,
   setNewWalletLabel,
   setWallets,
-} from "../../redux/walletSlice";
+} from "@redux/walletSlice";
 import { useNavigation } from "@react-navigation/native";
 import {
   addWalletToAsyncStorage,
   getWalletsFromAsyncStorage,
-} from "../../utils/asyncStorageHelper";
-import { encrypt } from "../../utils/helpers";
+} from "@utils/asyncStorageHelper";
+import { encrypt } from "@utils/helpers";
 
 export function WalletLoginScreen({
   route,

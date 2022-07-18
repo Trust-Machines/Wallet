@@ -1,5 +1,5 @@
 import { Assets } from "./CommonEnums";
-import { SvgIcons } from "../assets/images";
+import { SvgIcons } from "@assets/images";
 
 export const assetIcons = {
   [Assets.STX]: <SvgIcons.Assets.Stx />,

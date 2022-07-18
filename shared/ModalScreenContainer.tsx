@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { ScreenContainer } from "./ScreenContainer";
 import { TextTheme, ThemedText } from "./ThemedText";
-import { colors } from "../constants/Colors";
-import { layout } from "../constants/Layout";
-import { styleVariables } from "../constants/StyleVariables";
-import { SvgIcons } from "../assets/images";
+import { colors } from "@constants/Colors";
+import { layout } from "@constants/Layout";
+import { styleVariables } from "@constants/StyleVariables";
+import { SvgIcons } from "@assets/images";
 import { useNavigation } from "@react-navigation/native";
 
 type ModalScreenProps = {

@@ -1,7 +1,7 @@
 import { LegacyWallet } from "./legacy-wallet";
 import Frisbee from "frisbee";
 import bolt11 from "bolt11";
-import { BitcoinUnit, Chain } from "../../constants/bitcoinUnits";
+import { BitcoinUnit, Chain } from "@constants/bitcoinUnits";
 export class LightningCustodianWallet extends LegacyWallet {
   static type = "lightningCustodianWallet";
   static typeReadable = "Lightning";
