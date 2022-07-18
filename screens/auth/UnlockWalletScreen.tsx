@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
@@ -7,10 +7,10 @@ import { en } from '../../en';
 import { CommonStackScreenProps } from '../../types';
 import { styleVariables } from '@constants/StyleVariables';
 import { useState } from 'react';
-import { layout } from '@constants/Layout';
 import { decrypt } from '@utils/helpers';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { importWallet } from '@redux/walletSlice';
+import { AppTextInput } from '@shared/AppTextInput';
 
 export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWallet'>) {
   const [password, setPassword] = useState<string>('');
@@ -40,13 +40,12 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
 
   return (
     <ScreenContainer showStars>
-      <ThemedText
-        theme={TextTheme.Headline2Text}
-        styleOverwrite={{ marginTop: layout.isSmallDevice ? 10 : 60 }}
-      >
-        {en.Unlock_wallet_title}
-      </ThemedText>
-      <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 26 }}>
+      <Image
+        source={require('@assets/images/unlock-wallet-graphics.png')}
+        style={{ alignSelf: 'center', marginTop: 60 }}
+      />
+      <ThemedText theme={TextTheme.Headline2Text}>{en.Unlock_wallet_title}</ThemedText>
+      <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 32 }}>
         {en.Unlock_wallet_subtitle}
       </ThemedText>
       {loading ? (
@@ -65,25 +64,15 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
             marginBottom: '10%',
           }}
         >
-          <View>
-            <ThemedText theme={TextTheme.LabelText} styleOverwrite={styles.inputLabel}>
-              {en.Common_password}
-            </ThemedText>
-            <TextInput
-              secureTextEntry
-              value={password}
-              onChangeText={(pw: string) => setPassword(pw)}
-              style={styles.input}
-              keyboardType="default"
-              keyboardAppearance="dark"
-              placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
-              autoFocus
-            />
-          </View>
-
+          <AppTextInput
+            isPassword
+            labelText={en.Common_password}
+            value={password}
+            setValue={value => setPassword(value)}
+          />
           <AppButton
             onPress={validatePassword}
-            text={en.Common_save}
+            text={en.Common_unlock}
             theme={password.length ? ButtonTheme.Primary : ButtonTheme.Disabled}
             fullWidth={true}
           />

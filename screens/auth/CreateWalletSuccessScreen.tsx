@@ -16,7 +16,7 @@ export function CreateWalletSuccessScreen({
       showStars
       styles={{
         justifyContent: 'space-between',
-        paddingBottom: layout.isSmallDevice ? 0 : '15%',
+        marginBottom: '10%',
       }}
     >
       <View>

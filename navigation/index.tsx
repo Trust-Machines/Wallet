@@ -17,12 +17,10 @@ import {
   ExchangeStackParamList,
   NewWalletStackParamList,
   OnboardingStackParamList,
-  QrStackParamList,
-  ReceiveStackParamList,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
-  SendStackParamList,
+  TransactionStackParamList,
   WalletsStackParamList,
 } from '../types';
 import { en } from '../en';
@@ -38,11 +36,9 @@ import { styleVariables } from '@constants/StyleVariables';
 import { ExchangeSelectTokenModal } from '@screens/exchange/ExchangeSelectTokenModal';
 import { PresentQrModal } from '@screens/transactions/PresentQrModal';
 import { ScanQrModal } from '@screens/transactions/ScanQrModal';
-import { ConfirmSendModal } from '@screens/transactions/ConfirmSendModal';
+import { ConfirmTransactionModal } from '@screens/transactions/ConfirmTransactionModal';
 import { TransactionSuccessModal } from '@screens/transactions/TransactionSuccessModal';
-import { ReceivePresentQrModal } from '@screens/transactions/ReceivePresentQrModal';
 import { SendScreen } from '@screens/transactions/SendScreen';
-import { SendSuccessModal } from '@screens/transactions/SendSuccessModal';
 import { CollectiblesScreen } from '@screens/collectibles/CollectiblesScreen';
 import { DefiBrowserScreen } from '@screens/defi/DefiBrowserScreen';
 import { SettingsScreen } from '@screens/settings/SettingsScreen';
@@ -84,10 +80,8 @@ const OnboardingStack = createNativeStackNavigator<
   OnboardingStackParamList & CommonStackParamList
 >();
 const ExchangeStack = createNativeStackNavigator<ExchangeStackParamList>();
-const ReceiveStack = createNativeStackNavigator<ReceiveStackParamList>();
-const SendStack = createNativeStackNavigator<SendStackParamList>();
 const BuyCryptoStack = createNativeStackNavigator<BuyCryptoStackParamList>();
-const QrStack = createNativeStackNavigator<QrStackParamList>();
+const TransactionStack = createNativeStackNavigator<TransactionStackParamList>();
 const WalletsStack = createNativeStackNavigator<WalletsStackParamList>();
 const NewWalletStack = createNativeStackNavigator<NewWalletStackParamList>();
 
@@ -132,30 +126,10 @@ function RootNavigator() {
         component={OnboardingStackView}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="NewWalletStack"
-        component={NewWalletStackView}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="NewWalletStack" component={NewWalletStackView} />
       <Stack.Screen
         name="ExchangeStack"
         component={ExchangeStackView}
-        options={{
-          presentation: 'containedTransparentModal',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="ReceiveStack"
-        component={ReceiveStackView}
-        options={{
-          presentation: 'containedTransparentModal',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SendStack"
-        component={SendStackView}
         options={{
           presentation: 'containedTransparentModal',
           headerShown: false,
@@ -170,8 +144,8 @@ function RootNavigator() {
         }}
       />
       <Stack.Screen
-        name="QrStack"
-        component={QrStackView}
+        name="TransactionStack"
+        component={TransactionStackView}
         options={{
           presentation: 'containedTransparentModal',
           headerShown: false,
@@ -190,6 +164,16 @@ function RootNavigator() {
         component={TransactionDetails}
         options={{
           title: en.Header_title_transaction_details,
+          headerStyle: styles.header,
+          headerTintColor: colors.primaryFont,
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          title: en.Header_title_settings,
           headerStyle: styles.header,
           headerTintColor: colors.primaryFont,
           headerTitleAlign: 'center',
@@ -273,45 +257,6 @@ const ExchangeStackView = () => (
   </ExchangeStack.Navigator>
 );
 
-const ReceiveStackView = () => (
-  <ReceiveStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
-    <ReceiveStack.Screen
-      name="ReceivePresentQr"
-      component={ReceivePresentQrModal}
-      options={{
-        presentation: 'card',
-      }}
-    />
-  </ReceiveStack.Navigator>
-);
-
-const SendStackView = () => (
-  <SendStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
-    <SendStack.Screen
-      name="Send"
-      component={SendScreen}
-      options={{
-        presentation: 'card',
-      }}
-    />
-    <SendStack.Screen
-      name="SendSuccess"
-      component={SendSuccessModal}
-      options={{
-        presentation: 'card',
-      }}
-    />
-  </SendStack.Navigator>
-);
-
 const BuyCryptoStackView = () => (
   <BuyCryptoStack.Navigator
     screenOptions={{
@@ -328,41 +273,41 @@ const BuyCryptoStackView = () => (
   </BuyCryptoStack.Navigator>
 );
 
-const QrStackView = () => (
-  <QrStack.Navigator
+const TransactionStackView = () => (
+  <TransactionStack.Navigator
     screenOptions={{
       headerShown: false,
     }}
   >
-    <QrStack.Screen
+    <TransactionStack.Screen
       name="PresentQr"
       component={PresentQrModal}
       options={{
         presentation: 'card',
       }}
     />
-    <QrStack.Screen
+    <TransactionStack.Screen
       name="ScanQr"
       component={ScanQrModal}
       options={{
         presentation: 'card',
       }}
     />
-    <QrStack.Screen
-      name="ConfirmSend"
-      component={ConfirmSendModal}
+    <TransactionStack.Screen
+      name="ConfirmTransaction"
+      component={ConfirmTransactionModal}
       options={{
         presentation: 'card',
       }}
     />
-    <QrStack.Screen
+    <TransactionStack.Screen
       name="TransactionSuccess"
       component={TransactionSuccessModal}
       options={{
         presentation: 'card',
       }}
     />
-  </QrStack.Navigator>
+  </TransactionStack.Navigator>
 );
 
 const WalletsStackView = () => (
@@ -437,16 +382,71 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
+        name="DefiBrowser"
+        component={DefiBrowserScreen}
+        options={({ navigation }: RootTabScreenProps<'DefiBrowser'>) => ({
+          title: 'Defi Browser',
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, focused }) =>
+            focused ? <SvgIcons.TabBar.ActiveDefi style={styles.glow} /> : <SvgIcons.TabBar.Defi />,
+          headerShown: false,
+        })}
+      />
+      <BottomTab.Screen
+        name="ExchangeTab"
+        component={ExchangeScreen}
+        options={({ navigation }: RootTabScreenProps<'ExchangeTab'>) => ({
+          title: en.Header_title_exchange,
+          headerStyle: styles.header,
+          headerTintColor: colors.primaryFont,
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <SvgIcons.TabBar.ExchangeArrows style={styles.glow} />
+            ) : (
+              <SvgIcons.TabBar.ExchangeArrows />
+            ),
+        })}
+      />
+
+      <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
           headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View
+              style={{
+                position: 'relative',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                marginTop: -40,
+              }}
+            >
+              {focused ? (
+                <SvgIcons.TabBar.Polygon style={styles.glow} />
+              ) : (
+                <SvgIcons.TabBar.PolygonOutlined style={styles.glow} />
+              )}
+              <SvgIcons.TabBar.Stacks style={{ position: 'absolute' }} />
+            </View>
+          ),
+        })}
+      />
+
+      <BottomTab.Screen
+        name="Transactions"
+        component={SendScreen}
+        options={({ navigation }: RootTabScreenProps<'Transactions'>) => ({
+          title: en.Header_title_settings,
+          headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
-              <SvgIcons.TabBar.ActiveWallet style={styles.glow} />
+              <SvgIcons.TabBar.Transaction style={styles.glow} />
             ) : (
-              <SvgIcons.TabBar.Wallet />
+              <SvgIcons.TabBar.Transaction />
             ),
         })}
       />
@@ -461,73 +461,6 @@ function BottomTabNavigator() {
               <SvgIcons.TabBar.ActiveCollectibles style={styles.glow} />
             ) : (
               <SvgIcons.TabBar.Collectibles />
-            ),
-          headerStyle: styles.header,
-          headerTintColor: colors.primaryFont,
-        })}
-      />
-
-      <BottomTab.Screen
-        name="ExchangeTab"
-        component={ExchangeScreen}
-        listeners={({ navigation, route }) => ({
-          tabPress: e => {
-            e.preventDefault();
-            navigation.navigate(navigation.isFocused() ? 'Home' : 'ExchangeTab');
-          },
-        })}
-        options={({ navigation }: RootTabScreenProps<'ExchangeTab'>) => ({
-          title: en.Header_title_exchange,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, focused }) => (
-            <View
-              style={{
-                position: 'relative',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flex: 1,
-                marginTop: -40,
-              }}
-            >
-              {focused ? (
-                <>
-                  <SvgIcons.TabBar.PolygonOutlined style={styles.glow} />
-                  <SvgIcons.TabBar.Close style={{ position: 'absolute' }} />
-                </>
-              ) : (
-                <>
-                  <SvgIcons.TabBar.Polygon style={styles.glow} />
-                  <SvgIcons.TabBar.Stacks style={{ position: 'absolute' }} />
-                </>
-              )}
-            </View>
-          ),
-          headerStyle: styles.header,
-          headerTintColor: colors.primaryFont,
-        })}
-      />
-      <BottomTab.Screen
-        name="DefiBrowser"
-        component={DefiBrowserScreen}
-        options={({ navigation }: RootTabScreenProps<'DefiBrowser'>) => ({
-          title: 'Defi Browser',
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, focused }) =>
-            focused ? <SvgIcons.TabBar.ActiveDefi style={styles.glow} /> : <SvgIcons.TabBar.Defi />,
-          headerShown: false,
-        })}
-      />
-      <BottomTab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
-          title: en.Header_title_settings,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, focused }) =>
-            focused ? (
-              <SvgIcons.TabBar.ActiveSettings style={styles.glow} />
-            ) : (
-              <SvgIcons.TabBar.Settings />
             ),
           headerStyle: styles.header,
           headerTintColor: colors.primaryFont,

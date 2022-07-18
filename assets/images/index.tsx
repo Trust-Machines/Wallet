@@ -16,12 +16,13 @@ import Binance from './binance.svg';
 import RampNetwork from './ramp-network.svg';
 import ChevronDown from './chevron-down.svg';
 import ChevronRight from './chevron-right.svg';
-import ClearSearch from './clear-search.svg';
+import ClearInput from './clear-input.svg';
 import CloseModal from './close-modal.svg';
 import Close from './close.svg';
 import CopyToClipboard from './copy-to-clipboard.svg';
 import Copy from './copy.svg';
 import ExternalLink from './external-link.svg';
+import ExchangeArrows from './exchange-arrows.svg';
 import Exchange from './exchange.svg';
 import ExchangeColored from './exchange-colored.svg';
 import Globe60 from './globe-60.svg';
@@ -32,6 +33,8 @@ import Sent from './sent.svg';
 import Received from './received.svg';
 import Pending from './pending.svg';
 import Failed from './failed.svg';
+import Transaction from './transaction.svg';
+import ScanQr from './scan-qr.svg';
 
 export const SvgIcons = {
   TabBar: {
@@ -47,6 +50,8 @@ export const SvgIcons = {
     ActiveSettings,
     Polygon,
     PolygonOutlined,
+    ExchangeArrows,
+    Transaction,
   },
   Transactions: { Sent, Received, Pending, Failed },
   Assets: { Btc, Stx },
@@ -54,7 +59,7 @@ export const SvgIcons = {
   General: {
     ChevronDown,
     ChevronRight,
-    ClearSearch,
+    ClearInput,
     CloseModal,
 
     CopyToClipboard,
@@ -66,4 +71,5 @@ export const SvgIcons = {
   },
   Exchange: { Exchange, ExchangeColored },
   Defi: { Globe60 },
+  ScanQr,
 };

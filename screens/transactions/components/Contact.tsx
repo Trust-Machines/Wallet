@@ -32,8 +32,10 @@ export function Contact(props: ContactProps) {
     >
       <SvgIcons.Assets.Btc /*placeholder*/ />
       <View style={{ marginLeft: 16 }}>
-        <ThemedText theme={TextTheme.ButtonText}>{props.name}</ThemedText>
-        <ThemedText theme={TextTheme.ButtonText}>{formatAddress(props.address)}</ThemedText>
+        <ThemedText theme={TextTheme.LabelText}>{props.name}</ThemedText>
+        <ThemedText theme={TextTheme.CaptionText} styleOverwrite={{ color: colors.secondaryFont }}>
+          {formatAddress(props.address)}
+        </ThemedText>
       </View>
     </Pressable>
   );

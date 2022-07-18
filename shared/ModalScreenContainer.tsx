@@ -24,7 +24,7 @@ export function ModalScreenContainer({ title, children }: ModalScreenProps) {
             <SvgIcons.General.CloseModal />
           </Pressable>
         </View>
-        <ScreenContainer paddingTop={20}>{children}</ScreenContainer>
+        <ScreenContainer paddingTop={16}>{children}</ScreenContainer>
       </View>
     </View>
   );
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: colors.primaryBackgroundDarker,
-    height: layout.isSmallDevice ? 45 : 65,
+    height: layout.isSmallDevice ? 46 : 66,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopLeftRadius: 16,
@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
   },
   close: {
     position: 'absolute',
-    left: 20,
+    left: 16,
   },
 });

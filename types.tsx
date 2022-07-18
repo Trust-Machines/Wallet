@@ -20,13 +20,12 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   OnboardingStack: NavigatorScreenParams<OnboardingStackParamList>;
   ExchangeStack: NavigatorScreenParams<ExchangeStackParamList>;
-  QrStack: NavigatorScreenParams<QrStackParamList>;
-  ReceiveStack: NavigatorScreenParams<ReceiveStackParamList>;
-  SendStack: NavigatorScreenParams<SendStackParamList>;
+  TransactionStack: NavigatorScreenParams<TransactionStackParamList>;
   BuyCryptoStack: NavigatorScreenParams<BuyCryptoStackParamList>;
   WalletsStack: NavigatorScreenParams<WalletsStackParamList>;
   NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
   TransactionDetails: { transactionHash: string };
+  Settings: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -39,7 +38,7 @@ export type RootTabParamList = {
   Collectibles: undefined;
   ExchangeTab: undefined;
   DefiBrowser: undefined;
-  Settings: undefined;
+  Transactions: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
@@ -81,34 +80,15 @@ export type ExchangeStackParamList = {
 export type ExchangeStackScreenProps<Screen extends keyof ExchangeStackParamList> =
   NativeStackScreenProps<ExchangeStackParamList, Screen>;
 
-export type QrStackParamList = {
+export type TransactionStackParamList = {
   PresentQr: undefined;
   ScanQr: undefined;
-  ConfirmSend: { address: string; amount: string };
+  ConfirmTransaction: { address: string; amount: string };
   TransactionSuccess: TransactionDetails;
 };
 
-export type QrStackScreenProps<Screen extends keyof QrStackParamList> = NativeStackScreenProps<
-  QrStackParamList,
-  Screen
->;
-
-export type ReceiveStackParamList = {
-  ReceivePresentQr: undefined;
-};
-
-export type ReceiveStackScreenProps<Screen extends keyof ReceiveStackParamList> =
-  NativeStackScreenProps<ReceiveStackParamList, Screen>;
-
-export type SendStackParamList = {
-  Send: undefined;
-  SendSuccess: TransactionDetails;
-};
-
-export type SendStackScreenProps<Screen extends keyof SendStackParamList> = NativeStackScreenProps<
-  SendStackParamList,
-  Screen
->;
+export type TransactionStackScreenProps<Screen extends keyof TransactionStackParamList> =
+  NativeStackScreenProps<TransactionStackParamList, Screen>;
 
 export type BuyCryptoStackParamList = {
   BuyCrypto: undefined;

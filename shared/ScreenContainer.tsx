@@ -48,6 +48,7 @@ export function ScreenContainer(props: ScreenContainerProps) {
               },
             ]}
           >
+            {/*@ts-ignore*/}
             {props.children}
           </View>
         </LinearGradient>
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    padding: 20,
+    padding: styleVariables.commonSpacing,
   },
   image: {
     width: '100%',

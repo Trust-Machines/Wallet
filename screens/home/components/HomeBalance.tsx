@@ -10,39 +10,21 @@ export function HomeBalance() {
   const { balance } = useAppSelector(state => state.balance);
 
   return (
-    <View style={{ height: 166, justifyContent: 'space-between' }}>
-      <View>
-        <ThemedText
-          theme={TextTheme.CaptionText}
-          styleOverwrite={{ color: colors.secondaryFont, marginBottom: 4 }}
-        >
-          {en.Common_balance}
-        </ThemedText>
-        <View style={{ flexDirection: 'row' }}>
-          <ThemedText
-            theme={TextTheme.Headline2Text}
-            styleOverwrite={{
-              textAlign: 'left',
-              marginRight: 4,
-              marginBottom: 0,
-            }}
-          >
-            {satoshiToBitcoinString(balance ?? 0)} {Assets.BTC}
-          </ThemedText>
-          <ThemedText
-            theme={TextTheme.CaptionText}
-            styleOverwrite={{ color: colors.primaryAppColorLighter }}
-          >
-            +3%
-          </ThemedText>
-        </View>
-        <ThemedText theme={TextTheme.LabelText}>
-          $10,761.61&nbsp;
-          <ThemedText theme={TextTheme.LabelText} styleOverwrite={{ color: colors.secondaryFont }}>
-            {Assets.USD}
-          </ThemedText>
-        </ThemedText>
-      </View>
+    <View style={{ paddingBottom: 35, paddingTop: 10, alignItems: 'center' }}>
+      <ThemedText
+        theme={TextTheme.Headline1Text}
+        styleOverwrite={{
+          color: colors.primaryAppColorLighter,
+        }}
+      >
+        {satoshiToBitcoinString(balance ?? 0)} {Assets.BTC}
+      </ThemedText>
+      <ThemedText
+        theme={TextTheme.LabelText}
+        styleOverwrite={{ color: colors.primaryAppColorDarker, marginVertical: 4 }}
+      >
+        $10,761.61 {Assets.USD}
+      </ThemedText>
       <Text
         style={{
           fontFamily: 'Inter_600SemiBold',
