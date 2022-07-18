@@ -14,7 +14,7 @@ interface TransactionResult {
 }
 
 export default async function useTransactionSending(
-  transaction: { address: string; amount: string },
+  transaction: { address: string; amount: string; selectedFee?: 'slow' | 'medium' | 'fast' },
   wallet: any
 ): Promise<TransactionResult> {
   const broadcast = async (tx: number) => {
@@ -38,6 +38,8 @@ export default async function useTransactionSending(
       const fees = await ElectrumHelper.estimateFees();
       console.log('fast tx fee', fees.fast);
 
+      let selectedFeeAmount = transaction.selectedFee === 'medium' ? fees.medium : transaction.selectedFee === 'slow' ? fees.slow : fees.fast
+
       const changeAddress = await wallet.getChangeAddressAsync();
       console.log('changeAddress', changeAddress);
 
@@ -48,7 +50,7 @@ export default async function useTransactionSending(
       const { tx, outputs, psbt, fee } = wallet.createTransaction(
         wallet.getUtxo(),
         [{ address: transaction.address, value: amountToSendInSats }],
-        fees.fast,
+        selectedFeeAmount,
         changeAddress,
         HDSegwitBech32Wallet.defaultRBFSequence
       );
