@@ -88,5 +88,6 @@ export const en = {
   Wallet_selector_use_selected_button_text: "Use Selected",
   Add_new_wallet_screen_title: "Add a new wallet",
   Add_new_wallet_generate_button_text: "Generate new wallet",
-  Add_new_wallet_import_button_text: "Import wallet"
+  Add_new_wallet_import_button_text: "Import wallet",
+  Header_title_transaction_details: "Transaction Details"
 };

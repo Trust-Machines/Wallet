@@ -113,7 +113,7 @@ export function WalletLoginScreen({
             onPress={handleNextPress}
             text={en.Common_next}
             theme={ButtonTheme.Primary}
-            fullWidth={true}
+            fullWidth
           />
         </View>
       )}
