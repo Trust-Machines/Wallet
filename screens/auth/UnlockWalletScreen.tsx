@@ -1,11 +1,10 @@
-import { View, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import { View, ActivityIndicator, Image } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
 import { CommonStackScreenProps } from '../../types';
-import { styleVariables } from '@constants/StyleVariables';
 import { useState } from 'react';
 import { decrypt } from '@utils/helpers';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
@@ -81,22 +80,3 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
     </ScreenContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: styleVariables.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    padding: 16,
-    paddingTop: 16,
-    fontFamily: 'Inter_500Medium',
-    fontSize: 18,
-    lineHeight: 22,
-    color: colors.primaryFont,
-  },
-  inputLabel: {
-    marginBottom: 8,
-    marginTop: 24,
-  },
-});

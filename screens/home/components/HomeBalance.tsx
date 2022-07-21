@@ -3,11 +3,12 @@ import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../../en';
 import { Assets } from '@constants/CommonEnums';
 import { colors } from '@constants/Colors';
-import { useAppSelector } from '@redux/hooks';
 import { satoshiToBitcoinString } from '@utils/helpers';
+import { useSelector } from 'react-redux';
+import { selectCurrentWalletData } from '@redux/walletSlice';
 
 export function HomeBalance() {
-  const { balance } = useAppSelector(state => state.balance);
+  const currentWalletData = useSelector(selectCurrentWalletData);
 
   return (
     <View style={{ paddingBottom: 35, paddingTop: 10, alignItems: 'center' }}>
@@ -17,7 +18,7 @@ export function HomeBalance() {
           color: colors.primaryAppColorLighter,
         }}
       >
-        {satoshiToBitcoinString(balance ?? 0)} {Assets.BTC}
+        {satoshiToBitcoinString(currentWalletData?.balance ?? 0)} {Assets.BTC}
       </ThemedText>
       <ThemedText
         theme={TextTheme.LabelText}

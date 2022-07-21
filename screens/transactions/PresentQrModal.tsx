@@ -14,15 +14,17 @@ import { colors } from '@constants/Colors';
 import { createQr, formatAddress, safeParseFloat } from '@utils/helpers';
 import { SvgIcons } from '@assets/images';
 import { AppAmountInput } from '@shared/AppAmountInput';
+import { useSelector } from 'react-redux';
+import { selectCurrentWalletData } from '@redux/walletSlice';
 
 export function PresentQrModal({ navigation }: TransactionStackScreenProps<'PresentQr'>) {
   const [amount, setAmount] = useState<string>('0');
   const dispatch = useAppDispatch();
-  const { walletObject } = useAppSelector(state => state.wallet);
-  const { address, addressLoading, addressError } = useAppSelector(state => state.address);
+  const { currentWalletObject, addressLoading } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
 
   useEffect(() => {
-    dispatch(getAddress(walletObject));
+    dispatch(getAddress(currentWalletObject));
   }, []);
 
   return (
@@ -56,7 +58,7 @@ export function PresentQrModal({ navigation }: TransactionStackScreenProps<'Pres
                   backgroundColor: colors.primaryBackgroundDarker,
                 }}
               >
-                ({formatAddress(address)})
+                ({formatAddress(!!currentWalletData ? currentWalletData.address : '')})
               </ThemedText>
             </View>
             <View
@@ -114,8 +116,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   qrText: {
-    // borderWidth: 1,
-    // borderColor: colors.disabled,
     fontSize: 12,
     color: colors.secondaryFont,
     textAlign: 'center',

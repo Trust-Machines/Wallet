@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 
 export function TransactionItem({ transaction }: any) {
   const { value, hash } = transaction;
-  console.log('TRANSACTION', transaction);
   const navigation = useNavigation();
 
   const address = transaction.inputs[0].addresses[0];

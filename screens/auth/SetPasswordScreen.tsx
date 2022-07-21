@@ -9,17 +9,7 @@ import { useEffect, useState } from 'react';
 import { layout } from '@constants/Layout';
 import { decrypt, encrypt } from '@utils/helpers';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import {
-  importWallet,
-  setCurrentWalletLabel,
-  setNewWalletLabel,
-  setWallets,
-} from '@redux/walletSlice';
-import {
-  addWalletToAsyncStorage,
-  getWalletsFromAsyncStorage,
-  storeCurrentWalletIdToAsyncStorage,
-} from '@utils/asyncStorageHelper';
+import { addNewWallet, importWallet } from '@redux/walletSlice';
 import { AppTextInput } from '@shared/AppTextInput';
 
 export function SetPasswordScreen({
@@ -61,23 +51,17 @@ export function SetPasswordScreen({
 
       try {
         await dispatch(importWallet(decryptedWalletSeed)).unwrap();
-        console.log('SAVE!!!', currentWalletID, newWalletLabel);
 
-        dispatch(setCurrentWalletLabel(newWalletLabel));
-        dispatch(setNewWalletLabel(''));
-        await addWalletToAsyncStorage({
-          encryptedWalletSeed: encrypt(decryptedWalletSeed, password),
-          walletID: currentWalletID,
-          walletLabel: newWalletLabel,
-          balance: 0,
-          transactions: [],
-          address: '',
-        });
-        await storeCurrentWalletIdToAsyncStorage(currentWalletID);
-        const storedWallets = await getWalletsFromAsyncStorage();
-        if (storedWallets) {
-          dispatch(setWallets(storedWallets));
-        }
+        dispatch(
+          addNewWallet({
+            id: currentWalletID,
+            label: newWalletLabel,
+            encryptedSeed: encrypt(decryptedWalletSeed, password), // encryptedWalletSeed ?
+            balance: 0,
+            transactions: [],
+            address: '',
+          })
+        );
 
         navigation.navigate('CreateWalletSuccess', { isFirstWallet: true });
       } catch (err) {

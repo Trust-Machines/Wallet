@@ -2,19 +2,19 @@ import { useNavigation } from '@react-navigation/native';
 import { Pressable, StyleSheet } from 'react-native';
 import { colors } from '@constants/Colors';
 import { styleVariables } from '@constants/StyleVariables';
-import { useAppSelector } from '@redux/hooks';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { CachedWallet } from '@utils/asyncStorageHelper';
+import { selectCurrentWalletData, WalletData } from '@redux/walletSlice';
+import { useSelector } from 'react-redux';
 
 type WalletProps = {
-  wallet: CachedWallet;
+  wallet: WalletData;
   walletID: string;
   selectWallet(wallet: any, walletID: string): void;
   selected: boolean;
 };
 
 export const Wallet = ({ wallet, walletID, selectWallet, selected }: WalletProps) => {
-  const { wallets, currentWalletID } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
   const navigation = useNavigation();
 
   return (
@@ -33,22 +33,24 @@ export const Wallet = ({ wallet, walletID, selectWallet, selected }: WalletProps
       <Pressable
         style={styles.edit}
         onPress={() => {
-          navigation.navigate('WalletsStack', {
-            screen: 'UnlockWallet',
-            params: {
-              encryptedSeedPhrase: wallets[currentWalletID].seed,
-              onValidationFinished: (success: boolean, password: string) => {
-                if (success) {
-                  navigation.navigate('WalletsStack', {
-                    screen: 'EditWallet',
-                    params: { wallet, id: walletID },
-                  });
-                } else {
-                  console.log('error');
-                }
+          if (!!currentWalletData) {
+            navigation.navigate('WalletsStack', {
+              screen: 'UnlockWallet',
+              params: {
+                encryptedSeedPhrase: currentWalletData.encryptedSeed,
+                onValidationFinished: (success: boolean, password: string) => {
+                  if (success) {
+                    navigation.navigate('WalletsStack', {
+                      screen: 'EditWallet',
+                      params: { wallet, id: walletID },
+                    });
+                  } else {
+                    console.log('error');
+                  }
+                },
               },
-            },
-          });
+            });
+          }
         }}
       >
         <ThemedText theme={TextTheme.CaptionText}>Edit</ThemedText>

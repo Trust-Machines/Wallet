@@ -9,12 +9,7 @@ import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { useState } from 'react';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
-import {
-  addWalletToAsyncStorage,
-  getWalletsFromAsyncStorage,
-  removeWalletFromAsyncStorage,
-} from '@utils/asyncStorageHelper';
-import { setCurrentWalletLabel, setWallets } from '@redux/walletSlice';
+import { editWalletLabel, deleteWalletById } from '@redux/walletSlice';
 
 export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'EditWallet'>) {
   const { wallet, id } = route.params;
@@ -23,29 +18,13 @@ export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'
   const dispatch = useAppDispatch();
 
   const saveEditedWallet = async () => {
-    const addWallet = await addWalletToAsyncStorage({
-      encryptedWalletSeed: wallet.seed,
-      walletID: id,
-      walletLabel: label,
-    });
-    const storedWallets = await getWalletsFromAsyncStorage();
-    if (storedWallets) {
-      dispatch(setWallets(storedWallets));
-    }
-
-    if (currentWalletID === id) {
-      dispatch(setCurrentWalletLabel(label));
-    }
+    dispatch(editWalletLabel(label));
     navigation.navigate('WalletSelector');
   };
 
-  const deleteWallet = async () => {
-    await removeWalletFromAsyncStorage(id);
-    const wallets = await getWalletsFromAsyncStorage();
-    if (wallets) {
-      dispatch(setWallets(wallets));
-    }
-
+  const deleteWallet = () => {
+    console.log('DELETE');
+    dispatch(deleteWalletById(id));
     navigation.navigate('WalletSelector');
   };
 
@@ -61,7 +40,7 @@ export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'
         },
         {
           text: 'Yes, Delete',
-          onPress: async () => await deleteWallet(),
+          onPress: deleteWallet,
         },
       ]
     );

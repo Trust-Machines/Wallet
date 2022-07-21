@@ -1,26 +1,55 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CachedWallets } from '@utils/asyncStorageHelper';
 import { startImport } from '@utils/wallets/wallet-import';
 import type { RootState } from './store';
+const ElectrumHelper = require('@utils/ElectrumHelper');
+import { PURGE } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { createSelector } from '@reduxjs/toolkit';
+
+export interface EncryptedSeed {
+  iv: string;
+  content: string;
+}
+
+export interface WalletData {
+  id: string;
+  label: string;
+  address: string;
+  balance: number;
+  transactions: [];
+  encryptedSeed: EncryptedSeed;
+}
 
 interface WalletState {
+  wallets: WalletData[];
   currentWalletID: string;
-  currentWalletLabel: string;
-  walletObject: any;
+  currentWalletObject: any;
+
+  newWalletLabel: string;
   walletLoading: boolean;
   walletError: boolean;
-  wallets: CachedWallets;
-  newWalletLabel: string;
+  addressLoading: boolean;
+  addressError: boolean;
+  balanceLoading: boolean;
+  balanceError: boolean;
+  transactionsLoading: boolean;
+  transactionsError: boolean;
 }
 
 const initialState: WalletState = {
+  wallets: [],
   currentWalletID: '',
-  currentWalletLabel: '',
-  walletObject: undefined,
+  currentWalletObject: undefined,
+
+  newWalletLabel: '',
   walletLoading: false,
   walletError: false,
-  wallets: {},
-  newWalletLabel: '',
+  addressLoading: false,
+  addressError: false,
+  balanceLoading: false,
+  balanceError: false,
+  transactionsLoading: false,
+  transactionsError: false,
 };
 
 // TODO add type parameter
@@ -73,6 +102,53 @@ export const importWallet = createAsyncThunk(
   }
 );
 
+export const getAddress = createAsyncThunk(
+  'wallet/getAddress',
+  async (wallet: any, { rejectWithValue }) => {
+    try {
+      await ElectrumHelper.waitTillConnected();
+      const walletAddress = wallet._getExternalAddressByIndex(wallet.getNextFreeAddressIndex());
+      return walletAddress;
+    } catch (err) {
+      console.log('get address error: ', err);
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const getBalance = createAsyncThunk(
+  'balance/getBalance',
+  async (wallet: any, { rejectWithValue }) => {
+    try {
+      await ElectrumHelper.waitTillConnected();
+      await wallet.fetchBalance();
+      const walletBalance = wallet.getBalance();
+      console.log('BALANCE', walletBalance);
+      return walletBalance;
+    } catch (err) {
+      console.log('get balance error: ', err);
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const getTransactions = createAsyncThunk(
+  'wallet/getTransactions',
+  async (wallet: any, { rejectWithValue }) => {
+    try {
+      await ElectrumHelper.waitTillConnected();
+      await wallet.fetchTransactions();
+      console.log('TRANSACTIONS wallet');
+      const transactions = wallet.getTransactions();
+      //console.log("past transactions", transactions);
+      return transactions;
+    } catch (err) {
+      console.log('get transactions error: ', err);
+      return rejectWithValue(err);
+    }
+  }
+);
+
 export const walletSlice = createSlice({
   name: 'wallet',
   initialState,
@@ -83,49 +159,157 @@ export const walletSlice = createSlice({
         walletObject: Object;
       }>
     ) => {
-      state.walletObject = action.payload.walletObject;
-    },
-    setCurrentWalletLabel: (state, action: PayloadAction<string>) => {
-      state.currentWalletLabel = action.payload;
+      state.currentWalletObject = action.payload.walletObject;
     },
     setCurrentWalletID: (state, action: PayloadAction<string>) => {
       state.currentWalletID = action.payload;
     },
-    setWallets: (state, action: PayloadAction<CachedWallets>) => {
+    setWallets: (state, action: PayloadAction<WalletData[]>) => {
       state.wallets = action.payload;
     },
     setNewWalletLabel: (state, action: PayloadAction<string>) => {
       state.newWalletLabel = action.payload;
     },
+    addNewWallet: (state, action: PayloadAction<WalletData>) => {
+      // if there is no wallet stored, the current wallet id is set
+      if (!state.wallets.length) {
+        state.currentWalletID = action.payload.id;
+      }
+
+      state.wallets = [...state.wallets, action.payload];
+      state.newWalletLabel = '';
+    },
+    editWalletLabel: (state, action: PayloadAction<string>) => {
+      let wallets = state.wallets;
+      const walletIndex = wallets.findIndex(obj => obj.id === state.currentWalletID);
+      const walletData = wallets.find(obj => obj.id === state.currentWalletID);
+
+      if (walletIndex > -1 && !!walletData) {
+        wallets[walletIndex] = { ...walletData, label: action.payload };
+        state.wallets = wallets;
+      }
+    },
+    deleteWalletById: (state, action: PayloadAction<string>) => {
+      let wallets = state.wallets;
+      console.log('WWW1', wallets);
+      const walletIndex = wallets.findIndex(obj => obj.id === action.payload);
+      console.log('INDEX', walletIndex);
+
+      if (walletIndex > -1) {
+        wallets.splice(walletIndex, 1);
+      }
+
+      console.log('WWW2', wallets);
+      state.wallets = wallets;
+    },
   },
   extraReducers: builder => {
     builder
+      // WALLET OBJECT
       .addCase(importWallet.pending, (state, action) => {
         state.walletError = false;
         state.walletLoading = true;
       })
       .addCase(importWallet.fulfilled, (state, action) => {
-        state.walletObject = action.payload.walletObject;
+        state.currentWalletObject = action.payload.walletObject;
         state.walletLoading = false;
 
-        if (!Object.keys(state.wallets).length) {
+        // if there is no wallet stored, the id of the current wallet is set
+        if (!state.wallets.length) {
           state.currentWalletID = action.payload.walletID;
         }
       })
       .addCase(importWallet.rejected, (state, action) => {
         state.walletLoading = false;
         state.walletError = true;
+      })
+      // ADDRESS
+      .addCase(getAddress.pending, (state, action) => {
+        state.addressError = false;
+        state.addressLoading = true;
+      })
+      .addCase(getAddress.fulfilled, (state, action) => {
+        let wallets = state.wallets;
+        const walletIndex = wallets.findIndex(obj => obj.id === state.currentWalletID);
+        const walletData = wallets.find(obj => obj.id === state.currentWalletID);
+
+        if (walletIndex > -1 && !!walletData) {
+          wallets[walletIndex] = { ...walletData, address: action.payload };
+          state.wallets = wallets;
+        }
+
+        state.addressLoading = false;
+      })
+      .addCase(getAddress.rejected, (state, action) => {
+        state.addressLoading = false;
+        state.addressError = true;
+      })
+      // BALANCE
+      .addCase(getBalance.pending, (state, action) => {
+        state.balanceError = false;
+        state.balanceLoading = true;
+      })
+      .addCase(getBalance.fulfilled, (state, action) => {
+        let wallets = state.wallets;
+        const walletIndex = wallets.findIndex(obj => obj.id === state.currentWalletID);
+        const walletData = wallets.find(obj => obj.id === state.currentWalletID);
+
+        if (!!walletData) {
+          wallets[walletIndex] = { ...walletData, balance: action.payload };
+          state.wallets = wallets;
+        }
+
+        state.balanceLoading = false;
+      })
+      .addCase(getBalance.rejected, (state, action) => {
+        state.balanceLoading = false;
+        state.balanceError = true;
+      })
+      // TRANSACTIONS
+      .addCase(getTransactions.pending, (state, action) => {
+        state.transactionsError = false;
+        state.transactionsLoading = true;
+      })
+      .addCase(getTransactions.fulfilled, (state, action) => {
+        let wallets = state.wallets;
+        const walletIndex = wallets.findIndex(obj => obj.id === state.currentWalletID);
+        const walletData = wallets.find(obj => obj.id === state.currentWalletID);
+
+        if (!!walletData) {
+          wallets[walletIndex] = { ...walletData, transactions: action.payload };
+          state.wallets = wallets;
+        }
+
+        state.transactionsLoading = false;
+      })
+      .addCase(getTransactions.rejected, (state, action) => {
+        state.transactionsLoading = false;
+        state.transactionsError = true;
       });
+
+    // PURGE
+    builder.addCase(PURGE, state => {
+      storage.removeItem('root');
+    });
   },
 });
 
-export const selectWallet = (state: RootState) => state.wallet.walletObject;
+const selectWallets = (state: RootState) => state.wallet.wallets;
+const selectCurrentWalletID = (state: RootState) => state.wallet.currentWalletID;
+export const selectCurrentWalletData = createSelector(
+  selectWallets,
+  selectCurrentWalletID,
+  (wallets, id) => wallets.find(wallet => wallet.id === id)
+);
+
 export const {
   setWallet,
-  setCurrentWalletLabel,
   setCurrentWalletID,
   setWallets,
   setNewWalletLabel,
+  addNewWallet,
+  editWalletLabel,
+  deleteWalletById,
 } = walletSlice.actions;
 
 export default walletSlice.reducer;

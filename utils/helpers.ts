@@ -1,6 +1,6 @@
+import { EncryptedSeed } from '@redux/walletSlice';
 import BigNumber from 'bignumber.js';
 import crypto from 'crypto';
-import { EncryptedSeed } from './asyncStorageHelper';
 
 const PASSWORD_PREFIX = '1pR7Ej9vzE9HadEX1pR7Ej9vzE9HadEX'; // This is needed for encryption since it takes minimum 16 character strings and someone might only give a password of 4 characters
 

@@ -7,13 +7,15 @@ import { CommonStackScreenProps } from '../../types';
 import { useState } from 'react';
 import { layout } from '@constants/Layout';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { setNewWalletLabel } from '@redux/walletSlice';
+import { selectCurrentWalletData, setNewWalletLabel } from '@redux/walletSlice';
 import { useNavigation } from '@react-navigation/native';
 import { AppTextInput } from '@shared/AppTextInput';
+import { useSelector } from 'react-redux';
 
 export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLabel'>) {
   const [label, setLabel] = useState<string>('');
-  const { wallets, currentWalletID } = useAppSelector(state => state.wallet);
+  const { wallets } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
 
   const dispatch = useAppDispatch();
   const { flow } = route.params;
@@ -24,12 +26,12 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
       dispatch(setNewWalletLabel(label));
 
       // if user is logged in to a wallet
-      if (Object.keys(wallets).length) {
+      if (!!wallets.length && !!currentWalletData) {
         navigation.navigate('NewWalletStack', {
           screen: 'UnlockWallet',
           params: {
             // the current encrypted seed is used to validate the password
-            encryptedSeedPhrase: wallets[currentWalletID].seed,
+            encryptedSeedPhrase: currentWalletData.encryptedSeed,
             onValidationFinished: (success: boolean, password: string) => {
               if (success) {
                 navigation.navigate('NewWalletStack', {

@@ -1,21 +1,20 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { WalletsStackScreenProps } from '../../types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
-import { styleVariables } from '@constants/StyleVariables';
 import { layout } from '@constants/Layout';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { Wallet } from './components/Wallet';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { setCurrentWalletID, setCurrentWalletLabel } from '@redux/walletSlice';
-import { storeCurrentWalletIdToAsyncStorage } from '@utils/asyncStorageHelper';
+import { setCurrentWalletID, WalletData } from '@redux/walletSlice';
 
 export function WalletSelectorModal({}: //navigation,
 WalletsStackScreenProps<'WalletSelector'>) {
-  const [selectedWallet, setSelectedWallet] = useState<any>(undefined);
+  const [selectedWallet, setSelectedWallet] = useState<WalletData>();
   const [selectedWalletID, setSelectedWalletID] = useState<string | undefined>(undefined);
+
   const { wallets } = useAppSelector(state => state.wallet);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -25,12 +24,10 @@ WalletsStackScreenProps<'WalletSelector'>) {
       navigation.navigate('WalletsStack', {
         screen: 'UnlockWallet',
         params: {
-          encryptedSeedPhrase: selectedWallet.seed,
+          encryptedSeedPhrase: selectedWallet.encryptedSeed,
           onValidationFinished: async (success: boolean) => {
             if (success) {
-              await storeCurrentWalletIdToAsyncStorage(selectedWalletID);
               dispatch(setCurrentWalletID(selectedWalletID));
-              dispatch(setCurrentWalletLabel(selectedWallet.label));
 
               navigation.navigate('Root', { screen: 'Home' });
             } else {
@@ -57,14 +54,13 @@ WalletsStackScreenProps<'WalletSelector'>) {
         }}
       >
         <ScrollView>
-          {Object.keys(wallets).map((walletID: string) => {
-            const wallet = wallets[walletID];
+          {wallets.map(wallet => {
             return (
               <Wallet
                 wallet={wallet}
-                walletID={walletID}
-                selectWallet={() => handleSelectWallet(wallet, walletID)}
-                selected={walletID === selectedWalletID}
+                walletID={wallet.id}
+                selectWallet={() => handleSelectWallet(wallet, wallet.id)}
+                selected={wallet.id === selectedWalletID}
               />
             );
           })}
@@ -89,13 +85,3 @@ WalletsStackScreenProps<'WalletSelector'>) {
     </ModalScreenContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  qrContainer: {
-    backgroundColor: '#FFF',
-    borderRadius: styleVariables.borderRadius,
-    alignItems: 'center',
-    padding: 40,
-    marginBottom: 12,
-  },
-});

@@ -126,7 +126,11 @@ function RootNavigator() {
         component={OnboardingStackView}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="NewWalletStack" component={NewWalletStackView} />
+      <Stack.Screen
+        name="NewWalletStack"
+        component={NewWalletStackView}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="ExchangeStack"
         component={ExchangeStackView}

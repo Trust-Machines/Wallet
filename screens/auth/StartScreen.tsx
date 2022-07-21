@@ -7,22 +7,32 @@ import { en } from '../../en';
 import { OnboardingStackScreenProps } from '../../types';
 import { layout } from '@constants/Layout';
 import { useEffect, useState } from 'react';
-import {
-  clearAsyncStorage,
-  getDataFromAsyncStorage,
-  getWalletsFromAsyncStorage,
-  StorageKeys,
-} from '@utils/asyncStorageHelper';
-import { useAppDispatch } from '@redux/hooks';
-import { setCurrentWalletID, setCurrentWalletLabel, setWallets } from '@redux/walletSlice';
+import { useAppSelector } from '@redux/hooks';
 import { mapSeedToEncryptedSeed } from '@utils/mappers';
 import { useNavigation } from '@react-navigation/native';
+import { selectCurrentWalletData } from '@redux/walletSlice';
+import { useSelector } from 'react-redux';
 const ElectrumHelper = require('@utils/ElectrumHelper');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>) {
   const [loading, setLoading] = useState<Boolean>(false);
-  const dispatch = useAppDispatch();
   const nav = useNavigation();
+
+  const clearAsyncStorage = async () => {
+    try {
+      const keys: string[] = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(keys);
+    } catch (err) {
+      console.log('clear async storage error: ', err);
+    }
+
+    console.log('CLEARED');
+  };
+
+  const state = useAppSelector(state => state.wallet);
+  const { wallets, currentWalletID } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
 
   useEffect(() => {
     //clearAsyncStorage();
@@ -37,28 +47,13 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
   };
 
   const loginWithExistingWallet = async (): Promise<void> => {
+    console.log('STATEEE', state, 'CCCC', currentWalletData);
     await ElectrumHelper.waitTillConnected();
-    const currentWalletId = await getDataFromAsyncStorage(StorageKeys.CurrentWalletId);
-    console.log('currentWalletId', currentWalletId);
-    let storedWallets = null;
-
-    if (currentWalletId) {
-      storedWallets = await getWalletsFromAsyncStorage();
-    }
-    console.log('savedWallets', storedWallets);
-
     // If there is a current wallet and a corresponding wallet object stored on the device
     // the user is navigated to the password screen
-    if (!!storedWallets && !!currentWalletId && !!storedWallets[currentWalletId]) {
-      const wallet = storedWallets[currentWalletId];
-      const encryptedSeedPhrase = wallet.seed;
-
-      dispatch(setCurrentWalletID(currentWalletId));
-      dispatch(setCurrentWalletLabel(wallet.label));
-      dispatch(setWallets(storedWallets));
-
+    if (wallets.length && currentWalletID && !!currentWalletData) {
       navigation.navigate('UnlockWallet', {
-        encryptedSeedPhrase: mapSeedToEncryptedSeed(encryptedSeedPhrase),
+        encryptedSeedPhrase: mapSeedToEncryptedSeed(currentWalletData.encryptedSeed),
         onValidationFinished: (success: boolean) => {
           if (success) {
             nav.navigate('Root');
