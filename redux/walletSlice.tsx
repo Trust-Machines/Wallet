@@ -30,7 +30,7 @@ const importWalletHelper = async (
   walletObject: any;
   walletID: string;
 }> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     let walletType: string = '';
 
     const onProgress = (data: any) => {
@@ -52,8 +52,12 @@ const importWalletHelper = async (
       resolve({ walletObject: wallet, walletID });
     };
 
-    const type: string | undefined = undefined
-    startImport(seedPhrase, type, true, true, onProgress, onWallet, onPassword);
+    const onNotFound = async () => {
+      reject();
+    };
+
+    const type: string | undefined = undefined;
+    startImport(seedPhrase, type, true, true, onProgress, onWallet, onPassword, onNotFound);
   });
 };
 

@@ -43,7 +43,8 @@ export const startImport = (
   searchAccounts = false,
   onProgress,
   onWallet,
-  onPassword
+  onPassword,
+  onNotFound
 ) => {
   // actions
   const reportProgress = name => {
@@ -51,6 +52,9 @@ export const startImport = (
   };
   const reportWallet = (wallet) => {
     onWallet(wallet);
+  };
+  const reportNotFound = () => {
+    onNotFound();
   };
 
   let text = importTextOrig.trim();
@@ -350,33 +354,38 @@ export const startImport = (
   };
 
   // Use if/else for performance instead of switch case
-  if (!type || type === "multisignature") {
-    getMultisigWallet();
-  }
-  if (!type || type == "lightning custodian") {
-    getLightningCustodianWallet();
-  }
-  if (!type || type == "lightning") {
-    getLightningWallet();
-  }
-  if (!type || type?.startsWith("bip39" || type === "brd")) {
-    getBip39Wallet(type);
-  }
-  if (!type || type?.startsWith("wif")) {
-    getWifWallet();
-  }
-  if (!type || type === "watch only") {
-    getWatchOnlyWallet();
-  }
-  if (!type || type?.startsWith("electrum")) {
-    getElectrumWallet(type);
-  }
-  if (!type || type === "aezeed") {
-    getAezeedWallet();
-  }
-  if (!type || type?.startsWith("SLIP39")) {
-    getSlip39Wallet(type);
-  }
+  const importWallets = async () => {
+    if (!type || type === "multisignature") {
+      await getMultisigWallet();
+    }
+    if (!type || type == "lightning custodian") {
+      await getLightningCustodianWallet();
+    }
+    if (!type || type == "lightning") {
+      await getLightningWallet();
+    }
+    if (!type || type?.startsWith("bip39" || type === "brd")) {
+      await getBip39Wallet(type);
+    }
+    if (!type || type?.startsWith("wif")) {
+      await getWifWallet();
+    }
+    if (!type || type === "watch only") {
+      await getWatchOnlyWallet();
+    }
+    if (!type || type?.startsWith("electrum")) {
+      await getElectrumWallet(type);
+    }
+    if (!type || type === "aezeed") {
+      await getAezeedWallet();
+    }
+    if (!type || type?.startsWith("SLIP39")) {
+      await getSlip39Wallet(type);
+    }
+    reportNotFound();
+  };
+
+  importWallets();
 
   return;
 };
