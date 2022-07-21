@@ -52,7 +52,8 @@ const importWalletHelper = async (
       resolve({ walletObject: wallet, walletID });
     };
 
-    startImport(seedPhrase, true, true, onProgress, onWallet, onPassword);
+    const type = "bip39"
+    startImport(seedPhrase, type, true, true, onProgress, onWallet, onPassword);
   });
 };
 
