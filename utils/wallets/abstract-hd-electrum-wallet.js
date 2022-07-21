@@ -646,7 +646,7 @@ export class AbstractHDElectrumWallet extends AbstractHDWallet {
       addresses2fetch.push(this._getInternalAddressByIndex(c));
     }
     const balances = await ElectrumHelper.multiGetBalanceByAddress(addresses2fetch);
-    console.log('Balances of all user addresses:', balances);
+    //console.log('Balances of all user addresses:', balances);
     // converting to a more compact internal format
     for (let c = 0; c < this.next_free_address_index + this.gap_limit; c++) {
       const addr = this._getExternalAddressByIndex(c);

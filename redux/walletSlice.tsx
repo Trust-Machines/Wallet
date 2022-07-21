@@ -15,6 +15,7 @@ export interface WalletData {
   id: string;
   label: string;
   address: string;
+  type: string;
   balance: number;
   transactions: [];
   encryptedSeed: EncryptedSeed;
@@ -54,10 +55,12 @@ const initialState: WalletState = {
 
 // TODO add type parameter
 const importWalletHelper = async (
-  seedPhrase: string
+  seedPhrase: string,
+  type?: string
 ): Promise<{
   walletObject: any;
   walletID: string;
+  type: string;
 }> => {
   return new Promise((resolve, reject) => {
     let walletType: string = '';
@@ -77,24 +80,24 @@ const importWalletHelper = async (
       console.log('WALLETID: ', walletID);
       const subtitle = wallet.getDerivationPath?.();
       console.log('WALLET', wallet);
+      console.log('TYPE----', walletType, type);
 
-      resolve({ walletObject: wallet, walletID });
+      resolve({ walletObject: wallet, walletID, type: walletType });
     };
 
     const onNotFound = async () => {
       reject();
     };
 
-    const type: string | undefined = undefined;
     startImport(seedPhrase, type, true, true, onProgress, onWallet, onPassword, onNotFound);
   });
 };
 
 export const importWallet = createAsyncThunk(
   'wallet/importWallet',
-  async (seedPhrase: string, { rejectWithValue }) => {
+  async ({ seedPhrase, type }: { seedPhrase: string; type?: string }, { rejectWithValue }) => {
     try {
-      return await importWalletHelper(seedPhrase);
+      return await importWalletHelper(seedPhrase, type);
     } catch (err) {
       console.log('wallet import error', err);
       return rejectWithValue(err);

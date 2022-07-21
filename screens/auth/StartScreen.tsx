@@ -47,7 +47,6 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
   };
 
   const loginWithExistingWallet = async (): Promise<void> => {
-    console.log('STATEEE', state, 'CCCC', currentWalletData);
     await ElectrumHelper.waitTillConnected();
     // If there is a current wallet and a corresponding wallet object stored on the device
     // the user is navigated to the password screen

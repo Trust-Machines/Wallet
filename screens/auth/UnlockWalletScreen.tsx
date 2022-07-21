@@ -8,14 +8,16 @@ import { CommonStackScreenProps } from '../../types';
 import { useState } from 'react';
 import { decrypt } from '@utils/helpers';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { importWallet } from '@redux/walletSlice';
+import { importWallet, selectCurrentWalletData } from '@redux/walletSlice';
 import { AppTextInput } from '@shared/AppTextInput';
+import { useSelector } from 'react-redux';
 
 export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWallet'>) {
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const { walletError } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
 
   const { encryptedSeedPhrase, onValidationFinished } = route.params;
   const dispatch = useAppDispatch();
@@ -28,7 +30,12 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
 
     // Import wallet with decrypted seed
     try {
-      await dispatch(importWallet(decryptedWalletSeed)).unwrap();
+      await dispatch(
+        importWallet({
+          seedPhrase: decryptedWalletSeed,
+          type: currentWalletData?.type || undefined,
+        })
+      ).unwrap();
       onValidationFinished(true, password);
     } catch (err) {
       console.log('wallet import error when unlocking wallet', err);

@@ -8,10 +8,12 @@ import { CommonStackScreenProps } from '../../types';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { layout } from '@constants/Layout';
-import { addNewWallet, importWallet } from '@redux/walletSlice';
+import { addNewWallet, importWallet, selectCurrentWalletData } from '@redux/walletSlice';
 import { useNavigation } from '@react-navigation/native';
 import { encrypt } from '@utils/helpers';
 import { AppTextInput } from '@shared/AppTextInput';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 
 export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin'>) {
   const dispatch = useAppDispatch();
@@ -20,23 +22,29 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
   );
   const { walletLoading, walletError, wallets, currentWalletObject, newWalletLabel } =
     useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
   const navigation = useNavigation();
 
   const handleNextPress = async () => {
     if (seedPhrase.length) {
       try {
-        await dispatch(importWallet(seedPhrase)).unwrap();
+        const walletType = !wallets.length ? undefined : currentWalletData?.type;
+
+        const resultAction = await dispatch(importWallet({ seedPhrase, type: walletType }));
+        const originalPromiseResult = unwrapResult(resultAction);
+
         // if the user doesn't have a wallet yet
         if (!wallets.length) {
           navigation.navigate('OnboardingStack', {
             screen: 'SetPassword',
-            params: { seedPhrase },
+            params: { seedPhrase, type: originalPromiseResult.type },
           });
         } else if (route.params?.password) {
           dispatch(
             addNewWallet({
               id: currentWalletObject.getID(),
               label: newWalletLabel,
+              type: originalPromiseResult.type,
               encryptedSeed: encrypt(seedPhrase, route.params.password),
               balance: 0,
               transactions: [],

@@ -64,7 +64,7 @@ export type OnboardingStackParamList = CommonStackParamList & {
   Start: undefined;
   Biometrics: undefined;
   AcceptTOS: { flow: 'import' | 'generate' };
-  SetPassword: { seedPhrase: string };
+  SetPassword: { seedPhrase: string; type: string };
 };
 
 export type OnboardingStackScreenProps<Screen extends keyof OnboardingStackParamList> =

@@ -11,6 +11,7 @@ import { decrypt, encrypt } from '@utils/helpers';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { addNewWallet, importWallet } from '@redux/walletSlice';
 import { AppTextInput } from '@shared/AppTextInput';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 export function SetPasswordScreen({
   navigation,
@@ -23,7 +24,7 @@ export function SetPasswordScreen({
   const { walletLoading, walletError, newWalletLabel, currentWalletID } = useAppSelector(
     state => state.wallet
   );
-  const { seedPhrase } = route.params;
+  const { seedPhrase, type } = route.params;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -50,12 +51,16 @@ export function SetPasswordScreen({
       console.log('decrypted wallet seed:', decryptedWalletSeed);
 
       try {
-        await dispatch(importWallet(decryptedWalletSeed)).unwrap();
+        const resultAction = await dispatch(
+          importWallet({ seedPhrase: decryptedWalletSeed, type })
+        );
+        const originalPromiseResult = unwrapResult(resultAction);
 
         dispatch(
           addNewWallet({
             id: currentWalletID,
             label: newWalletLabel,
+            type: originalPromiseResult.type,
             encryptedSeed: encrypt(decryptedWalletSeed, password), // encryptedWalletSeed ?
             balance: 0,
             transactions: [],

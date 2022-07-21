@@ -67,13 +67,14 @@ export function SaveRecoveryPhraseScreen({
       if (!wallets.length) {
         navigation.navigate('OnboardingStack', {
           screen: 'SetPassword',
-          params: { seedPhrase: seedPhrase.join(' ') },
+          params: { seedPhrase: seedPhrase.join(' '), type: `bip39 p2wpkh m/84'/0'/0'` },
         });
       } else if (route.params?.password) {
         dispatch(
           addNewWallet({
             id: generatedWallet.getID(),
             label: newWalletLabel,
+            type: `bip39 p2wpkh m/84'/0'/0'`,
             encryptedSeed: encrypt(seedPhrase.join(' '), route.params.password),
             balance: 0,
             transactions: [],
