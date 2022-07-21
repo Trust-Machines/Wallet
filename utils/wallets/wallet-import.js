@@ -350,35 +350,32 @@ export const startImport = (
   };
 
   // Use if/else for performance instead of switch case
-  if (type === "multisignature") {
+  if (!type || type === "multisignature") {
     getMultisigWallet();
-  } else if (type == "lightning custodian") {
+  }
+  if (!type || type == "lightning custodian") {
     getLightningCustodianWallet();
-  } else if (type == "lightning") {
+  }
+  if (!type || type == "lightning") {
     getLightningWallet();
-  } else if (type?.startsWith("bip39" || type === "brd")) {
+  }
+  if (!type || type?.startsWith("bip39" || type === "brd")) {
     getBip39Wallet(type);
-  } else if (type?.startsWith("wif")) {
+  }
+  if (!type || type?.startsWith("wif")) {
     getWifWallet();
-  } else if (type === "watch only") {
+  }
+  if (!type || type === "watch only") {
     getWatchOnlyWallet();
-  } else if (type?.startsWith("electrum")) {
+  }
+  if (!type || type?.startsWith("electrum")) {
     getElectrumWallet(type);
-  } else if (type === "aezeed") {
+  }
+  if (!type || type === "aezeed") {
     getAezeedWallet();
-  } else if (type?.startsWith("SLIP39")) {
+  }
+  if (!type || type?.startsWith("SLIP39")) {
     getSlip39Wallet(type);
-  } else {
-    // Call all wallets simultaneously
-    getMultisigWallet();
-    getLightningCustodianWallet();
-    getLightningWallet();
-    getBip39Wallet();
-    getWifWallet();
-    getWatchOnlyWallet();
-    getElectrumWallet();
-    getAezeedWallet();
-    getSlip39Wallet();
   }
 
   return;
