@@ -52,7 +52,7 @@ const importWalletHelper = async (
       resolve({ walletObject: wallet, walletID });
     };
 
-    const type = "bip39"
+    const type: string | undefined = undefined
     startImport(seedPhrase, type, true, true, onProgress, onWallet, onPassword);
   });
 };
