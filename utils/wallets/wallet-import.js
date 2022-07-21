@@ -238,6 +238,8 @@ export const startImport = (
 
         // if we havent found any wallet for this seed suggest new bech32 wallet
         if (!walletFound) {
+          // maybe we need a report progress here?????
+          reportProgress(`bip39 ${hd2.segwitType} ${hd2._derivationPath}`);
           reportWallet(hd2);
         }
       }
