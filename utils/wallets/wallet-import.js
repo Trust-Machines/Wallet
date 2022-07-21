@@ -50,7 +50,7 @@ export const startImport = (
   const reportProgress = name => {
     onProgress(name);
   };
-  const reportWallet = (wallet) => {
+  const reportWallet = wallet => {
     onWallet(wallet);
   };
   const reportNotFound = () => {
@@ -58,17 +58,17 @@ export const startImport = (
   };
 
   let text = importTextOrig.trim();
-  let password;
+  let password = '123456';
 
   // BIP38 password required
-  if (text.startsWith("6P")) {
+  if (text.startsWith('6P')) {
     do {
       password = onPassword();
     } while (!password);
   }
 
   const getMultisigWallet = async () => {
-    reportProgress("multisignature");
+    reportProgress('multisignature');
     const ms = new MultisigHDWallet();
     ms.setSecret(text);
     if (ms.getN() > 0 && ms.getM() > 0) {
@@ -78,8 +78,8 @@ export const startImport = (
   };
 
   const getLightningCustodianWallet = async () => {
-    reportProgress("lightning custodian");
-    if (text.startsWith("blitzhub://") || text.startsWith("lndhub://")) {
+    reportProgress('lightning custodian');
+    if (text.startsWith('blitzhub://') || text.startsWith('lndhub://')) {
       const lnd = new LightningCustodianWallet();
       if (text.includes('@')) {
         const split = text.split('@');
@@ -97,8 +97,8 @@ export const startImport = (
   };
 
   const getLightningWallet = async () => {
-    reportProgress("lightning");
-    if (text.startsWith("ldk://")) {
+    reportProgress('lightning');
+    if (text.startsWith('ldk://')) {
       const ldk = new LightningLdkWallet();
       ldk.setSecret(text);
       if (ldk.valid()) {
@@ -109,37 +109,75 @@ export const startImport = (
   };
 
   //   check bip39 wallets
-  const getBip39Wallet = async (type) => {
-    reportProgress("bip39");
+  const getBip39Wallet = async type => {
+    if (type && type !== "bip39 p2pkh m/0'" && type !== 'BRD') {
+      let wallet;
+      if (type.startsWith('bip p2pkh')) {
+        wallet = new HDLegacyP2PKHWallet();
+      } else if (type.startsWith('bip p2wpkh-p2sh')) {
+        wallet = new HDSegwitP2SHWallet();
+      } else {
+        wallet = new HDSegwitBech32Wallet();
+      }
+      wallet.setSecret(text);
+      wallet.setPassphrase(password);
+      wallet.setDerivationPath(type.split(' ')[type.split(' ').length - 1]);
+      reportProgress(type);
+      reportWallet(wallet);
+      return;
+    }
+
+    if (type === "bip39 p2pkh m/0'") {
+      const m0Legacy = new HDLegacyP2PKHWallet();
+      m0Legacy.setSecret(text);
+      m0Legacy.setPassphrase(password);
+      m0Legacy.setDerivationPath("m/0'");
+      await m0Legacy.fetchBalance();
+      await m0Legacy.fetchTransactions();
+      reportProgress(type);
+      reportWallet(m0Legacy);
+      return;
+    }
+
+    if (type === 'BRD') {
+      const brd = new HDLegacyBreadwalletWallet();
+      brd.setSecret(text);
+      await brd.fetchBalance();
+      await brd.fetchTransactions();
+      reportProgress(type);
+      reportWallet(brd);
+      return;
+    }
+
     const hd2 = new HDSegwitBech32Wallet();
     hd2.setSecret(text);
     hd2.setPassphrase(password);
+
     if (hd2.validateMnemonic()) {
       let walletFound = false;
       // by default we don't try all the paths and options
       const paths = bip39WalletFormats;
-      const walletTypes = paths.map((walletType) => {
+      const walletTypes = paths.map(walletType => {
         return `bip39 ${walletType.script_type} ${walletType.derivation_path}`;
       });
 
-      if (!type || walletTypes.includes(type)) {
+      if (!type || (walletTypes.includes(type) && type !== "bip39 p2pkh m/0'" && type !== 'BRD')) {
         for (const i of paths) {
           // we need to skip m/0' p2pkh from default scan list. It could be a BRD wallet and will be handled later
-          if (i.derivation_path === "m/0'" && i.script_type === "p2pkh")
-            continue;
+          if (i.derivation_path === "m/0'" && i.script_type === 'p2pkh') continue;
           let paths;
           if (i.iterate_accounts && searchAccounts) {
             const basicPath = i.derivation_path.slice(0, -2); // remove 0' from the end
-            paths = [...Array(10).keys()].map((j) => basicPath + j + "'"); // add account number
+            paths = [...Array(10).keys()].map(j => basicPath + j + "'"); // add account number
           } else {
             paths = [i.derivation_path];
           }
           let WalletClass;
           switch (i.script_type) {
-            case "p2pkh":
+            case 'p2pkh':
               WalletClass = HDLegacyP2PKHWallet;
               break;
-            case "p2wpkh-p2sh":
+            case 'p2wpkh-p2sh':
               WalletClass = HDSegwitP2SHWallet;
               break;
             default:
@@ -154,6 +192,7 @@ export const startImport = (
               wallet.setDerivationPath(path);
               reportProgress(`bip39 ${i.script_type} ${path}`);
               if (await wallet.wasEverUsed()) {
+                // if no pw given, it reports it true. with pw, false is reported
                 reportWallet(wallet);
                 walletFound = true;
               } else {
@@ -165,26 +204,24 @@ export const startImport = (
 
         // m/0' p2pkh is a special case. It could be regular a HD wallet or a BRD wallet.
         // to decide which one is it let's compare number of transactions
-        if (!type || type === "bip39 p2pkh m/0'" || type === "BRD") {
+        if (!type || type === "bip39 p2pkh m/0'" || type === 'BRD') {
           const m0Legacy = new HDLegacyP2PKHWallet();
           m0Legacy.setSecret(text);
           m0Legacy.setPassphrase(password);
           m0Legacy.setDerivationPath("m/0'");
           reportProgress("bip39 p2pkh m/0'");
           // BRD doesn't support passphrase and only works with 12 words seeds
-          if (!password && text.split(" ").length === 12) {
+          if (!password && text.split(' ').length === 12) {
             const brd = new HDLegacyBreadwalletWallet();
             brd.setSecret(text);
 
             if (await m0Legacy.wasEverUsed()) {
               await m0Legacy.fetchBalance();
               await m0Legacy.fetchTransactions();
-              reportProgress("BRD");
+              reportProgress('BRD');
               await brd.fetchBalance();
               await brd.fetchTransactions();
-              if (
-                brd.getTransactions().length > m0Legacy.getTransactions().length
-              ) {
+              if (brd.getTransactions().length > m0Legacy.getTransactions().length) {
                 reportWallet(brd);
               } else {
                 reportWallet(m0Legacy);
@@ -208,12 +245,12 @@ export const startImport = (
   };
 
   // check wif wallets
-  const getWifWallet = async (type) => {
-    reportProgress("wif");
+  const getWifWallet = async type => {
+    reportProgress('wif');
 
     // case - Legacy wallet or WIF is valid, just has uncompressed pubkey
-    if (!type || type === "wif p2pkh") {
-      reportProgress("wif p2pkh");
+    if (!type || type === 'wif p2pkh') {
+      reportProgress('wif p2pkh');
       const legacyWallet = new LegacyWallet();
       legacyWallet.setSecret(text);
       if (legacyWallet.getAddress()) {
@@ -238,8 +275,8 @@ export const startImport = (
       // ok its a valid WIF
       let walletFound = false;
 
-      if (!type || type === "wif p2wpkh") {
-        reportProgress("wif p2wpkh");
+      if (!type || type === 'wif p2wpkh') {
+        reportProgress('wif p2wpkh');
         const segwitBech32Wallet = new SegwitBech32Wallet();
         segwitBech32Wallet.setSecret(text);
         if (await segwitBech32Wallet.wasEverUsed()) {
@@ -251,8 +288,8 @@ export const startImport = (
         }
       }
 
-      if (!type || type === "wif p2wpkh-p2sh") {
-        reportProgress("wif p2wpkh-p2sh");
+      if (!type || type === 'wif p2wpkh-p2sh') {
+        reportProgress('wif p2wpkh-p2sh');
         if (await segwitWallet.wasEverUsed()) {
           // yep, its single-address p2wpkh wallet
           await segwitWallet.fetchBalance();
@@ -261,19 +298,12 @@ export const startImport = (
           return;
         }
       }
-
-      // if no wallets was ever used, import all of them |||||    DO WE NEED THIS??
-      if (!walletFound) {
-        reportWallet(segwitBech32Wallet);
-        reportWallet(segwitWallet);
-        reportWallet(legacyWallet);
-      }
     }
   };
 
   // maybe its a watch-only address?
   const getWatchOnlyWallet = async () => {
-    reportProgress("watch only");
+    reportProgress('watch only');
     const watchOnly = new WatchOnlyWallet();
     watchOnly.setSecret(text);
     if (watchOnly.valid()) {
@@ -283,9 +313,9 @@ export const startImport = (
   };
 
   // electrum
-  const getElectrumWallet = async (type) => {
-    if (!type || type === "electrum p2wpkh-p2sh") {
-      reportProgress("electrum p2wpkh-p2sh");
+  const getElectrumWallet = async type => {
+    if (!type || type === 'electrum p2wpkh-p2sh') {
+      reportProgress('electrum p2wpkh-p2sh');
       const el1 = new HDSegwitElectrumSeedP2WPKHWallet();
       el1.setSecret(text);
       el1.setPassphrase(password);
@@ -293,8 +323,8 @@ export const startImport = (
         reportWallet(el1); // not fetching txs or balances, fuck it, yolo, life is too short
       }
     }
-    if (!type || type === "electrum p2pkh") {
-      reportProgress("electrum p2pkh");
+    if (!type || type === 'electrum p2pkh') {
+      reportProgress('electrum p2pkh');
       const el2 = new HDLegacyElectrumSeedP2PKHWallet();
       el2.setSecret(text);
       el2.setPassphrase(password);
@@ -306,7 +336,7 @@ export const startImport = (
 
   // is it AEZEED?
   const getAezeedWallet = async () => {
-    reportProgress("aezeed");
+    reportProgress('aezeed');
     const aezeed2 = new HDAezeedWallet();
     aezeed2.setSecret(text);
     aezeed2.setPassphrase(password);
@@ -317,23 +347,23 @@ export const startImport = (
 
   // if it is multi-line string, then it is probably SLIP39 wallet
   // each line - one share
-  const getSlip39Wallet = async (type) => {
-    reportProgress("SLIP39");
-    if (text.includes("\n")) {
+  const getSlip39Wallet = async type => {
+    reportProgress('SLIP39');
+    if (text.includes('\n')) {
       const s1 = new SLIP39SegwitP2SHWallet();
       s1.setSecret(text);
 
       if (s1.validateMnemonic()) {
-        if (!type || type === "SLIP39 p2wpkh-p2sh") {
-          reportProgress("SLIP39 p2wpkh-p2sh");
+        if (!type || type === 'SLIP39 p2wpkh-p2sh') {
+          reportProgress('SLIP39 p2wpkh-p2sh');
           s1.setPassphrase(password);
           if (await s1.wasEverUsed()) {
             reportWallet(s1);
           }
         }
 
-        if (!type || type === "SLIP39 p2pkh") {
-          reportProgress("SLIP39 p2pkh");
+        if (!type || type === 'SLIP39 p2pkh') {
+          reportProgress('SLIP39 p2pkh');
           const s2 = new SLIP39LegacyP2PKHWallet();
           s2.setPassphrase(password);
           s2.setSecret(text);
@@ -342,8 +372,8 @@ export const startImport = (
           }
         }
 
-        if (!type || type === "SLIP39 p2wpkh") {
-          reportProgress("SLIP39 p2wpkh");
+        if (!type || type === 'SLIP39 p2wpkh') {
+          reportProgress('SLIP39 p2wpkh');
           const s3 = new SLIP39SegwitBech32Wallet();
           s3.setSecret(text);
           s3.setPassphrase(password);
@@ -355,31 +385,31 @@ export const startImport = (
 
   // Use if/else for performance instead of switch case
   const importWallets = async () => {
-    if (!type || type === "multisignature") {
+    if (!type || type === 'multisignature') {
       await getMultisigWallet();
     }
-    if (!type || type == "lightning custodian") {
+    if (!type || type == 'lightning custodian') {
       await getLightningCustodianWallet();
     }
-    if (!type || type == "lightning") {
+    if (!type || type == 'lightning') {
       await getLightningWallet();
     }
-    if (!type || type?.startsWith("bip39" || type === "brd")) {
+    if (!type || type?.startsWith('bip39' || type === 'BRD')) {
       await getBip39Wallet(type);
     }
-    if (!type || type?.startsWith("wif")) {
+    if (!type || type?.startsWith('wif')) {
       await getWifWallet();
     }
-    if (!type || type === "watch only") {
+    if (!type || type === 'watch only') {
       await getWatchOnlyWallet();
     }
-    if (!type || type?.startsWith("electrum")) {
+    if (!type || type?.startsWith('electrum')) {
       await getElectrumWallet(type);
     }
-    if (!type || type === "aezeed") {
+    if (!type || type === 'aezeed') {
       await getAezeedWallet();
     }
-    if (!type || type?.startsWith("SLIP39")) {
+    if (!type || type?.startsWith('SLIP39')) {
       await getSlip39Wallet(type);
     }
     reportNotFound();
