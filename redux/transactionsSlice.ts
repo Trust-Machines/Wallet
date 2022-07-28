@@ -19,7 +19,6 @@ export const getTransactions = createAsyncThunk(
     try {
       await ElectrumHelper.waitTillConnected();
       await wallet.fetchTransactions();
-      console.log('TRANSACTIONS wallet');
       const transactions = wallet.getTransactions();
       //console.log("past transactions", transactions);
       return transactions;

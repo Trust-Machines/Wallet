@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { HomeHeader } from './components/HomeHeader';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { RootTabScreenProps } from '../../types';
@@ -42,29 +42,25 @@ export function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   return (
     <ScreenContainer withTab>
       <HomeHeader />
-      <ScrollView
-        style={{
-          marginTop: 11,
-        }}
-        contentContainerStyle={{ position: 'relative' }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl enabled={true} refreshing={transactionsLoading} onRefresh={getHomeData} />
-        }
-      >
-        <HomeBalance />
-
-        <View style={{ paddingBottom: 30 }}>
-          {!transactionsError && (
-            <FlatList
-              nestedScrollEnabled
-              data={currentWalletData?.transactions}
-              renderItem={(item: any) => renderItem(item)}
-              keyExtractor={(item: any) => item.hash}
-            />
-          )}
-        </View>
-      </ScrollView>
+      <View style={{ paddingBottom: 30, marginTop: 11 }}>
+        {!transactionsError && (
+          <FlatList
+            nestedScrollEnabled
+            data={currentWalletData?.transactions}
+            renderItem={(item: any) => renderItem(item)}
+            keyExtractor={(item: any) => item.hash}
+            ListHeaderComponent={<HomeBalance />}
+            refreshControl={
+              <RefreshControl
+                enabled={true}
+                refreshing={transactionsLoading}
+                onRefresh={getHomeData}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </View>
     </ScreenContainer>
   );
 }
