@@ -1,22 +1,15 @@
-import { View, StyleSheet, TextInput, ActivityIndicator, Image } from 'react-native';
+import { View, ActivityIndicator, Image } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
 import { CommonStackScreenProps } from '../../types';
-import { styleVariables } from '@constants/StyleVariables';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { layout } from '@constants/Layout';
-import {
-  importWallet,
-  setCurrentWalletLabel,
-  setNewWalletLabel,
-  setWallets,
-} from '@redux/walletSlice';
+import { addNewWallet, importWallet } from '@redux/walletSlice';
 import { useNavigation } from '@react-navigation/native';
-import { addWalletToAsyncStorage, getWalletsFromAsyncStorage } from '@utils/asyncStorageHelper';
 import { encrypt } from '@utils/helpers';
 import { AppTextInput } from '@shared/AppTextInput';
 
@@ -25,9 +18,8 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
   const [seedPhrase, setSeedPhrase] = useState<string>(
     'liar knee pioneer critic water gospel another butter like purity garment member'
   );
-  const { walletLoading, walletError, wallets, walletObject, newWalletLabel } = useAppSelector(
-    state => state.wallet
-  );
+  const { walletLoading, walletError, wallets, currentWalletObject, newWalletLabel } =
+    useAppSelector(state => state.wallet);
   const navigation = useNavigation();
 
   const handleNextPress = async () => {
@@ -35,25 +27,22 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
       try {
         await dispatch(importWallet(seedPhrase)).unwrap();
         // if the user doesn't have a wallet yet
-        if (!Object.keys(wallets).length) {
+        if (!wallets.length) {
           navigation.navigate('OnboardingStack', {
             screen: 'SetPassword',
             params: { seedPhrase },
           });
         } else if (route.params?.password) {
-          await addWalletToAsyncStorage({
-            encryptedWalletSeed: encrypt(seedPhrase, route.params.password),
-            walletID: walletObject.getID(),
-            walletLabel: newWalletLabel,
-            balance: 0,
-            transactions: [],
-            address: '',
-          });
-
-          const storedWallets = await getWalletsFromAsyncStorage();
-          if (storedWallets) {
-            dispatch(setWallets(storedWallets));
-          }
+          dispatch(
+            addNewWallet({
+              id: currentWalletObject.getID(),
+              label: newWalletLabel,
+              encryptedSeed: encrypt(seedPhrase, route.params.password),
+              balance: 0,
+              transactions: [],
+              address: '',
+            })
+          );
 
           navigation.navigate('NewWalletStack', {
             screen: 'CreateWalletSuccess',
@@ -103,17 +92,6 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
             setValue={value => setSeedPhrase(value)}
             multiline
           />
-          {/* <TextInput
-            value={seedPhrase}
-            onChangeText={(phrase: string) => setSeedPhrase(phrase)}
-            style={styles.input}
-            keyboardType="default"
-            keyboardAppearance="dark"
-            placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
-            multiline
-            autoFocus
-            textAlignVertical="top"
-          /> */}
           <AppButton
             onPress={handleNextPress}
             text={en.Common_next}
@@ -125,20 +103,3 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
     </ScreenContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: styleVariables.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    padding: 16,
-    paddingTop: 16,
-    height: layout.isSmallDevice ? 236 : 336,
-    fontFamily: 'Inter_500Medium',
-    fontSize: 18,
-    lineHeight: 22,
-    color: colors.primaryFont,
-    textAlignVertical: 'top',
-  },
-});

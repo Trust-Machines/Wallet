@@ -3,13 +3,13 @@ import { colors } from '@constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { styleVariables } from '@constants/StyleVariables';
 import { SvgIcons } from '@assets/images';
-import { useAppSelector } from '@redux/hooks';
 import { formatAddress } from '@utils/helpers';
+import { useSelector } from 'react-redux';
+import { selectCurrentWalletData } from '@redux/walletSlice';
 
 export function HomeHeader() {
   const navigation = useNavigation();
-  const { address } = useAppSelector(state => state.address);
-  const { currentWalletLabel } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
 
   return (
     <View style={styles.container}>
@@ -18,8 +18,12 @@ export function HomeHeader() {
         onPress={() => navigation.navigate('WalletsStack', { screen: 'WalletSelector' })}
       >
         <SvgIcons.TabBar.Wallet />
-        <Text style={styles.walletName}>{currentWalletLabel ?? formatAddress(address)} </Text>
-        <Text style={styles.address}>{address.length ? `(${formatAddress(address)})` : ''}</Text>
+        <Text style={styles.walletName}>{currentWalletData?.label} </Text>
+        <Text style={styles.address}>
+          {currentWalletData?.address.length
+            ? `(${formatAddress(currentWalletData?.address)})`
+            : ''}
+        </Text>
       </Pressable>
 
       <Pressable

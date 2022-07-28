@@ -6,9 +6,9 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { EncryptedSeed, WalletData } from '@redux/walletSlice';
 import { Assets } from './constants/CommonEnums';
 import { TransactionDetails } from './hooks/useTransactionSending';
-import { CachedWallet, EncryptedSeed } from './utils/asyncStorageHelper';
 
 declare global {
   namespace ReactNavigation {
@@ -103,7 +103,7 @@ export type WalletsStackParamList = {
     encryptedSeedPhrase: EncryptedSeed;
     onValidationFinished(success: boolean, password: string): void;
   };
-  EditWallet: { wallet: CachedWallet; id: string };
+  EditWallet: { wallet: WalletData; id: string };
 };
 
 export type WalletsStackScreenProps<Screen extends keyof WalletsStackParamList> =

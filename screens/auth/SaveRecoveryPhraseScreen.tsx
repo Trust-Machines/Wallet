@@ -10,9 +10,8 @@ import { HDSegwitP2SHWallet } from '@utils/wallets/hd-segwit-p2sh-wallet';
 import { useEffect, useState } from 'react';
 import { layout } from '@constants/Layout';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { setCurrentWalletLabel, setNewWalletLabel, setWallets } from '@redux/walletSlice';
+import { addNewWallet } from '@redux/walletSlice';
 import { encrypt } from '@utils/helpers';
-import { addWalletToAsyncStorage, getWalletsFromAsyncStorage } from '@utils/asyncStorageHelper';
 import { useNavigation } from '@react-navigation/native';
 
 export function SaveRecoveryPhraseScreen({
@@ -65,31 +64,27 @@ export function SaveRecoveryPhraseScreen({
   const handleButtonClick = async () => {
     if (seedPhrase && seedPhrase.length) {
       // In case it's the user's first wallet password setting is needed
-      if (!Object.keys(wallets).length) {
+      if (!wallets.length) {
         navigation.navigate('OnboardingStack', {
           screen: 'SetPassword',
           params: { seedPhrase: seedPhrase.join(' ') },
         });
       } else if (route.params?.password) {
-        try {
-          const addWallet = await addWalletToAsyncStorage({
-            encryptedWalletSeed: encrypt(seedPhrase.join(' '), route.params.password),
-            walletID: generatedWallet.getID(),
-            walletLabel: newWalletLabel,
-          });
-          const storedWallets = await getWalletsFromAsyncStorage();
-          if (storedWallets) {
-            dispatch(setWallets(storedWallets));
-          }
-          dispatch(setNewWalletLabel(''));
+        dispatch(
+          addNewWallet({
+            id: generatedWallet.getID(),
+            label: newWalletLabel,
+            encryptedSeed: encrypt(seedPhrase.join(' '), route.params.password),
+            balance: 0,
+            transactions: [],
+            address: '',
+          })
+        );
 
-          navigation.navigate('NewWalletStack', {
-            screen: 'CreateWalletSuccess',
-            params: { isFirstWallet: false },
-          });
-        } catch (err) {
-          console.log('wallet import error', err);
-        }
+        navigation.navigate('NewWalletStack', {
+          screen: 'CreateWalletSuccess',
+          params: { isFirstWallet: false },
+        });
       }
     }
   };

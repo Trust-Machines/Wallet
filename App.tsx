@@ -15,8 +15,10 @@ import {
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import { LogBox } from 'react-native';
+import { persistor, store } from './redux/store';
+import { LogBox, Text } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
+// import { persistStore } from 'redux-persist';
 
 logger('App launched', { success: true }, 'Main');
 
@@ -34,10 +36,14 @@ export function App() {
     return null;
   }
 
+  //let persistor = persistStore(store);
+
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <Navigation />
+        <PersistGate loading={<Text>Loading...</Text> /*null*/} persistor={persistor}>
+          <Navigation />
+        </PersistGate>
       </Provider>
     </SafeAreaProvider>
   );

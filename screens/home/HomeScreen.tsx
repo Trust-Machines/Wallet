@@ -10,13 +10,14 @@ import { getBalance } from '@redux/balanceSlice';
 import { getTransactions } from '@redux/transactionsSlice';
 import { getAddress } from '@redux/addressSlice';
 import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { selectCurrentWalletData } from '@redux/walletSlice';
 
 export function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const dispatch = useAppDispatch();
-  const { walletObject, currentWalletID } = useAppSelector(state => state.wallet);
-  const { transactions, transactionsLoading, transactionsError } = useAppSelector(
-    state => state.transactions
-  );
+  const { currentWalletObject, currentWalletID } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
+  const { transactionsLoading, transactionsError } = useAppSelector(state => state.wallet);
 
   useFocusEffect(
     useCallback(() => {
@@ -25,13 +26,13 @@ export function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   );
 
   const getHomeData = () => {
-    dispatch(getAddress(walletObject));
-    dispatch(getBalance(walletObject));
-    dispatch(getTransactions(walletObject));
+    dispatch(getAddress(currentWalletObject));
+    dispatch(getBalance(currentWalletObject));
+    dispatch(getTransactions(currentWalletObject));
   };
 
   const renderItem = ({ item }: any) => {
-    if (transactions.length) {
+    if (currentWalletData?.transactions.length) {
       return <TransactionItem transaction={item} />;
     } else {
       return <View></View>;
@@ -57,9 +58,9 @@ export function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           {!transactionsError && (
             <FlatList
               nestedScrollEnabled
-              data={transactions}
+              data={currentWalletData?.transactions}
               renderItem={(item: any) => renderItem(item)}
-              keyExtractor={item => item.hash}
+              keyExtractor={(item: any) => item.hash}
             />
           )}
         </View>

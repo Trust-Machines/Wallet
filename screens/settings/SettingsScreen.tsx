@@ -1,20 +1,15 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '@shared/ScreenContainer';
-import { RootTabScreenProps } from '../../types';
+import { RootStackScreenProps } from '../../types';
 import { colors } from '@constants/Colors';
 import { styleVariables } from '@constants/StyleVariables';
 import { en } from '../../en';
 import { SvgIcons } from '@assets/images';
-import { clearAsyncStorage } from '@utils/asyncStorageHelper';
-import { useAppDispatch } from '@redux/hooks';
-import { setWallets } from '@redux/walletSlice';
+import { persistor } from '@redux/store';
 
-export function SettingsScreen({ navigation }: RootTabScreenProps<'Settings'>) {
-  const dispatch = useAppDispatch();
-
+export function SettingsScreen({ navigation }: RootStackScreenProps<'Settings'>) {
   const handleLogout = async (): Promise<void> => {
-    dispatch(setWallets({}));
-    const cleared = await clearAsyncStorage();
+    await persistor.purge();
     navigation.navigate('OnboardingStack', { screen: 'Start' });
   };
 

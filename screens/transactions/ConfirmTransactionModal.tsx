@@ -31,12 +31,15 @@ export function ConfirmTransactionModal({
     { label: 'High', key: 'fast', value: undefined },
   ]);
   const [selectedFee, setSelectedFee] = useState<'slow' | 'medium' | 'fast'>('slow');
-  const { walletObject } = useAppSelector(state => state.wallet);
+  const { currentWalletObject } = useAppSelector(state => state.wallet);
 
   const handleTransactionSending = async () => {
     setError(false);
     setLoading(true);
-    const result = await useTransactionSending({ address, amount, selectedFee }, walletObject);
+    const result = await useTransactionSending(
+      { address, amount, selectedFee },
+      currentWalletObject
+    );
 
     if (result.success && result.data) {
       navigation.navigate('TransactionSuccess', result.data);
