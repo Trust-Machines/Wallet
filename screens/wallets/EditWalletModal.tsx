@@ -1,15 +1,13 @@
-import { Alert, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { WalletsStackScreenProps } from '../../nav-types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
-import { styleVariables } from '@constants/StyleVariables';
 import { layout } from '@constants/Layout';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { useState } from 'react';
-import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { colors } from '@constants/Colors';
 import { editWalletLabel, deleteWalletById } from '@redux/walletSlice';
+import { AppTextInput } from '@shared/AppTextInput';
 
 export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'EditWallet'>) {
   const { wallet, id } = route.params;
@@ -47,7 +45,7 @@ export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'
   };
 
   return (
-    <ModalScreenContainer title={en.Wallet_selector_modal_title}>
+    <ModalScreenContainer title={'Edit wallet'}>
       <View
         style={{
           flex: 1,
@@ -55,25 +53,8 @@ export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'
           marginBottom: layout.isSmallDevice ? 0 : '10%',
         }}
       >
-        <View>
-          <ThemedText
-            theme={TextTheme.Headline2Text}
-            styleOverwrite={{ marginTop: 20, marginBottom: 60 }}
-          >
-            Edit wallet
-          </ThemedText>
-
-          <View>
-            <ThemedText theme={TextTheme.LabelText}>Wallet name</ThemedText>
-            <TextInput
-              value={label}
-              onChangeText={(pw: string) => setLabel(pw)}
-              style={styles.input}
-              keyboardType="default"
-              keyboardAppearance="dark"
-              placeholderTextColor={'rgba(248, 249, 250, 0.3)'}
-            />
-          </View>
+        <View style={{ marginTop: 40 }}>
+          <AppTextInput value={label} setValue={setLabel} labelText={'Wallet name'} />
         </View>
 
         <View style={{ flexDirection: 'row' }}>
@@ -95,26 +76,3 @@ export function EditWalletModal({ route, navigation }: WalletsStackScreenProps<'
     </ModalScreenContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  qrContainer: {
-    backgroundColor: '#FFF',
-    borderRadius: styleVariables.borderRadius,
-    alignItems: 'center',
-    padding: 40,
-    marginBottom: 12,
-  },
-  input: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: styleVariables.borderRadius,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    padding: 16,
-    paddingTop: 16,
-    fontFamily: 'Inter_500Medium',
-    fontSize: 18,
-    lineHeight: 22,
-    color: colors.primaryFont,
-    marginTop: 12,
-  },
-});

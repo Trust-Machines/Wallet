@@ -92,6 +92,7 @@ export type TransactionStackParamList = {
   };
   TransactionSuccess: TransactionDetails;
   CommonError: { message?: string; onButtonPress?(): void };
+  EditContact: { name?: string; address?: string; index?: number };
 };
 
 export type TransactionStackScreenProps<Screen extends keyof TransactionStackParamList> =

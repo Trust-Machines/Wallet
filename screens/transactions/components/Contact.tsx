@@ -4,20 +4,23 @@ import { colors } from '@constants/Colors';
 import { SvgIcons } from '@assets/images';
 import { styleVariables } from '@constants/StyleVariables';
 import { formatAddress } from '@utils/helpers';
+import { useNavigation } from '@react-navigation/native';
 
 export type ContactProps = {
   name: string;
   address: string;
   selected: boolean;
-  setSelectedContantAddress(address: string | undefined): void;
-  clearAddressInputValue(): void;
+  index: number;
+  setSelectedContactIndex(index: number | undefined): void;
 };
 
 export function Contact(props: ContactProps) {
+  const navigation = useNavigation();
+
   function handleContactPress(): void {
-    props.setSelectedContantAddress(props.selected ? undefined : props.address);
-    props.clearAddressInputValue();
+    props.setSelectedContactIndex(props.selected ? undefined : props.index);
   }
+
   return (
     <Pressable
       onPress={handleContactPress}
@@ -30,13 +33,34 @@ export function Contact(props: ContactProps) {
         },
       ]}
     >
-      <SvgIcons.Assets.Btc /*placeholder*/ />
-      <View style={{ marginLeft: 16 }}>
-        <ThemedText theme={TextTheme.LabelText}>{props.name}</ThemedText>
-        <ThemedText theme={TextTheme.CaptionText} styleOverwrite={{ color: colors.secondaryFont }}>
-          {formatAddress(props.address)}
-        </ThemedText>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <SvgIcons.Assets.Btc /*placeholder*/ />
+        <View style={{ marginLeft: 16 }}>
+          <ThemedText theme={TextTheme.LabelText}>{props.name}</ThemedText>
+          <ThemedText
+            theme={TextTheme.CaptionText}
+            styleOverwrite={{ color: colors.secondaryFont }}
+          >
+            {formatAddress(props.address)}
+          </ThemedText>
+        </View>
       </View>
+      <Pressable
+        style={styles.edit}
+        onPress={() =>
+          navigation.navigate('TransactionStack', {
+            screen: 'EditContact',
+            params: { name: props.name, address: props.address, index: props.index },
+          })
+        }
+      >
+        <ThemedText theme={TextTheme.CaptionText}>Edit</ThemedText>
+      </Pressable>
     </Pressable>
   );
 }
@@ -48,6 +72,13 @@ const styles = StyleSheet.create({
     borderRadius: styleVariables.borderRadius,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
+  },
+  edit: {
+    width: 60,
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

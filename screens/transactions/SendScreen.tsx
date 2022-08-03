@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { RootTabScreenProps } from '../../nav-types';
 import { en } from '../../en';
@@ -13,24 +13,29 @@ import { ScreenContainer } from '@shared/ScreenContainer';
 import { HomeHeader } from '@screens/home/components/HomeHeader';
 import { AppAmountInput } from '@shared/AppAmountInput';
 import { AppTextInput } from '@shared/AppTextInput';
+import { useAppSelector } from '@redux/hooks';
 
 export function SendScreen({ navigation }: RootTabScreenProps<'Transactions'>) {
   const [amount, setAmount] = useState<string>('0');
-  const [selectedContactAddress, setSelectedContantAddress] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedContactIndex, setSelectedContactIndex] = useState<number | undefined>(undefined);
   const [addressInputValue, setAddressInputValue] = useState<string>('');
+  const { contactList } = useAppSelector(state => state.contacts);
 
   useEffect(() => {
-    if (addressInputValue) {
-      setSelectedContantAddress(undefined);
+    if (selectedContactIndex !== undefined) {
+      setAddressInputValue(contactList[selectedContactIndex].address);
     }
-  }, [addressInputValue]);
+  }, [selectedContactIndex]);
 
   const handleSendPress = () => {
     navigation.navigate('TransactionStack', {
       screen: 'ConfirmTransaction',
-      params: { address: selectedContactAddress ?? addressInputValue, amount },
+      params: {
+        address: selectedContactIndex
+          ? contactList[selectedContactIndex].address
+          : addressInputValue,
+        amount,
+      },
     });
   };
 
@@ -53,50 +58,49 @@ export function SendScreen({ navigation }: RootTabScreenProps<'Transactions'>) {
         />
         <View style={styles.contactsHeader}>
           <ThemedText theme={TextTheme.CaptionText}>
-            {en.Send_screen_select_contact_label}
+            {contactList.length ? en.Send_screen_select_contact_label : ''}
           </ThemedText>
-          <ThemedText
-            theme={TextTheme.CaptionText}
-            styleOverwrite={{ color: colors.primaryAppColorDarker }}
+          <Pressable
+            onPress={() =>
+              navigation.navigate('TransactionStack', { screen: 'EditContact', params: {} })
+            }
           >
-            {en.Send_screen_add_contact_label}
-          </ThemedText>
+            <ThemedText
+              theme={TextTheme.CaptionText}
+              styleOverwrite={{ color: colors.primaryAppColorDarker }}
+            >
+              {en.Send_screen_add_contact_label}
+            </ThemedText>
+          </Pressable>
         </View>
-        <Contact
+        {contactList.map((contact, i) => {
+          return (
+            <Contact
+              key={contact.address}
+              name={contact.name}
+              address={contact.address}
+              index={i}
+              selected={addressInputValue === contact.address}
+              setSelectedContactIndex={setSelectedContactIndex}
+            />
+          );
+        })}
+        {/* <Contact
           name={'Stacks Merch Shop'}
           address={'bc1qrm74dlzvzrkc4fgkx9df0jgwm02drnktpn8gw7'}
           selected={selectedContactAddress === 'bc1qrm74dlzvzrkc4fgkx9df0jgwm02drnktpn8gw7'}
           setSelectedContantAddress={setSelectedContantAddress}
           clearAddressInputValue={() => setAddressInputValue('')}
         />
-        <Contact
-          name={'Katie'}
-          address={'(SM2Z....TGTF4)'}
-          selected={selectedContactAddress === '(SM2Z....TGTF4)'}
-          setSelectedContantAddress={setSelectedContantAddress}
-          clearAddressInputValue={() => setAddressInputValue('')}
-        />
-        <Contact
-          name={'Katie'}
-          address={'(SM2Z....TGTF3)'}
-          selected={selectedContactAddress === '(SM2Z....TGTF3)'}
-          setSelectedContantAddress={setSelectedContantAddress}
-          clearAddressInputValue={() => setAddressInputValue('')}
-        />
+      */}
       </ScrollView>
       <View style={{ flexDirection: 'row', paddingBottom: 40 }}>
         <AppButton
-          text={`${en.Common_send}${
-            (selectedContactAddress || addressInputValue) && ' ' + en.Common_to
-          } ${formatAddress(
-            selectedContactAddress
-              ? selectedContactAddress
-              : addressInputValue.length
-              ? addressInputValue
-              : ''
+          text={`${en.Common_send}${addressInputValue && ' ' + en.Common_to} ${formatAddress(
+            addressInputValue.length ? addressInputValue : ''
           )}`}
           theme={
-            (selectedContactAddress || addressInputValue.length) && safeParseFloat(amount) > 0
+            addressInputValue.length && safeParseFloat(amount) > 0
               ? ButtonTheme.Primary
               : ButtonTheme.Disabled
           }

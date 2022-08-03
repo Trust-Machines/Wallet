@@ -54,6 +54,7 @@ import { AddNewWalletScreen } from '@screens/wallets/AddNewWallet';
 import { EditWalletModal } from '@screens/wallets/EditWalletModal';
 import { TransactionDetails } from '@screens/transaction-details/TransactionDetailsScreen';
 import { CommonErrorScreen } from '@screens/common/CommonErrorScreen';
+import { EditContactModal } from '@screens/transactions/EditContactModal';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -322,10 +323,17 @@ const TransactionStackView = () => (
         presentation: 'card',
       }}
     />
-    <Stack.Screen
+    <TransactionStack.Screen
       name="CommonError"
       component={CommonErrorScreen}
       options={{ headerShown: false }}
+    />
+    <TransactionStack.Screen
+      name="EditContact"
+      component={EditContactModal}
+      options={{
+        presentation: 'card',
+      }}
     />
   </TransactionStack.Navigator>
 );
