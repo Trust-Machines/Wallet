@@ -40,6 +40,7 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
             type: currentWalletData?.type || undefined,
           })
         ).unwrap();
+        setPassword('');
         onValidationFinished(true, password);
       } catch (err) {
         console.log('wallet import error when unlocking wallet', err);
