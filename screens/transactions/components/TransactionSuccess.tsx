@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../../en';
