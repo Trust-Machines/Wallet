@@ -1,4 +1,4 @@
-import { TransactionStackScreenProps } from '../../types';
+import { TransactionStackScreenProps } from '../../nav-types';
 import { en } from '../../en';
 import { TransactionSuccess } from './components/TransactionSuccess';
 

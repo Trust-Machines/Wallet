@@ -13,6 +13,8 @@ export const en = {
   Common_buy: 'Buy',
   Common_next: 'Next',
   Common_success: 'Success!',
+  Common_error: 'Something Went Wrong',
+  Common_try_again: 'Try Again',
   Common_balance: 'Balance',
   Common_unlock: 'Unlock',
   Wallet_name: 'TrustMachines',

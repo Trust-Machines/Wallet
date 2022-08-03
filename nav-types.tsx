@@ -26,6 +26,7 @@ export type RootStackParamList = {
   NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
   TransactionDetails: { transactionHash: string };
   Settings: undefined;
+  CommonError: { message?: string };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

@@ -3,7 +3,7 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../en';
-import { NewWalletStackScreenProps } from '../../types';
+import { NewWalletStackScreenProps } from '../../nav-types';
 import { layout } from '@constants/Layout';
 import { useAppSelector } from '@redux/hooks';
 import { useNavigation } from '@react-navigation/native';
