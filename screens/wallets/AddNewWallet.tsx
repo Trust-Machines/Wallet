@@ -25,6 +25,8 @@ export function AddNewWalletScreen({ route }: NewWalletStackScreenProps<'AddNewW
       styles={{
         marginBottom: layout.isSmallDevice ? '5%' : '10%',
       }}
+      canGoBack
+      onGoBack={() => navigation.goBack()}
     >
       <View>
         <Image

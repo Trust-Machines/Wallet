@@ -65,7 +65,12 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
   };
 
   return (
-    <ScreenContainer showStars loading={walletLoading}>
+    <ScreenContainer
+      showStars
+      loading={walletLoading}
+      canGoBack
+      onGoBack={() => navigation.goBack()}
+    >
       <Image
         style={{
           marginTop: layout.isSmallDevice ? 0 : '10%',

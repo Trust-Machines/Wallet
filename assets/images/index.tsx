@@ -35,6 +35,7 @@ import Pending from './pending.svg';
 import Failed from './failed.svg';
 import Transaction from './transaction.svg';
 import ScanQr from './scan-qr.svg';
+import ArrowLeft from './arrow-left.svg';
 
 export const SvgIcons = {
   TabBar: {
@@ -68,6 +69,7 @@ export const SvgIcons = {
     Qr,
     Search,
     Share,
+    ArrowLeft,
   },
   Exchange: { Exchange, ExchangeColored },
   Defi: { Globe60 },

@@ -14,16 +14,22 @@ export function HomeHeader() {
   return (
     <View style={styles.container}>
       <Pressable
-        style={[styles.innerContainer, { flex: 1, marginRight: 8, paddingHorizontal: 10 }]}
+        style={[
+          styles.innerContainer,
+          { flex: 1, marginRight: 8, paddingHorizontal: 10, justifyContent: 'space-between' },
+        ]}
         onPress={() => navigation.navigate('WalletsStack', { screen: 'WalletSelector' })}
       >
-        <SvgIcons.TabBar.Wallet />
-        <Text style={styles.walletName}>{currentWalletData?.label} </Text>
-        <Text style={styles.address}>
-          {currentWalletData?.address.length
-            ? `(${formatAddress(currentWalletData?.address)})`
-            : ''}
-        </Text>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <SvgIcons.TabBar.Wallet />
+          <Text style={styles.walletName}>{currentWalletData?.label} </Text>
+          <Text style={styles.address}>
+            {currentWalletData?.address.length
+              ? `(${formatAddress(currentWalletData?.address)})`
+              : ''}
+          </Text>
+        </View>
+        <SvgIcons.General.ChevronDown />
       </Pressable>
 
       <Pressable
