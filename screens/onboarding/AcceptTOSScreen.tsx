@@ -2,7 +2,7 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../en';
-import { OnboardingStackScreenProps } from '../../nav-types';
+import { OnboardingStackScreenProps } from '../../navigation/nav-types';
 import { AppSwitch } from '@shared/AppSwitch';
 import { useState } from 'react';
 import { Image, View } from 'react-native';
@@ -11,7 +11,7 @@ import { colors } from '@constants/Colors';
 
 export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProps<'AcceptTOS'>) {
   const [isAccepted, setIsAccepted] = useState(false);
-  const { flow } = route.params;
+  const { generateOrImport } = route.params;
 
   function onToggleSwitch(value: boolean) {
     setIsAccepted(value);
@@ -51,7 +51,7 @@ export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProp
         />
       </View>
       <AppButton
-        onPress={() => navigation.navigate('WalletLabel', { flow })}
+        onPress={() => navigation.navigate('WalletLabel', { generateOrImport })}
         text={en.Common_next}
         theme={isAccepted ? ButtonTheme.Primary : ButtonTheme.Disabled}
         fullWidth

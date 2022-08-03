@@ -3,10 +3,10 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../en';
-import { CommonStackScreenProps } from '../../nav-types';
+import { CommonStackScreenProps } from '../../navigation/nav-types';
 import { useState } from 'react';
 import { layout } from '@constants/Layout';
-import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { useAppDispatch } from '@redux/hooks';
 import { selectCurrentWalletData, selectIsLoggedIn, setNewWalletLabel } from '@redux/walletSlice';
 import { useNavigation } from '@react-navigation/native';
 import { AppTextInput } from '@shared/AppTextInput';
@@ -18,7 +18,7 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const dispatch = useAppDispatch();
-  const { flow } = route.params;
+  const { generateOrImport } = route.params;
   const navigation = useNavigation();
 
   const saveLabel = async () => {
@@ -36,7 +36,7 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
             onValidationFinished: (success: boolean, password: string) => {
               if (success) {
                 navigation.navigate('NewWalletStack', {
-                  screen: flow === 'generate' ? 'SaveRecoveryPhrase' : 'WalletLogin',
+                  screen: generateOrImport === 'generate' ? 'GenerateWallet' : 'WalletImport',
                   params: { password },
                 });
               } else {
@@ -47,7 +47,7 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
         });
       } else {
         navigation.navigate('OnboardingStack', {
-          screen: flow === 'generate' ? 'SaveRecoveryPhrase' : 'WalletLogin',
+          screen: generateOrImport === 'generate' ? 'GenerateWallet' : 'WalletImport',
           params: {},
         });
       }

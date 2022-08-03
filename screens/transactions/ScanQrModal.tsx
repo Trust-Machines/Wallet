@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { TransactionStackScreenProps } from '../../nav-types';
+import { TransactionStackScreenProps } from '../../navigation/nav-types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { layout } from '@constants/Layout';
 import { BarCodeScanningResult, Camera } from 'expo-camera';

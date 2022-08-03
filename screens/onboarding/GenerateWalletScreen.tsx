@@ -4,7 +4,7 @@ import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
-import { CommonStackScreenProps } from '../../nav-types';
+import { CommonStackScreenProps } from '../../navigation/nav-types';
 import { SvgIcons } from '@assets/images';
 import { HDSegwitP2SHWallet } from '@utils/wallets/hd-segwit-p2sh-wallet';
 import { useEffect, useState } from 'react';
@@ -15,10 +15,10 @@ import { encrypt } from '@utils/helpers';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
-export function SaveRecoveryPhraseScreen({
+export function GenerateWalletScreen({
   //navigation,
   route,
-}: CommonStackScreenProps<'SaveRecoveryPhrase'>) {
+}: CommonStackScreenProps<'GenerateWallet'>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [seedPhrase, setSeedPhrase] = useState<string[] | undefined>(undefined);
   const [generatedWallet, setGeneratedWallet] = useState<any>(undefined);
@@ -56,7 +56,7 @@ export function SaveRecoveryPhraseScreen({
         setLoading(false);
       } catch (e) {
         setLoading(false);
-        navigation.navigate('CommonError', {});
+        navigation.navigate('OnboardingStack', { screen: 'CommonError', params: {} });
         console.log('generate wallet error', e);
       }
     }

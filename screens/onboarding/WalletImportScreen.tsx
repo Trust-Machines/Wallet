@@ -3,7 +3,7 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../en';
-import { CommonStackScreenProps } from '../../nav-types';
+import { CommonStackScreenProps } from '../../navigation/nav-types';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { layout } from '@constants/Layout';
@@ -19,7 +19,7 @@ import { AppTextInput } from '@shared/AppTextInput';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 
-export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin'>) {
+export function WalletImportScreen({ route }: CommonStackScreenProps<'WalletImport'>) {
   const dispatch = useAppDispatch();
   const [seedPhrase, setSeedPhrase] = useState<string>(
     'liar knee pioneer critic water gospel another butter like purity garment member'
@@ -65,7 +65,10 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
         }
       } catch (err) {
         console.log('wallet import error', err);
-        navigation.navigate('CommonError', { message: 'Wallet not found' });
+        navigation.navigate('OnboardingStack', {
+          screen: 'CommonError',
+          params: { message: 'Wallet not found' },
+        });
       }
     }
   };

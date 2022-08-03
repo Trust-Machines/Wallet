@@ -1,13 +1,13 @@
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { en } from '../../en';
-import { RootStackScreenProps } from '../../nav-types';
+import { CommonStackScreenProps } from '../../navigation/nav-types';
 import { AppError } from '@shared/AppError';
 import { View } from 'react-native';
 import { layout } from '@constants/Layout';
 import { useNavigation } from '@react-navigation/native';
 
-export function CommonErrorScreen({ route }: RootStackScreenProps<'CommonError'>) {
+export function CommonErrorScreen({ route }: CommonStackScreenProps<'CommonError'>) {
   const navigation = useNavigation();
 
   const handleButtonPress = () => {

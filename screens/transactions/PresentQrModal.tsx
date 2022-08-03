@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { TransactionStackScreenProps } from '../../nav-types';
+import { TransactionStackScreenProps } from '../../navigation/nav-types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
