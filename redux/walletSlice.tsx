@@ -80,7 +80,6 @@ const importWalletHelper = async (
       console.log('WALLETID: ', walletID);
       const subtitle = wallet.getDerivationPath?.();
       console.log('WALLET', wallet);
-      console.log('TYPE----', walletType, type);
 
       resolve({ walletObject: wallet, walletID, type: walletType });
     };
@@ -141,7 +140,6 @@ export const getTransactions = createAsyncThunk(
     try {
       await ElectrumHelper.waitTillConnected();
       await wallet.fetchTransactions();
-      console.log('TRANSACTIONS wallet');
       const transactions = wallet.getTransactions();
       //console.log("past transactions", transactions);
       return transactions;
