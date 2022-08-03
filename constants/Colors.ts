@@ -10,4 +10,5 @@ export const colors = {
   error: '#FA5252',
   mainBackground: '#10171D',
   inputBackground: '#343842',
+  white: '#FFFFFF'
 };

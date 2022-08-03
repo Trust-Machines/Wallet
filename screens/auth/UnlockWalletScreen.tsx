@@ -45,7 +45,7 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
   };
 
   return (
-    <ScreenContainer showStars>
+    <ScreenContainer showStars loading={loading}>
       <Image
         source={require('@assets/images/unlock-wallet-graphics.png')}
         style={{ alignSelf: 'center', marginTop: 60 }}
@@ -54,13 +54,7 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
       <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 32 }}>
         {en.Unlock_wallet_subtitle}
       </ThemedText>
-      {loading ? (
-        <ActivityIndicator
-          size={'large'}
-          color={colors.primaryAppColorLighter}
-          style={{ marginTop: '25%' }}
-        />
-      ) : walletError ? (
+      {walletError ? (
         <ThemedText theme={TextTheme.NavigationText}>Something went wrong</ThemedText>
       ) : (
         <View

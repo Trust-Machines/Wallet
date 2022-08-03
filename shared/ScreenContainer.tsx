@@ -7,6 +7,7 @@ import {
   Keyboard,
   Image,
   ViewStyle,
+  ActivityIndicator,
 } from 'react-native';
 import { colors } from '@constants/Colors';
 import { styleVariables } from '@constants/StyleVariables';
@@ -18,6 +19,7 @@ type ScreenContainerProps = {
   paddingHorizontal?: number;
   withTab?: boolean;
   styles?: ViewStyle;
+  loading?: boolean;
 };
 
 export function ScreenContainer(props: ScreenContainerProps) {
@@ -52,6 +54,11 @@ export function ScreenContainer(props: ScreenContainerProps) {
             {props.children}
           </View>
         </LinearGradient>
+        {props.loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size={'large'} color={colors.white} />
+          </View>
+        ) : null}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -70,5 +77,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
+  },
+  loadingContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: '45%',
   },
 });

@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { TransactionStackScreenProps } from '../../types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
@@ -51,7 +51,7 @@ export function ConfirmTransactionModal({
   };
 
   return (
-    <ModalScreenContainer title={'Confirm Transaction'}>
+    <ModalScreenContainer title={'Confirm Transaction'} loading={loading}>
       <View
         style={{
           flex: 1,
@@ -128,9 +128,7 @@ export function ConfirmTransactionModal({
             >
               {address}
             </ThemedText>
-            {loading ? (
-              <ActivityIndicator size={'large'} color={colors.primaryAppColorLighter} />
-            ) : error ? (
+            {error ? (
               <ThemedText
                 theme={TextTheme.LabelText}
                 styleOverwrite={{

@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { ScreenContainer } from './ScreenContainer';
 import { TextTheme, ThemedText } from './ThemedText';
 import { colors } from '@constants/Colors';
@@ -10,9 +10,10 @@ import { useNavigation } from '@react-navigation/native';
 type ModalScreenProps = {
   title: string;
   children: React.ReactNode;
+  loading?: boolean;
 };
 
-export function ModalScreenContainer({ title, children }: ModalScreenProps) {
+export function ModalScreenContainer({ title, children, loading }: ModalScreenProps) {
   const navigation = useNavigation();
 
   return (
@@ -26,6 +27,11 @@ export function ModalScreenContainer({ title, children }: ModalScreenProps) {
         </View>
         <ScreenContainer paddingTop={16}>{children}</ScreenContainer>
       </View>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size={'large'} color={colors.white} />
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -52,5 +58,16 @@ const styles = StyleSheet.create({
   close: {
     position: 'absolute',
     left: 16,
+  },
+  loadingContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: '45%',
   },
 });

@@ -1,6 +1,4 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-//import useCachedResources from "./hooks/useCachedResources";
-//import useColorScheme from "./hooks/useColorScheme";
 import { Navigation } from './navigation';
 import RNUxcam from 'react-native-ux-cam';
 import { logger } from './utils/logger';
@@ -18,13 +16,12 @@ import { Provider } from 'react-redux';
 import { persistor, store } from './redux/store';
 import { LogBox, Text } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
-// import { persistStore } from 'redux-persist';
 
 logger('App launched', { success: true }, 'Main');
 
-LogBox.ignoreAllLogs();
-
 export function App() {
+  LogBox.ignoreAllLogs();
+
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -35,8 +32,6 @@ export function App() {
   if (!fontsLoaded) {
     return null;
   }
-
-  //let persistor = persistStore(store);
 
   return (
     <SafeAreaProvider>
