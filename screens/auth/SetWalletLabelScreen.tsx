@@ -7,15 +7,15 @@ import { CommonStackScreenProps } from '../../nav-types';
 import { useState } from 'react';
 import { layout } from '@constants/Layout';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { selectCurrentWalletData, setNewWalletLabel } from '@redux/walletSlice';
+import { selectCurrentWalletData, selectIsLoggedIn, setNewWalletLabel } from '@redux/walletSlice';
 import { useNavigation } from '@react-navigation/native';
 import { AppTextInput } from '@shared/AppTextInput';
 import { useSelector } from 'react-redux';
 
 export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLabel'>) {
   const [label, setLabel] = useState<string>('');
-  const { wallets } = useAppSelector(state => state.wallet);
   const currentWalletData = useSelector(selectCurrentWalletData);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const dispatch = useAppDispatch();
   const { flow } = route.params;
@@ -24,9 +24,10 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
   const saveLabel = async () => {
     if (label.length) {
       dispatch(setNewWalletLabel(label));
+      console.log('asd', isLoggedIn);
 
       // if user is logged in to a wallet
-      if (!!wallets.length && !!currentWalletData) {
+      if (isLoggedIn && !!currentWalletData) {
         navigation.navigate('NewWalletStack', {
           screen: 'UnlockWallet',
           params: {

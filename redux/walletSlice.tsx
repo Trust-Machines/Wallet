@@ -336,6 +336,7 @@ export const selectCurrentWalletData = createSelector(
   selectCurrentWalletID,
   (wallets, id) => wallets.find(wallet => wallet.id === id)
 );
+export const selectIsLoggedIn = createSelector(selectWallets, wallets => wallets.length > 0);
 
 export const {
   setWallet,

@@ -10,9 +10,10 @@ import { HDSegwitP2SHWallet } from '@utils/wallets/hd-segwit-p2sh-wallet';
 import { useEffect, useState } from 'react';
 import { layout } from '@constants/Layout';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { addNewWallet } from '@redux/walletSlice';
+import { addNewWallet, selectIsLoggedIn } from '@redux/walletSlice';
 import { encrypt } from '@utils/helpers';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 export function SaveRecoveryPhraseScreen({
   //navigation,
@@ -21,9 +22,10 @@ export function SaveRecoveryPhraseScreen({
   const [loading, setLoading] = useState<boolean>(false);
   const [seedPhrase, setSeedPhrase] = useState<string[] | undefined>(undefined);
   const [generatedWallet, setGeneratedWallet] = useState<any>(undefined);
-  const { wallets, newWalletLabel } = useAppSelector(state => state.wallet);
+  const { newWalletLabel } = useAppSelector(state => state.wallet);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   useEffect(() => {
     createWallet();
@@ -63,7 +65,7 @@ export function SaveRecoveryPhraseScreen({
   const handleButtonClick = async () => {
     if (seedPhrase && seedPhrase.length) {
       // In case it's the user's first wallet password setting is needed
-      if (!wallets.length) {
+      if (!isLoggedIn) {
         navigation.navigate('OnboardingStack', {
           screen: 'SetPassword',
           params: { seedPhrase: seedPhrase.join(' '), type: `bip39 p2wpkh m/84'/0'/0'` },
