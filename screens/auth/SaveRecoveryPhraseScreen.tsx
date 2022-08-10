@@ -97,6 +97,7 @@ export function SaveRecoveryPhraseScreen({
         justifyContent: 'space-between',
         paddingBottom: layout.isSmallDevice ? 0 : '15%',
       }}
+      loading={loading}
     >
       <View>
         <ThemedText
@@ -112,9 +113,7 @@ export function SaveRecoveryPhraseScreen({
           {en.Save_recovery_phrase_screen_subtitle}
         </ThemedText>
         <View>
-          {loading ? (
-            <ThemedText theme={TextTheme.NavigationText}>Loading...</ThemedText>
-          ) : error ? (
+          {error ? (
             <ThemedText theme={TextTheme.NavigationText}>Something went wrong</ThemedText>
           ) : (
             <View style={styles.tagContainer}>

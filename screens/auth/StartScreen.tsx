@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
@@ -16,7 +16,7 @@ const ElectrumHelper = require('@utils/ElectrumHelper');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>) {
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const nav = useNavigation();
 
   const clearAsyncStorage = async () => {
@@ -73,6 +73,7 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
       styles={{
         marginBottom: layout.isSmallDevice ? '5%' : '10%',
       }}
+      loading={loading}
     >
       <View>
         <Image
@@ -92,31 +93,21 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
           {en.Start_screen_title}
         </ThemedText>
       </View>
-      {loading ? (
-        <View style={{ alignItems: 'center' }}>
-          <ActivityIndicator
-            size={'large'}
-            color={colors.primaryAppColorLighter}
-            style={{ marginTop: 40 }}
-          />
-        </View>
-      ) : (
-        <View style={{ marginTop: 'auto' }}>
-          <AppButton
-            onPress={() => navigation.navigate('AcceptTOS', { flow: 'generate' })}
-            text={en.Generate_new_wallet_button_text}
-            theme={ButtonTheme.Primary}
-            fullWidth
-            style={{ marginBottom: 10 }}
-          />
-          <AppButton
-            onPress={() => navigation.navigate('AcceptTOS', { flow: 'import' })}
-            text={en.Import_wallet_button_text}
-            theme={ButtonTheme.NoBorder}
-            fullWidth
-          />
-        </View>
-      )}
+      <View style={{ marginTop: 'auto' }}>
+        <AppButton
+          onPress={() => navigation.navigate('AcceptTOS', { flow: 'generate' })}
+          text={en.Generate_new_wallet_button_text}
+          theme={ButtonTheme.Primary}
+          fullWidth
+          style={{ marginBottom: 10 }}
+        />
+        <AppButton
+          onPress={() => navigation.navigate('AcceptTOS', { flow: 'import' })}
+          text={en.Import_wallet_button_text}
+          theme={ButtonTheme.NoBorder}
+          fullWidth
+        />
+      </View>
     </ScreenContainer>
   );
 }

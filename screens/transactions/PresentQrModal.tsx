@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { TransactionStackScreenProps } from '../../types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
@@ -28,77 +28,73 @@ export function PresentQrModal({ navigation }: TransactionStackScreenProps<'Pres
   }, []);
 
   return (
-    <ModalScreenContainer title={en.Qr_flow_present_qr_title}>
-      {addressLoading ? (
-        <ActivityIndicator size={'large'} color={colors.primaryAppColorLighter} />
-      ) : (
-        <View
-          style={{
-            flex: 1,
-            marginBottom: '10%',
-          }}
-        >
-          <View style={{ position: 'relative' }}>
-            <View style={styles.qrOuterContainer}>
-              <View style={styles.qrInnerContainer}>
-                {/* @ts-ignore */}
-                <QRCode value={createQr(address, amount)} size={layout.window.width - 116} />
-              </View>
-            </View>
-            <View
-              style={{
-                ...styles.qrTextContainer,
-                top: -11,
-              }}
-            >
-              <ThemedText
-                theme={TextTheme.CaptionText}
-                styleOverwrite={{
-                  ...styles.qrText,
-                  backgroundColor: colors.primaryBackgroundDarker,
-                }}
-              >
-                ({formatAddress(!!currentWalletData ? currentWalletData.address : '')})
-              </ThemedText>
-            </View>
-            <View
-              style={{
-                ...styles.qrTextContainer,
-                bottom: -11,
-              }}
-            >
-              <ThemedText
-                theme={TextTheme.CaptionText}
-                styleOverwrite={{
-                  ...styles.qrText,
-                  backgroundColor: colors.primaryBackgroundLighter,
-                  color: colors.primaryFont,
-                }}
-              >
-                {safeParseFloat(amount) <= 0
-                  ? 'No amount assigned to QR code'
-                  : `Amount assigned to QR code: ${amount} BTC`}
-              </ThemedText>
+    <ModalScreenContainer title={en.Qr_flow_present_qr_title} loading={addressLoading}>
+      <View
+        style={{
+          flex: 1,
+          marginBottom: '10%',
+        }}
+      >
+        <View style={{ position: 'relative' }}>
+          <View style={styles.qrOuterContainer}>
+            <View style={styles.qrInnerContainer}>
+              {/* @ts-ignore */}
+              <QRCode value={createQr(address, amount)} size={layout.window.width - 116} />
             </View>
           </View>
-
-          <AppAmountInput
-            amount={amount}
-            setAmount={value => setAmount(value)}
-            labelText={'Assign amount to QR code:'}
-            style={{ marginTop: 24 }}
-          />
-
-          <AppButton
-            text={en.Copy_to_clipboard}
-            theme={ButtonTheme.NoBorder}
-            onPress={() => navigation.navigate('ScanQr')}
-            fullWidth
-            icon={<SvgIcons.General.CopyToClipboard />}
-            style={{ marginTop: 'auto' }}
-          />
+          <View
+            style={{
+              ...styles.qrTextContainer,
+              top: -11,
+            }}
+          >
+            <ThemedText
+              theme={TextTheme.CaptionText}
+              styleOverwrite={{
+                ...styles.qrText,
+                backgroundColor: colors.primaryBackgroundDarker,
+              }}
+            >
+              ({formatAddress(!!currentWalletData ? currentWalletData.address : '')})
+            </ThemedText>
+          </View>
+          <View
+            style={{
+              ...styles.qrTextContainer,
+              bottom: -11,
+            }}
+          >
+            <ThemedText
+              theme={TextTheme.CaptionText}
+              styleOverwrite={{
+                ...styles.qrText,
+                backgroundColor: colors.primaryBackgroundLighter,
+                color: colors.primaryFont,
+              }}
+            >
+              {safeParseFloat(amount) <= 0
+                ? 'No amount assigned to QR code'
+                : `Amount assigned to QR code: ${amount} BTC`}
+            </ThemedText>
+          </View>
         </View>
-      )}
+
+        <AppAmountInput
+          amount={amount}
+          setAmount={value => setAmount(value)}
+          labelText={'Assign amount to QR code:'}
+          style={{ marginTop: 24 }}
+        />
+
+        <AppButton
+          text={en.Copy_to_clipboard}
+          theme={ButtonTheme.NoBorder}
+          onPress={() => navigation.navigate('ScanQr')}
+          fullWidth
+          icon={<SvgIcons.General.CopyToClipboard />}
+          style={{ marginTop: 'auto' }}
+        />
+      </View>
     </ModalScreenContainer>
   );
 }

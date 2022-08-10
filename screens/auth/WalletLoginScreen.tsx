@@ -1,8 +1,7 @@
-import { View, ActivityIndicator, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { colors } from '@constants/Colors';
 import { en } from '../../en';
 import { CommonStackScreenProps } from '../../types';
 import { useState } from 'react';
@@ -64,7 +63,7 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
   };
 
   return (
-    <ScreenContainer showStars>
+    <ScreenContainer showStars loading={walletLoading}>
       <Image
         style={{
           marginTop: layout.isSmallDevice ? 0 : '10%',
@@ -78,13 +77,7 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
       <ThemedText theme={TextTheme.BodyText} styleOverwrite={{ marginBottom: 26 }}>
         {en.Wallet_login_screen_subtitle}
       </ThemedText>
-      {walletLoading ? (
-        <ActivityIndicator
-          size={'large'}
-          color={colors.primaryAppColorLighter}
-          style={{ marginTop: '25%' }}
-        />
-      ) : walletError ? (
+      {walletError ? (
         <ThemedText theme={TextTheme.NavigationText}>Something went wrong</ThemedText>
       ) : (
         <View

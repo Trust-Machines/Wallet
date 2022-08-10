@@ -76,7 +76,7 @@ export function SetPasswordScreen({
   };
 
   return (
-    <ScreenContainer showStars>
+    <ScreenContainer showStars loading={walletLoading}>
       <Image
         style={{
           marginTop: layout.isSmallDevice ? 0 : '10%',
@@ -92,13 +92,7 @@ export function SetPasswordScreen({
         Please make sure that you remember your password. In case of loss you’ll have to re-import
         your wallets.
       </ThemedText>
-      {walletLoading ? (
-        <ActivityIndicator
-          size={'large'}
-          color={colors.primaryAppColorLighter}
-          style={{ marginTop: '25%' }}
-        />
-      ) : walletError ? (
+      {walletError ? (
         <ThemedText theme={TextTheme.NavigationText}>Something went wrong</ThemedText>
       ) : (
         <View
