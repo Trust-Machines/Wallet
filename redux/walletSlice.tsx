@@ -53,7 +53,6 @@ const initialState: WalletState = {
   transactionsError: false,
 };
 
-// TODO add type parameter
 const importWalletHelper = async (
   seedPhrase: string,
   type?: string
@@ -85,7 +84,7 @@ const importWalletHelper = async (
     };
 
     const onNotFound = async () => {
-      reject();
+      reject('Wallet not found');
     };
 
     startImport(seedPhrase, type, true, true, onProgress, onWallet, onPassword, onNotFound);
@@ -192,7 +191,6 @@ export const walletSlice = createSlice({
     },
     deleteWalletById: (state, action: PayloadAction<string>) => {
       let wallets = state.wallets;
-      console.log('WWW1', wallets);
       const walletIndex = wallets.findIndex(obj => obj.id === action.payload);
       console.log('INDEX', walletIndex);
 
@@ -200,7 +198,6 @@ export const walletSlice = createSlice({
         wallets.splice(walletIndex, 1);
       }
 
-      console.log('WWW2', wallets);
       state.wallets = wallets;
     },
   },

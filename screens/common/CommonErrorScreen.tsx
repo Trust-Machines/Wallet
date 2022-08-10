@@ -1,15 +1,13 @@
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { en } from '../../en';
-import { CommonStackScreenProps } from '../../nav-types';
-import { AppSuccess } from '@shared/AppSuccess';
+import { RootStackScreenProps } from '../../nav-types';
+import { AppError } from '@shared/AppError';
 import { View } from 'react-native';
 import { layout } from '@constants/Layout';
 import { useNavigation } from '@react-navigation/native';
 
-export function CreateWalletSuccessScreen({
-  route,
-}: CommonStackScreenProps<'CreateWalletSuccess'>) {
+export function CommonErrorScreen({ route }: RootStackScreenProps<'CommonError'>) {
   const navigation = useNavigation();
   return (
     <ScreenContainer
@@ -20,14 +18,14 @@ export function CreateWalletSuccessScreen({
       }}
     >
       <View>
-        <AppSuccess
-          text={en.Create_wallet_success_text}
+        <AppError
+          text={route?.params?.message ?? ''}
           style={{ marginTop: layout.isSmallDevice ? 0 : '10%' }}
         />
       </View>
       <AppButton
-        onPress={() => navigation.navigate(route.params.isFirstWallet ? 'Root' : 'WalletsStack')}
-        text={en.Create_wallet_success_button_text}
+        onPress={() => navigation.goBack()}
+        text={en.Common_try_again}
         theme={ButtonTheme.Primary}
         fullWidth={true}
       />

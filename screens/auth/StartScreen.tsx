@@ -4,7 +4,7 @@ import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
-import { OnboardingStackScreenProps } from '../../types';
+import { OnboardingStackScreenProps } from '../../nav-types';
 import { layout } from '@constants/Layout';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@redux/hooks';
@@ -57,6 +57,7 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
           if (success) {
             nav.navigate('Root');
           } else {
+            nav.navigate('CommonError', {});
             console.log('error');
           }
         },

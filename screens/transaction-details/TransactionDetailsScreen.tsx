@@ -1,6 +1,6 @@
 import { Linking, RefreshControl, ScrollView, View } from 'react-native';
 import { ScreenContainer } from '@shared/ScreenContainer';
-import { RootStackScreenProps } from '../../types';
+import { RootStackScreenProps } from '../../nav-types';
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { useEffect, useState } from 'react';

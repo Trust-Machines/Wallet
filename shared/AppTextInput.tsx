@@ -15,6 +15,7 @@ export const AppTextInput = ({
   error,
   errorMessage,
   clearable,
+  clearError,
 }: {
   labelText: string;
   value: string;
@@ -26,8 +27,17 @@ export const AppTextInput = ({
   error?: boolean;
   errorMessage?: string;
   clearable?: boolean;
+  clearError?(): void;
 }) => {
   const [focused, setFocused] = useState<boolean>(false);
+
+  const handleTextChange = (val: string) => {
+    if (error && !!clearError) {
+      clearError();
+    }
+
+    setValue(val);
+  };
 
   return (
     <View style={style}>
@@ -55,7 +65,7 @@ export const AppTextInput = ({
           ]}
           secureTextEntry={!!isPassword}
           value={value}
-          onChangeText={(val: string) => setValue(val)}
+          onChangeText={(val: string) => handleTextChange(val)}
           keyboardType="default"
           keyboardAppearance="dark"
           placeholder={placeholder}

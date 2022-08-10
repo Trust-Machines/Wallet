@@ -4,7 +4,7 @@ import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
-import { CommonStackScreenProps } from '../../types';
+import { CommonStackScreenProps } from '../../nav-types';
 import { SvgIcons } from '@assets/images';
 import { HDSegwitP2SHWallet } from '@utils/wallets/hd-segwit-p2sh-wallet';
 import { useEffect, useState } from 'react';
@@ -19,7 +19,6 @@ export function SaveRecoveryPhraseScreen({
   route,
 }: CommonStackScreenProps<'SaveRecoveryPhrase'>) {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
   const [seedPhrase, setSeedPhrase] = useState<string[] | undefined>(undefined);
   const [generatedWallet, setGeneratedWallet] = useState<any>(undefined);
   const { wallets, newWalletLabel } = useAppSelector(state => state.wallet);
@@ -55,7 +54,7 @@ export function SaveRecoveryPhraseScreen({
         setLoading(false);
       } catch (e) {
         setLoading(false);
-        setError(true);
+        navigation.navigate('CommonError', {});
         console.log('generate wallet error', e);
       }
     }
@@ -113,15 +112,11 @@ export function SaveRecoveryPhraseScreen({
           {en.Save_recovery_phrase_screen_subtitle}
         </ThemedText>
         <View>
-          {error ? (
-            <ThemedText theme={TextTheme.NavigationText}>Something went wrong</ThemedText>
-          ) : (
-            <View style={styles.tagContainer}>
-              {seedPhrase?.map((word, i) => (
-                <WordTag word={word} i={i} key={word} />
-              ))}
-            </View>
-          )}
+          <View style={styles.tagContainer}>
+            {seedPhrase?.map((word, i) => (
+              <WordTag word={word} i={i} key={word} />
+            ))}
+          </View>
         </View>
         <AppButton
           onPress={() => console.log('copied')}

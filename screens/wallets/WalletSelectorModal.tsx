@@ -1,5 +1,5 @@
 import { ScrollView, View } from 'react-native';
-import { WalletsStackScreenProps } from '../../types';
+import { WalletsStackScreenProps } from '../../nav-types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { AppButton, ButtonTheme } from '@shared/AppButton';

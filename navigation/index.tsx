@@ -22,7 +22,7 @@ import {
   RootTabScreenProps,
   TransactionStackParamList,
   WalletsStackParamList,
-} from '../types';
+} from '../nav-types';
 import { en } from '../en';
 import LinkingConfiguration from './LinkingConfiguration';
 import { SaveRecoveryPhraseScreen } from '@screens/auth/SaveRecoveryPhraseScreen';
@@ -47,12 +47,13 @@ import { WalletLoginScreen } from '@screens/auth/WalletLoginScreen';
 import { SvgIcons } from '@assets/images';
 import { AcceptTOSScreen } from '@screens/auth/AcceptTOSScreen';
 import { SetPasswordScreen } from '@screens/auth/SetPasswordScreen';
-import { UnlockWalletScreen } from '@screens/auth/UnlockWalletScreen';
+import { UnlockWalletScreen } from '@screens/common/UnlockWalletScreen';
 import { SetWalletLabelScreen } from '@screens/auth/SetWalletLabelScreen';
 import { WalletSelectorModal } from '@screens/wallets/WalletSelectorModal';
 import { AddNewWalletScreen } from '@screens/wallets/AddNewWallet';
 import { EditWalletModal } from '@screens/wallets/EditWalletModal';
 import { TransactionDetails } from '@screens/transaction-details/TransactionDetailsScreen';
+import { CommonErrorScreen } from '@screens/common/CommonErrorScreen';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -182,6 +183,11 @@ function RootNavigator() {
           headerTintColor: colors.primaryFont,
           headerTitleAlign: 'center',
         }}
+      />
+      <Stack.Screen
+        name="CommonError"
+        component={CommonErrorScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

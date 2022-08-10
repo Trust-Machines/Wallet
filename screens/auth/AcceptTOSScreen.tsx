@@ -2,7 +2,7 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../en';
-import { OnboardingStackScreenProps } from '../../types';
+import { OnboardingStackScreenProps } from '../../nav-types';
 import { AppSwitch } from '@shared/AppSwitch';
 import { useState } from 'react';
 import { Image, View } from 'react-native';

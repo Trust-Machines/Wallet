@@ -1,6 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ScreenContainer } from '@shared/ScreenContainer';
-import { RootStackScreenProps } from '../../types';
+import { RootStackScreenProps } from '../../nav-types';
 import { colors } from '@constants/Colors';
 import { styleVariables } from '@constants/StyleVariables';
 import { en } from '../../en';
