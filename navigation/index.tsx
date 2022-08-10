@@ -105,6 +105,11 @@ const getCommonScreens = (Stack: ReturnType<typeof createNativeStackNavigator>) 
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="CommonError"
+        component={CommonErrorScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="WalletLogin"
         component={WalletLoginScreen}
         options={{ headerShown: false }}
@@ -183,11 +188,6 @@ function RootNavigator() {
           headerTintColor: colors.primaryFont,
           headerTitleAlign: 'center',
         }}
-      />
-      <Stack.Screen
-        name="CommonError"
-        component={CommonErrorScreen}
-        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
@@ -310,12 +310,22 @@ const TransactionStackView = () => (
         presentation: 'card',
       }}
     />
+    <WalletsStack.Screen
+      name="UnlockWallet"
+      component={UnlockWalletScreen}
+      options={{ headerShown: false }}
+    />
     <TransactionStack.Screen
       name="TransactionSuccess"
       component={TransactionSuccessModal}
       options={{
         presentation: 'card',
       }}
+    />
+    <Stack.Screen
+      name="CommonError"
+      component={CommonErrorScreen}
+      options={{ headerShown: false }}
     />
   </TransactionStack.Navigator>
 );

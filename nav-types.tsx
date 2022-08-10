@@ -26,7 +26,7 @@ export type RootStackParamList = {
   NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
   TransactionDetails: { transactionHash: string };
   Settings: undefined;
-  CommonError: { message?: string };
+  CommonError: { message?: string; onButtonPress?(): void };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -56,6 +56,7 @@ export type CommonStackParamList = {
     onValidationFinished(success: boolean, password?: string): void;
   };
   WalletLabel: { flow: 'import' | 'generate' };
+  CommonError: { message?: string; onButtonPress?(): void };
 };
 
 export type CommonStackScreenProps<Screen extends keyof CommonStackParamList> =
@@ -85,7 +86,12 @@ export type TransactionStackParamList = {
   PresentQr: undefined;
   ScanQr: undefined;
   ConfirmTransaction: { address: string; amount: string };
+  UnlockWallet: {
+    encryptedSeedPhrase: EncryptedSeed;
+    onValidationFinished(success: boolean, password?: string): void;
+  };
   TransactionSuccess: TransactionDetails;
+  CommonError: { message?: string; onButtonPress?(): void };
 };
 
 export type TransactionStackScreenProps<Screen extends keyof TransactionStackParamList> =

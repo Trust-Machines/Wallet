@@ -9,6 +9,15 @@ import { useNavigation } from '@react-navigation/native';
 
 export function CommonErrorScreen({ route }: RootStackScreenProps<'CommonError'>) {
   const navigation = useNavigation();
+
+  const handleButtonPress = () => {
+    if (!!route.params?.onButtonPress) {
+      route.params.onButtonPress();
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <ScreenContainer
       showStars
@@ -19,12 +28,12 @@ export function CommonErrorScreen({ route }: RootStackScreenProps<'CommonError'>
     >
       <View>
         <AppError
-          text={route?.params?.message ?? ''}
+          text={route.params?.message ?? ''}
           style={{ marginTop: layout.isSmallDevice ? 0 : '10%' }}
         />
       </View>
       <AppButton
-        onPress={() => navigation.goBack()}
+        onPress={handleButtonPress}
         text={en.Common_try_again}
         theme={ButtonTheme.Primary}
         fullWidth={true}

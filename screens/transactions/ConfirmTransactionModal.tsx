@@ -14,6 +14,10 @@ import { styleVariables } from '@constants/StyleVariables';
 import { safeParseFloat } from '@utils/helpers';
 import { Fee, FeeSelector } from './components/FeeSelector';
 import { AppAmountInput } from '@shared/AppAmountInput';
+import { useSelector } from 'react-redux';
+import { selectCurrentWalletData } from '@redux/walletSlice';
+import { mapSeedToEncryptedSeed } from '@utils/mappers';
+import { useNavigation } from '@react-navigation/native';
 
 export function ConfirmTransactionModal({
   navigation,
@@ -21,7 +25,6 @@ export function ConfirmTransactionModal({
 }: TransactionStackScreenProps<'ConfirmTransaction'>) {
   const { address } = route.params;
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>(
     route.params.amount.length ? route.params.amount : '0'
   );
@@ -32,22 +35,38 @@ export function ConfirmTransactionModal({
   ]);
   const [selectedFee, setSelectedFee] = useState<'slow' | 'medium' | 'fast'>('slow');
   const { currentWalletObject } = useAppSelector(state => state.wallet);
+  const currentWalletData = useSelector(selectCurrentWalletData);
+  const nav = useNavigation();
 
   const handleTransactionSending = async () => {
-    setError(false);
-    setLoading(true);
-    const result = await useTransactionSending(
-      { address, amount, selectedFee },
-      currentWalletObject
-    );
+    if (currentWalletData) {
+      setLoading(true);
+      navigation.navigate('UnlockWallet', {
+        encryptedSeedPhrase: mapSeedToEncryptedSeed(currentWalletData.encryptedSeed),
+        onValidationFinished: async (success: boolean) => {
+          if (success) {
+            navigation.pop();
 
-    if (result.success && result.data) {
-      navigation.navigate('TransactionSuccess', result.data);
-    } else {
-      setError(true);
+            const result = await useTransactionSending(
+              { address, amount, selectedFee },
+              currentWalletObject
+            );
+
+            if (result.success && result.data) {
+              navigation.navigate('TransactionSuccess', result.data);
+            } else {
+              navigation.navigate('CommonError', {
+                message: 'Please try again!',
+                onButtonPress: () => nav.navigate('Root', { screen: 'Transactions' }),
+              });
+            }
+          } else {
+            console.log('error');
+          }
+          setLoading(false);
+        },
+      });
     }
-
-    setLoading(false);
   };
 
   return (
@@ -128,19 +147,6 @@ export function ConfirmTransactionModal({
             >
               {address}
             </ThemedText>
-            {error ? (
-              <ThemedText
-                theme={TextTheme.LabelText}
-                styleOverwrite={{
-                  marginTop: 20,
-                  marginBottom: 4,
-                  textAlign: 'center',
-                  color: colors.error,
-                }}
-              >
-                Something went wrong, please try again
-              </ThemedText>
-            ) : null}
           </View>
 
           <FeeSelector

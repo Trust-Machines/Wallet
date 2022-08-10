@@ -29,33 +29,33 @@ export default async function useTransactionSending(
 
   const handleTransactionSending = async () => {
     return new Promise(async resolve => {
-      await wallet.fetchBalance();
-      console.log('wallet balance', wallet.getBalance());
-
-      await wallet.fetchTransactions();
-      console.log('wallet transactions', wallet.getTransactions());
-
-      const fees = await ElectrumHelper.estimateFees();
-      console.log('fast tx fee', fees.fast);
-
-      let selectedFeeAmount = transaction.selectedFee === 'medium' ? fees.medium : transaction.selectedFee === 'slow' ? fees.slow : fees.fast
-
-      const changeAddress = await wallet.getChangeAddressAsync();
-      console.log('changeAddress', changeAddress);
-
-      console.log('utxo', wallet.getUtxo());
-
-      const amountToSendInSats = bitcoinToSatoshiInteger(safeParseFloat(transaction.amount));
-
-      const { tx, outputs, psbt, fee } = wallet.createTransaction(
-        wallet.getUtxo(),
-        [{ address: transaction.address, value: amountToSendInSats }],
-        selectedFeeAmount,
-        changeAddress,
-        HDSegwitBech32Wallet.defaultRBFSequence
-      );
-
       try {
+        await wallet.fetchBalance();
+        console.log('wallet balance', wallet.getBalance());
+
+        await wallet.fetchTransactions();
+        console.log('wallet transactions', wallet.getTransactions());
+
+        const fees = await ElectrumHelper.estimateFees();
+        console.log('fast tx fee', fees.fast);
+
+        let selectedFeeAmount = transaction.selectedFee === 'medium' ? fees.medium : transaction.selectedFee === 'slow' ? fees.slow : fees.fast
+
+        const changeAddress = await wallet.getChangeAddressAsync();
+        console.log('changeAddress', changeAddress);
+
+        console.log('utxo', wallet.getUtxo());
+
+        const amountToSendInSats = bitcoinToSatoshiInteger(safeParseFloat(transaction.amount));
+
+        const { tx, outputs, psbt, fee } = wallet.createTransaction(
+          wallet.getUtxo(),
+          [{ address: transaction.address, value: amountToSendInSats }],
+          selectedFeeAmount,
+          changeAddress,
+          HDSegwitBech32Wallet.defaultRBFSequence
+        );
+
         await broadcast(tx.toHex());
         const transactionId = bitcoin.Transaction.fromHex(tx.toHex()).getId();
         console.log('Transaction ID on btc network: ', transactionId);
