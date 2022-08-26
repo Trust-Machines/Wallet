@@ -1,7 +1,7 @@
 import { StyleSheet, View, SafeAreaView, Pressable, ScrollView } from 'react-native';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { RootTabScreenProps } from '../../nav-types';
+import { RootTabScreenProps } from '../../navigation/nav-types';
 import { SvgIcons } from '@assets/images';
 import { en } from '../../en';
 import { colors } from '@constants/Colors';

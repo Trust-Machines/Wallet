@@ -4,7 +4,7 @@ import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
-import { OnboardingStackScreenProps } from '../../nav-types';
+import { OnboardingStackScreenProps } from '../../navigation/nav-types';
 import { layout } from '@constants/Layout';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@redux/hooks';
@@ -45,7 +45,7 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
           if (success) {
             nav.navigate('Root');
           } else {
-            nav.navigate('CommonError', {});
+            nav.navigate('OnboardingStack', { screen: 'CommonError', params: {} });
             console.log('error');
           }
         },
@@ -85,14 +85,14 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
       </View>
       <View style={{ marginTop: 'auto' }}>
         <AppButton
-          onPress={() => navigation.navigate('AcceptTOS', { flow: 'generate' })}
+          onPress={() => navigation.navigate('AcceptTOS', { generateOrImport: 'generate' })}
           text={en.Generate_new_wallet_button_text}
           theme={ButtonTheme.Primary}
           fullWidth
           style={{ marginBottom: 10 }}
         />
         <AppButton
-          onPress={() => navigation.navigate('AcceptTOS', { flow: 'import' })}
+          onPress={() => navigation.navigate('AcceptTOS', { generateOrImport: 'import' })}
           text={en.Import_wallet_button_text}
           theme={ButtonTheme.NoBorder}
           fullWidth

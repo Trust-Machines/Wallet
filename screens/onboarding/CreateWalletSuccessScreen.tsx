@@ -1,7 +1,7 @@
 import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { en } from '../../en';
-import { CommonStackScreenProps } from '../../nav-types';
+import { CommonStackScreenProps } from '../../navigation/nav-types';
 import { AppSuccess } from '@shared/AppSuccess';
 import { View } from 'react-native';
 import { layout } from '@constants/Layout';

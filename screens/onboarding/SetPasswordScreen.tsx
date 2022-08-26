@@ -4,7 +4,7 @@ import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { en } from '../../en';
-import { OnboardingStackScreenProps } from '../../nav-types';
+import { OnboardingStackScreenProps } from '../../navigation/nav-types';
 import { useEffect, useState } from 'react';
 import { layout } from '@constants/Layout';
 import { decrypt, encrypt } from '@utils/helpers';

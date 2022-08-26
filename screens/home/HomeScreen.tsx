@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { HomeHeader } from './components/HomeHeader';
 import { ScreenContainer } from '@shared/ScreenContainer';
-import { RootTabScreenProps } from '../../nav-types';
+import { RootTabScreenProps } from '../../navigation/nav-types';
 import { HomeBalance } from './components/HomeBalance';
 import { TransactionItem } from './components/TransactionItem';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';

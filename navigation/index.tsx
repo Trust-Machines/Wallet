@@ -1,16 +1,11 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colors } from '@constants/Colors';
-import { StartScreen } from '@screens/auth/StartScreen';
-import { BiometricsScreen } from '@screens/auth/BiometricsScreen';
+import { StartScreen } from '@screens/onboarding/StartScreen';
+import { BiometricsScreen } from '@screens/onboarding/BiometricsScreen';
 import {
   BuyCryptoStackParamList,
   CommonStackParamList,
@@ -22,11 +17,11 @@ import {
   RootTabScreenProps,
   TransactionStackParamList,
   WalletsStackParamList,
-} from '../nav-types';
+} from './nav-types';
 import { en } from '../en';
 import LinkingConfiguration from './LinkingConfiguration';
-import { SaveRecoveryPhraseScreen } from '@screens/auth/SaveRecoveryPhraseScreen';
-import { CreateWalletSuccessScreen } from '@screens/auth/CreateWalletSuccessScreen';
+import { GenerateWalletScreen } from '@screens/onboarding/GenerateWalletScreen';
+import { CreateWalletSuccessScreen } from '@screens/onboarding/CreateWalletSuccessScreen';
 import BottomTabBorder from '@assets/images/bottom-tab-border.svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { layout } from '@constants/Layout';
@@ -43,12 +38,12 @@ import { CollectiblesScreen } from '@screens/collectibles/CollectiblesScreen';
 import { DefiBrowserScreen } from '@screens/defi/DefiBrowserScreen';
 import { SettingsScreen } from '@screens/settings/SettingsScreen';
 import { BuyCryptoModal } from '@screens/transactions/BuyCryptoModal';
-import { WalletLoginScreen } from '@screens/auth/WalletLoginScreen';
+import { WalletImportScreen } from '@screens/onboarding/WalletImportScreen';
 import { SvgIcons } from '@assets/images';
-import { AcceptTOSScreen } from '@screens/auth/AcceptTOSScreen';
-import { SetPasswordScreen } from '@screens/auth/SetPasswordScreen';
+import { AcceptTOSScreen } from '@screens/onboarding/AcceptTOSScreen';
+import { SetPasswordScreen } from '@screens/onboarding/SetPasswordScreen';
 import { UnlockWalletScreen } from '@screens/common/UnlockWalletScreen';
-import { SetWalletLabelScreen } from '@screens/auth/SetWalletLabelScreen';
+import { SetWalletLabelScreen } from '@screens/onboarding/SetWalletLabelScreen';
 import { WalletSelectorModal } from '@screens/wallets/WalletSelectorModal';
 import { AddNewWalletScreen } from '@screens/wallets/AddNewWallet';
 import { EditWalletModal } from '@screens/wallets/EditWalletModal';
@@ -111,13 +106,13 @@ const getCommonScreens = (Stack: ReturnType<typeof createNativeStackNavigator>) 
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="WalletLogin"
-        component={WalletLoginScreen}
+        name="WalletImport"
+        component={WalletImportScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SaveRecoveryPhrase"
-        component={SaveRecoveryPhraseScreen}
+        name="GenerateWallet"
+        component={GenerateWalletScreen}
         options={{ headerShown: false }}
       />
     </>

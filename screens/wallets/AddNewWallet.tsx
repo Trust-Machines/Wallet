@@ -3,7 +3,7 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../en';
-import { NewWalletStackScreenProps } from '../../nav-types';
+import { NewWalletStackScreenProps } from '../../navigation/nav-types';
 import { layout } from '@constants/Layout';
 import { useAppSelector } from '@redux/hooks';
 import { useNavigation } from '@react-navigation/native';
@@ -12,10 +12,10 @@ export function AddNewWalletScreen({ route }: NewWalletStackScreenProps<'AddNewW
   const { wallets } = useAppSelector(state => state.wallet);
   const navigation = useNavigation();
 
-  const handleButtonPress = (flow: 'generate' | 'import') => {
+  const handleButtonPress = (generateOrImport: 'generate' | 'import') => {
     navigation.navigate(Object.keys(wallets).length ? 'NewWalletStack' : 'OnboardingStack', {
       screen: 'WalletLabel',
-      params: { flow },
+      params: { generateOrImport },
     });
   };
 

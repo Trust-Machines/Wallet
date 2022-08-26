@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import { BuyCryptoStackScreenProps } from '../../nav-types';
+import { BuyCryptoStackScreenProps } from '../../navigation/nav-types';
 import { ModalScreenContainer } from '@shared/ModalScreenContainer';
 import { en } from '../../en';
 import { AppButton, ButtonTheme } from '@shared/AppButton';

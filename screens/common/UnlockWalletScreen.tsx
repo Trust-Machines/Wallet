@@ -3,7 +3,7 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { ScreenContainer } from '@shared/ScreenContainer';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../en';
-import { CommonStackScreenProps } from '../../nav-types';
+import { CommonStackScreenProps } from '../../navigation/nav-types';
 import { useState } from 'react';
 import { decrypt } from '@utils/helpers';
 import { useAppDispatch } from '@redux/hooks';

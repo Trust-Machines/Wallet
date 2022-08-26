@@ -7,8 +7,8 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { EncryptedSeed, WalletData } from '@redux/walletSlice';
-import { Assets } from './constants/CommonEnums';
-import { TransactionDetails } from './hooks/useTransactionSending';
+import { Assets } from '../constants/CommonEnums';
+import { TransactionDetails } from '../hooks/useTransactionSending';
 
 declare global {
   namespace ReactNavigation {
@@ -26,7 +26,6 @@ export type RootStackParamList = {
   NewWalletStack: NavigatorScreenParams<NewWalletStackParamList>;
   TransactionDetails: { transactionHash: string };
   Settings: undefined;
-  CommonError: { message?: string; onButtonPress?(): void };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -48,14 +47,14 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
 >;
 
 export type CommonStackParamList = {
-  SaveRecoveryPhrase: { password?: string };
+  GenerateWallet: { password?: string };
   CreateWalletSuccess: { isFirstWallet?: boolean };
-  WalletLogin: { password?: string };
+  WalletImport: { password?: string };
   UnlockWallet: {
     encryptedSeedPhrase: EncryptedSeed;
     onValidationFinished(success: boolean, password?: string): void;
   };
-  WalletLabel: { flow: 'import' | 'generate' };
+  WalletLabel: { generateOrImport: 'import' | 'generate' };
   CommonError: { message?: string; onButtonPress?(): void };
 };
 
@@ -65,7 +64,7 @@ export type CommonStackScreenProps<Screen extends keyof CommonStackParamList> =
 export type OnboardingStackParamList = CommonStackParamList & {
   Start: undefined;
   Biometrics: undefined;
-  AcceptTOS: { flow: 'import' | 'generate' };
+  AcceptTOS: { generateOrImport: 'import' | 'generate' };
   SetPassword: { seedPhrase: string; type: string };
 };
 

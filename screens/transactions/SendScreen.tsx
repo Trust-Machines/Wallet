@@ -1,6 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
-import { RootTabScreenProps } from '../../nav-types';
+import { RootTabScreenProps } from '../../navigation/nav-types';
 import { en } from '../../en';
 import { styleVariables } from '@constants/StyleVariables';
 import { colors } from '@constants/Colors';

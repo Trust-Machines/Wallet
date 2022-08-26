@@ -8,7 +8,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import { ScreenContainer } from '@shared/ScreenContainer';
-import { RootTabScreenProps } from '../../nav-types';
+import { RootTabScreenProps } from '../../navigation/nav-types';
 import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { colors } from '@constants/Colors';
 import { styleVariables } from '@constants/StyleVariables';
