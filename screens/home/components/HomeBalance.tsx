@@ -3,12 +3,14 @@ import { TextTheme, ThemedText } from '@shared/ThemedText';
 import { en } from '../../../en';
 import { Assets } from '@constants/CommonEnums';
 import { colors } from '@constants/Colors';
-import { satoshiToBitcoinString } from '@utils/helpers';
+import { satoshiToBitcoinString, timestampToDate } from '@utils/helpers';
 import { useSelector } from 'react-redux';
 import { selectCurrentWalletData } from '@redux/walletSlice';
+import { useAppSelector } from '@redux/hooks';
 
 export function HomeBalance() {
   const currentWalletData = useSelector(selectCurrentWalletData);
+  const { usdPrice, updatedAt } = useAppSelector(state => state.wallet);
 
   return (
     <View style={{ paddingBottom: 35, paddingTop: 10, alignItems: 'center' }}>
@@ -24,7 +26,7 @@ export function HomeBalance() {
         theme={TextTheme.LabelText}
         styleOverwrite={{ color: colors.primaryAppColorDarker, marginVertical: 4 }}
       >
-        $10,761.61 {Assets.USD}
+        ${(usdPrice * (currentWalletData ? currentWalletData?.balance : 0)).toFixed(2)} {Assets.USD}
       </ThemedText>
       <Text
         style={{
@@ -34,7 +36,7 @@ export function HomeBalance() {
           color: colors.disabled,
         }}
       >
-        {en.Home_last_updated_label}:&nbsp;5 seconds ago
+        {en.Home_last_updated_label}:&nbsp;{updatedAt ? timestampToDate(updatedAt) : ''}
       </Text>
     </View>
   );

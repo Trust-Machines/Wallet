@@ -6,12 +6,14 @@ import { RootTabScreenProps } from '../../nav-types';
 import { HomeBalance } from './components/HomeBalance';
 import { TransactionItem } from './components/TransactionItem';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { getBalance } from '@redux/balanceSlice';
-import { getTransactions } from '@redux/transactionsSlice';
-import { getAddress } from '@redux/addressSlice';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { selectCurrentWalletData } from '@redux/walletSlice';
+import {
+  getAddress,
+  getBalance,
+  getTransactions,
+  selectCurrentWalletData,
+} from '@redux/walletSlice';
 
 export function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const dispatch = useAppDispatch();

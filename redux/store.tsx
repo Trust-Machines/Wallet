@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { persistReducer } from 'redux-persist'
+import { persistReducer } from 'redux-persist';
 import walletReducer from './walletSlice';
 import contactsReducer from './contactsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,44 +8,44 @@ import { persistStore } from 'redux-persist';
 const rootPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['wallet']
-}
- 
+  blacklist: ['wallet'],
+};
+
 const walletPersistConfig = {
   key: 'wallet',
   storage: AsyncStorage,
   blacklist: [
-  'currentWalletObject',
-  'newWalletLabel',
-  'walletLoading',
-  'walletError',
-  'addressLoading',
-  'addressError',
-  'balanceLoading',
-  'balanceError',
-  'transactionsLoading',
-  'transactionsError'
-  ]
-}
- 
+    'currentWalletObject',
+    'newWalletLabel',
+    'walletLoading',
+    'walletError',
+    'addressLoading',
+    'addressError',
+    'balanceLoading',
+    'balanceError',
+    'transactionsLoading',
+    'transactionsError',
+  ],
+};
+
 const rootReducer = combineReducers({
   wallet: persistReducer(walletPersistConfig, walletReducer),
-  contacts: contactsReducer
-})
+  contacts: contactsReducer,
+});
 
-const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoreActions: true,
-        ignoreState: true
+        ignoreState: true,
       },
       immutableCheck: false,
     }),
-})
+});
 
 export let persistor = persistStore(store);
 

@@ -9,13 +9,12 @@ import { layout } from '@constants/Layout';
 import QRCode from 'react-native-qrcode-svg';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { getAddress } from '@redux/addressSlice';
 import { colors } from '@constants/Colors';
 import { createQr, formatAddress, safeParseFloat } from '@utils/helpers';
 import { SvgIcons } from '@assets/images';
 import { AppAmountInput } from '@shared/AppAmountInput';
 import { useSelector } from 'react-redux';
-import { selectCurrentWalletData } from '@redux/walletSlice';
+import { getAddress, selectCurrentWalletData } from '@redux/walletSlice';
 
 export function PresentQrModal({ navigation }: TransactionStackScreenProps<'PresentQr'>) {
   const [amount, setAmount] = useState<string>('0');

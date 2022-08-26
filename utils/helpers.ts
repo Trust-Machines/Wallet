@@ -80,7 +80,6 @@ export const timestampToDate = (timestamp: number): string => {
     'December',
   ];
   const date = new Date(timestamp * 1000);
-  console.log('DATE', date, timestamp);
 
   const hours = date.getHours();
   const minutes = date.getMinutes();

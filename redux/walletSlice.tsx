@@ -25,6 +25,8 @@ interface WalletState {
   wallets: WalletData[];
   currentWalletID: string;
   currentWalletObject: any;
+  usdPrice: number;
+  updatedAt: number | undefined;
 
   newWalletLabel: string;
   walletLoading: boolean;
@@ -41,6 +43,8 @@ const initialState: WalletState = {
   wallets: [],
   currentWalletID: '',
   currentWalletObject: undefined,
+  usdPrice: 0,
+  updatedAt: undefined,
 
   newWalletLabel: '',
   walletLoading: false,
@@ -125,7 +129,21 @@ export const getBalance = createAsyncThunk(
       await wallet.fetchBalance();
       const walletBalance = wallet.getBalance();
       console.log('BALANCE', walletBalance);
-      return walletBalance;
+
+      const priceResponse = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=usd&vs_currencies=btc',
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const usdPrice = await priceResponse.json();
+
+      return { walletBalance, usdPrice: usdPrice.usd.btc, updatedAt: Date.now() / 1000 };
     } catch (err) {
       console.log('get balance error: ', err);
       return rejectWithValue(err);
@@ -141,7 +159,21 @@ export const getTransactions = createAsyncThunk(
       await wallet.fetchTransactions();
       const transactions = wallet.getTransactions();
       //console.log("past transactions", transactions);
-      return transactions;
+
+      const priceResponse = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=usd&vs_currencies=btc',
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const usdPrice = await priceResponse.json();
+
+      return { transactions, usdPrice: usdPrice.usd.btc };
     } catch (err) {
       console.log('get transactions error: ', err);
       return rejectWithValue(err);
@@ -253,11 +285,14 @@ export const walletSlice = createSlice({
         const walletData = wallets.find(obj => obj.id === state.currentWalletID);
 
         if (!!walletData) {
-          wallets[walletIndex] = { ...walletData, balance: action.payload };
+          wallets[walletIndex] = { ...walletData, balance: action.payload.walletBalance };
           state.wallets = wallets;
         }
 
+        state.updatedAt = action.payload.updatedAt;
+        state.usdPrice = action.payload.usdPrice;
         state.balanceLoading = false;
+        state.balanceError = false;
       })
       .addCase(getBalance.rejected, (state, action) => {
         state.balanceLoading = false;
@@ -274,11 +309,13 @@ export const walletSlice = createSlice({
         const walletData = wallets.find(obj => obj.id === state.currentWalletID);
 
         if (!!walletData) {
-          wallets[walletIndex] = { ...walletData, transactions: action.payload };
+          wallets[walletIndex] = { ...walletData, transactions: action.payload.transactions };
           state.wallets = wallets;
         }
 
+        state.usdPrice = action.payload.usdPrice;
         state.transactionsLoading = false;
+        state.transactionsError = false;
       })
       .addCase(getTransactions.rejected, (state, action) => {
         state.transactionsLoading = false;

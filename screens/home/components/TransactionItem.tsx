@@ -6,9 +6,11 @@ import { Assets } from '@constants/CommonEnums';
 import { SvgIcons } from '@assets/images';
 import { formatAddress, satoshiToBitcoinString } from '@utils/helpers';
 import { useNavigation } from '@react-navigation/native';
+import { useAppSelector } from '@redux/hooks';
 
 export function TransactionItem({ transaction }: any) {
   const { value, hash } = transaction;
+  const { usdPrice } = useAppSelector(state => state.wallet);
   const navigation = useNavigation();
 
   const address = transaction.inputs[0].addresses[0];
@@ -85,7 +87,7 @@ export function TransactionItem({ transaction }: any) {
                 marginRight: 4,
               }}
             >
-              3.5 {Assets.USD}
+              {(value * usdPrice).toFixed(2)} {Assets.USD}
             </ThemedText>
           </View>
         </View>

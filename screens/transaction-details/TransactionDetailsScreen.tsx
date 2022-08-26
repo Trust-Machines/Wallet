@@ -5,10 +5,10 @@ import { AppButton, ButtonTheme } from '@shared/AppButton';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { useEffect, useState } from 'react';
 import { satoshiToBitcoinString, timestampToDate } from '@utils/helpers';
-import { getTransactions } from '@redux/transactionsSlice';
 import { TransactionDataItem } from './components/TransactionDataItem';
 import { useSelector } from 'react-redux';
 import { selectCurrentWalletData } from '@redux/walletSlice';
+import { getTransactions } from '@redux/walletSlice';
 
 interface TransactionDataItem<T> {
   label: string;
