@@ -6,10 +6,12 @@ import { styleVariables } from '@constants/StyleVariables';
 import { en } from '../../en';
 import { SvgIcons } from '@assets/images';
 import { persistor } from '@redux/store';
+import { clearAsyncStorage } from '@utils/asyncStorageHelper';
 
 export function SettingsScreen({ navigation }: RootStackScreenProps<'Settings'>) {
   const handleLogout = async (): Promise<void> => {
     await persistor.purge();
+    const clear = await clearAsyncStorage();
     navigation.navigate('OnboardingStack', { screen: 'Start' });
   };
 

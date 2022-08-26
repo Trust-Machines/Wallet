@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '@redux/hooks';
 import { mapSeedToEncryptedSeed } from '@utils/mappers';
 import { useNavigation } from '@react-navigation/native';
-import { selectCurrentWalletData } from '@redux/walletSlice';
+import { selectCurrentWalletData, selectIsLoggedIn } from '@redux/walletSlice';
 import { useSelector } from 'react-redux';
 const ElectrumHelper = require('@utils/ElectrumHelper');
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,23 +19,11 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
   const [loading, setLoading] = useState<boolean>(false);
   const nav = useNavigation();
 
-  const clearAsyncStorage = async () => {
-    try {
-      const keys: string[] = await AsyncStorage.getAllKeys();
-      await AsyncStorage.multiRemove(keys);
-    } catch (err) {
-      console.log('clear async storage error: ', err);
-    }
-
-    console.log('CLEARED');
-  };
-
-  const state = useAppSelector(state => state.wallet);
-  const { wallets, currentWalletID } = useAppSelector(state => state.wallet);
+  const { currentWalletID } = useAppSelector(state => state.wallet);
   const currentWalletData = useSelector(selectCurrentWalletData);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   useEffect(() => {
-    //clearAsyncStorage();
     setLoading(true);
     initializeElectrumHelper();
     loginWithExistingWallet();
@@ -50,7 +38,7 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
     await ElectrumHelper.waitTillConnected();
     // If there is a current wallet and a corresponding wallet object stored on the device
     // the user is navigated to the password screen
-    if (wallets.length && currentWalletID && !!currentWalletData) {
+    if (isLoggedIn && currentWalletID && !!currentWalletData) {
       navigation.navigate('UnlockWallet', {
         encryptedSeedPhrase: mapSeedToEncryptedSeed(currentWalletData.encryptedSeed),
         onValidationFinished: (success: boolean) => {
@@ -64,6 +52,7 @@ export function StartScreen({ navigation }: OnboardingStackScreenProps<'Start'>)
       });
     } else {
       // The user has no wallet saved on the device and can choose to import/create one
+      // TODO clear async storage?
       console.log('NO WALLET');
     }
   };

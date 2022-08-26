@@ -7,7 +7,12 @@ import { CommonStackScreenProps } from '../../nav-types';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { layout } from '@constants/Layout';
-import { addNewWallet, importWallet, selectCurrentWalletData } from '@redux/walletSlice';
+import {
+  addNewWallet,
+  importWallet,
+  selectCurrentWalletData,
+  selectIsLoggedIn,
+} from '@redux/walletSlice';
 import { useNavigation } from '@react-navigation/native';
 import { encrypt } from '@utils/helpers';
 import { AppTextInput } from '@shared/AppTextInput';
@@ -19,22 +24,23 @@ export function WalletLoginScreen({ route }: CommonStackScreenProps<'WalletLogin
   const [seedPhrase, setSeedPhrase] = useState<string>(
     'liar knee pioneer critic water gospel another butter like purity garment member'
   );
-  const { walletLoading, wallets, currentWalletObject, newWalletLabel } = useAppSelector(
+  const { walletLoading, currentWalletObject, newWalletLabel } = useAppSelector(
     state => state.wallet
   );
   const currentWalletData = useSelector(selectCurrentWalletData);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
 
   const handleNextPress = async () => {
     if (seedPhrase.length) {
       try {
-        const walletType = !wallets.length ? undefined : currentWalletData?.type;
+        const walletType = !isLoggedIn ? undefined : currentWalletData?.type;
 
         const resultAction = await dispatch(importWallet({ seedPhrase, type: walletType }));
         const originalPromiseResult = unwrapResult(resultAction);
 
         // if the user doesn't have a wallet yet
-        if (!wallets.length) {
+        if (!isLoggedIn) {
           navigation.navigate('OnboardingStack', {
             screen: 'SetPassword',
             params: { seedPhrase, type: originalPromiseResult.type },

@@ -16,7 +16,12 @@ export function HomeHeader() {
       <Pressable
         style={[
           styles.innerContainer,
-          { flex: 1, marginRight: 8, paddingHorizontal: 10, justifyContent: 'space-between' },
+          {
+            flex: 1,
+            marginRight: 8,
+            paddingLeft: 10,
+            justifyContent: 'space-between',
+          },
         ]}
         onPress={() => navigation.navigate('WalletsStack', { screen: 'WalletSelector' })}
       >
