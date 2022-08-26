@@ -24,6 +24,8 @@ export function AcceptTOSScreen({ navigation, route }: OnboardingStackScreenProp
         justifyContent: 'space-between',
         paddingBottom: '10%',
       }}
+      canGoBack
+      onGoBack={() => navigation.goBack()}
     >
       <View>
         <Image

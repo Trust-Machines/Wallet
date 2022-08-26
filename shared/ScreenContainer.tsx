@@ -8,9 +8,11 @@ import {
   Image,
   ViewStyle,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import { colors } from '@constants/Colors';
 import { styleVariables } from '@constants/StyleVariables';
+import { SvgIcons } from '@assets/images';
 
 type ScreenContainerProps = {
   children: React.ReactNode;
@@ -20,6 +22,8 @@ type ScreenContainerProps = {
   withTab?: boolean;
   styles?: ViewStyle;
   loading?: boolean;
+  canGoBack?: boolean;
+  onGoBack?(): void;
 };
 
 export function ScreenContainer(props: ScreenContainerProps) {
@@ -37,6 +41,14 @@ export function ScreenContainer(props: ScreenContainerProps) {
               source={require('@assets/images/constellations-background.png')}
             />
           )}
+          {props.canGoBack ? (
+            <Pressable
+              onPress={props.onGoBack}
+              style={{ padding: 16, position: 'absolute', left: 0, top: 38 }}
+            >
+              <SvgIcons.General.ArrowLeft />
+            </Pressable>
+          ) : null}
           <View
             style={[
               styles.contentWrapper,

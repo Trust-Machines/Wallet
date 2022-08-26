@@ -10,6 +10,7 @@ import { useAppDispatch } from '@redux/hooks';
 import { importWallet, selectCurrentWalletData } from '@redux/walletSlice';
 import { AppTextInput } from '@shared/AppTextInput';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWallet'>) {
   const [password, setPassword] = useState<string>('');
@@ -20,6 +21,7 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
 
   const { encryptedSeedPhrase, onValidationFinished } = route.params;
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
   const validatePassword = async () => {
     setLoading(true);
@@ -51,7 +53,7 @@ export function UnlockWalletScreen({ route }: CommonStackScreenProps<'UnlockWall
   };
 
   return (
-    <ScreenContainer showStars loading={loading}>
+    <ScreenContainer showStars loading={loading} canGoBack onGoBack={() => navigation.goBack()}>
       <Image
         source={require('@assets/images/unlock-wallet-graphics.png')}
         style={{ alignSelf: 'center', marginTop: 60 }}

@@ -54,7 +54,7 @@ export function SetWalletLabelScreen({ route }: CommonStackScreenProps<'WalletLa
   };
 
   return (
-    <ScreenContainer showStars>
+    <ScreenContainer showStars canGoBack onGoBack={() => navigation.goBack()}>
       <Image
         style={{
           marginTop: layout.isSmallDevice ? 0 : '10%',
